@@ -1,7 +1,6 @@
 package com.tikklesaver.domain.Challenge.entity;
 
-import com.tikklesaver.domain.Challenge.enums.Status;
-import com.tikklesaver.global.common.BaseEntity;
+import com.tikklesaver.domain.Challenge.entity.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
 

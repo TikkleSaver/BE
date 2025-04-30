@@ -1,9 +1,9 @@
 package com.tikklesaver.domain.wish.entity;
 
-import com.tikklesaver.domain.wish.enums.ProductType;
-import com.tikklesaver.domain.wish.enums.PublicStatus;
-import com.tikklesaver.domain.wish.enums.PurchaseStatus;
-import com.tikklesaver.domain.wish.enums.SatisfactionStatus;
+import com.tikklesaver.domain.wish.entity.enums.ProductType;
+import com.tikklesaver.domain.wish.entity.enums.PublicStatus;
+import com.tikklesaver.domain.wish.entity.enums.PurchaseStatus;
+import com.tikklesaver.domain.wish.entity.enums.SatisfactionStatus;
 import com.tikklesaver.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;

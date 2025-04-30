@@ -1,4 +1,4 @@
-package com.tikklesaver.domain.Challenge.enums;
+package com.tikklesaver.domain.Challenge.entity.enums;
 
 public enum Status {
     PENDING,

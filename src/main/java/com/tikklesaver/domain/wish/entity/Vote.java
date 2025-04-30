@@ -1,6 +1,6 @@
 package com.tikklesaver.domain.wish.entity;
 
-import com.tikklesaver.domain.wish.enums.LikeStatus;
+import com.tikklesaver.domain.wish.entity.enums.LikeStatus;
 import com.tikklesaver.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
