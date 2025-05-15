@@ -13,6 +13,9 @@ import com.tikklesaver.global.apiPayload.exception.handler.ChallengeHandler;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.javassist.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,4 +47,25 @@ public class ChallengeQueryServiceImpl implements ChallengeQueryService {
         Challenge newChallenge = ChallengeConverter.toChallenge(member, request,category,imageUrl);
         return challengeRepository.save(newChallenge);
     }
+
+    @Override
+    public Page<Challenge> getAllChallenges(Long memberId, Long categoryId, Integer page) {
+
+        PageRequest pageRequest = PageRequest.of(page - 1, 20, Sort.by(Sort.Direction.DESC, "createdAt"));
+
+        if (categoryId != null) {
+            Category category = categoryRepository.findById(categoryId).orElse(null);
+            return challengeRepository.findAllByCategory(category, pageRequest);
+        }
+        else {
+            return challengeRepository.findAll(pageRequest);
+        }
+    }
+
 }
+
+
+
+
+
+
