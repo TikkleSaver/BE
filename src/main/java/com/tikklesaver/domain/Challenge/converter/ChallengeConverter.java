@@ -5,9 +5,12 @@ import com.tikklesaver.domain.Challenge.dto.ChallengeRequestDTO;
 import com.tikklesaver.domain.Challenge.dto.ChallengeResponseDTO;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
 import com.tikklesaver.domain.member.entity.Member;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ChallengeConverter {
@@ -28,6 +31,29 @@ public class ChallengeConverter {
         return ChallengeResponseDTO.challengeResultDTO.builder()
                 .challengeId(challenge.getId())
                 .createdAt(LocalDateTime.now())
+                .build();
+    }
+
+    public static ChallengeResponseDTO.ChallengePreViewListDTO challengePreViewListDTO(Page<Challenge> challengeList){
+        List<ChallengeResponseDTO.ChallengePreViewDTO> postPreViewDTOList = challengeList.stream().map(ChallengeConverter::challengePreViewDTO).collect(Collectors.toList());
+
+        return ChallengeResponseDTO.ChallengePreViewListDTO.builder()
+                .isFirst(challengeList.isFirst())
+                .isLast(challengeList.isLast())
+                .totalPage(challengeList.getTotalPages())
+                .totalElements(challengeList.getTotalElements())
+                .listSize(postPreViewDTOList.size())
+                .challengeList(postPreViewDTOList)
+                .build();
+    }
+
+    public static ChallengeResponseDTO.ChallengePreViewDTO challengePreViewDTO(Challenge challenge) {
+        return ChallengeResponseDTO.ChallengePreViewDTO.builder()
+                .challengeId(challenge.getId())
+                .title(challenge.getTitle())
+                .categoryId(challenge.getCategory().getId())
+                .imgUrl(challenge.getChallengeUrl())
+                .createdAt(challenge.getCreatedAt())
                 .build();
     }
 
