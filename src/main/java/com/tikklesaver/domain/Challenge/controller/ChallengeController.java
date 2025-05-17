@@ -1,27 +1,25 @@
 package com.tikklesaver.domain.Challenge.controller;
 
-import com.tikklesaver.domain.Category.entity.Category;
 import com.tikklesaver.domain.Challenge.converter.ChallengeConverter;
 import com.tikklesaver.domain.Challenge.dto.ChallengeRequestDTO;
 import com.tikklesaver.domain.Challenge.dto.ChallengeResponseDTO;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
-import com.tikklesaver.domain.Challenge.service.ChallengeQueryService;
+import com.tikklesaver.domain.Challenge.service.Challenge.ChallengeCommandService;
+import com.tikklesaver.domain.Challenge.service.Challenge.ChallengeQueryService;
 import com.tikklesaver.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/challenge")
+@RequestMapping("/api/challenges")
 public class ChallengeController {
 
     private final ChallengeQueryService challengeQueryService;
+    private final ChallengeCommandService challengeCommandService;
 
     @PostMapping
     @Operation(summary = "챌린지 생성 API")
@@ -30,13 +28,13 @@ public class ChallengeController {
 
         //임시 memberId
         Long memberId = 1L;
-        Challenge challenge = challengeQueryService.createChallenge(memberId, request);
+        Challenge challenge = challengeCommandService.createChallenge(memberId, request);
         return ApiResponse.onSuccess(ChallengeConverter.toChallengeResultDTO(challenge));
     }
 
 
     @GetMapping("/lists")
-    @Operation(summary = "카테고리별 게시글 리스트 조회 API")
+    @Operation(summary = "카테고리별 챌린지 리스트 조회 API")
     public ApiResponse<ChallengeResponseDTO.ChallengePreViewListDTO> getChallengeList(@RequestParam(name = "category", required = false) Long categoryId, @RequestParam(name="page")Integer page){
 
         Long memberId = 1L;
@@ -46,4 +44,18 @@ public class ChallengeController {
         return ApiResponse.onSuccess(ChallengeConverter.challengePreViewListDTO(challengeList));
 
     }
+
+    @GetMapping("/join-challenge/{challengeId}")
+    @Operation(summary = "챌린지 신청 페이지 조회 API")
+    public ApiResponse<ChallengeResponseDTO.ChallengePreviewWithStatusResponseDTO> getChallengePreview(@PathVariable(name = "challengeId") Long challengeId){
+
+        Long memberId = 1L;
+
+        ChallengeResponseDTO.ChallengePreviewWithStatusResponseDTO challengePreview = challengeQueryService.getChallengePreview(memberId,challengeId);
+
+        return ApiResponse.onSuccess(challengePreview);
+
+    }
+
+
 }
