@@ -1,5 +1,6 @@
 package com.tikklesaver.domain.Challenge.dto;
 
+import com.tikklesaver.domain.Challenge.entity.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,6 +45,26 @@ public class ChallengeResponseDTO {
         Long categoryId;
         String imgUrl;
         LocalDateTime createdAt;
+
+
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ChallengePreviewWithStatusResponseDTO {
+        private Long challengeId;
+        private String title;
+        private String description;
+        private String category;
+        private String imgUrl;
+        private List<String> missionMethods;
+        private Status status;
+        private String isPublic;
+        private boolean isScrapped;
+        private List<String> challengerImages;
+        private Integer challengerCount;
 
 
     }

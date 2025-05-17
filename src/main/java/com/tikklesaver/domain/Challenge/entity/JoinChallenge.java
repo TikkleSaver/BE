@@ -1,6 +1,7 @@
 package com.tikklesaver.domain.Challenge.entity;
 
 import com.tikklesaver.domain.Challenge.entity.enums.Status;
+import com.tikklesaver.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,7 +27,13 @@ public class JoinChallenge {
     private Status status;
 
     // 회원 ID (FK)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     // 챌린지 ID (FK)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "challenge_id")
+    private Challenge challenge;
 
 }

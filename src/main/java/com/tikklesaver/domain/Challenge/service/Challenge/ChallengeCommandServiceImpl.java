@@ -1,4 +1,4 @@
-package com.tikklesaver.domain.Challenge.service;
+package com.tikklesaver.domain.Challenge.service.Challenge;
 
 import com.tikklesaver.domain.Category.entity.Category;
 import com.tikklesaver.domain.Category.repository.CategoryRepository;
@@ -6,26 +6,23 @@ import com.tikklesaver.domain.Challenge.converter.ChallengeConverter;
 import com.tikklesaver.domain.Challenge.dto.ChallengeRequestDTO;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
 import com.tikklesaver.domain.Challenge.repository.ChallengeRepository;
+import com.tikklesaver.domain.Challenge.repository.JoinChallengeRepository;
 import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.domain.member.repository.MemberRepository;
 import com.tikklesaver.global.apiPayload.code.status.ErrorStatus;
 import com.tikklesaver.global.apiPayload.exception.handler.ChallengeHandler;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.javassist.NotFoundException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
-public class ChallengeQueryServiceImpl implements ChallengeQueryService {
+public class ChallengeCommandServiceImpl implements ChallengeCommandService {
 
     private final MemberRepository memberRepository;
     private final ChallengeRepository challengeRepository;
     private final CategoryRepository categoryRepository;
+
     @Override
     public Challenge createChallenge(Long memberId, ChallengeRequestDTO.CreateChallengeDTO request) {
 
@@ -47,25 +44,4 @@ public class ChallengeQueryServiceImpl implements ChallengeQueryService {
         Challenge newChallenge = ChallengeConverter.toChallenge(member, request,category,imageUrl);
         return challengeRepository.save(newChallenge);
     }
-
-    @Override
-    public Page<Challenge> getAllChallenges(Long memberId, Long categoryId, Integer page) {
-
-        PageRequest pageRequest = PageRequest.of(page - 1, 20, Sort.by(Sort.Direction.DESC, "createdAt"));
-
-        if (categoryId != null) {
-            Category category = categoryRepository.findById(categoryId).orElse(null);
-            return challengeRepository.findAllByCategory(category, pageRequest);
-        }
-        else {
-            return challengeRepository.findAll(pageRequest);
-        }
-    }
-
 }
-
-
-
-
-
-
