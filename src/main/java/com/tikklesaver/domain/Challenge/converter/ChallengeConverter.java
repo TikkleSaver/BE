@@ -4,7 +4,6 @@ import com.tikklesaver.domain.Category.entity.Category;
 import com.tikklesaver.domain.Challenge.dto.ChallengeRequestDTO;
 import com.tikklesaver.domain.Challenge.dto.ChallengeResponseDTO;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
-import com.tikklesaver.domain.Challenge.entity.JoinChallenge;
 import com.tikklesaver.domain.Challenge.entity.enums.Status;
 import com.tikklesaver.domain.member.entity.Member;
 import org.springframework.data.domain.Page;
@@ -60,7 +59,7 @@ public class ChallengeConverter {
     }
 
 
-    public static ChallengeResponseDTO.ChallengePreviewWithStatusResponseDTO challengePreviewWithStatusResponseDTO(Challenge challenge, Status status) {
+    public static ChallengeResponseDTO.ChallengePreviewWithStatusResponseDTO challengePreviewWithStatusResponseDTO(Challenge challenge, Status status, boolean isScrapped, Integer challengerCount, List<String> challengerImages) {
         return ChallengeResponseDTO.ChallengePreviewWithStatusResponseDTO.builder()
                 .challengeId(challenge.getId())
                 .title(challenge.getTitle())
@@ -68,6 +67,10 @@ public class ChallengeConverter {
                 .missionMethods(challenge.getMissionMethods())
                 .category(challenge.getCategory().getCategory_name())
                 .status(status)
+                .isPublic(challenge.getPublicStatus().toString())
+                .isScrapped(isScrapped)
+                .challengerCount(challengerCount)
+                .challengerImages(challengerImages)
                 .build();
 
     }

@@ -1,5 +1,6 @@
 package com.tikklesaver.domain.Challenge.entity;
 
+import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,7 +24,13 @@ public class MissionProof extends BaseEntity {
     private String content;
 
     // 회원 ID (FK)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     // 챌린지 ID (FK)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "challenge_id")
+    private Challenge challenge;
 
 }

@@ -7,6 +7,7 @@ import com.tikklesaver.domain.Challenge.dto.ChallengeResponseDTO;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
 import com.tikklesaver.domain.Challenge.entity.enums.Status;
 import com.tikklesaver.domain.Challenge.repository.ChallengeRepository;
+import com.tikklesaver.domain.Challenge.repository.ChallengeScrapRepository;
 import com.tikklesaver.domain.Challenge.repository.JoinChallengeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ChallengeQueryServiceImpl implements ChallengeQueryService {
@@ -22,6 +25,7 @@ public class ChallengeQueryServiceImpl implements ChallengeQueryService {
     private final ChallengeRepository challengeRepository;
     private final CategoryRepository categoryRepository;
     private final JoinChallengeRepository joinChallengeRepository;
+    private final ChallengeScrapRepository challengeScrapRepository;
 
 
     @Override
@@ -43,12 +47,13 @@ public class ChallengeQueryServiceImpl implements ChallengeQueryService {
 
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 챌린지를 찾을 수 없습니다. ID: " + challengeId));
-
-
         Status status = joinChallengeRepository.getJoinChallengeStatusByChallengeIdAndMemberId(challengeId, memberId)
                 .orElse(Status.NOT_APPLIED);
+        boolean isScrapped = challengeScrapRepository.existsByChallengeIdAndMemberId(challengeId, memberId);
+        Integer challengerCount = joinChallengeRepository.countJoinChallengeByChallengeId(challengeId);
 
-        return ChallengeConverter.challengePreviewWithStatusResponseDTO(challenge, status);
+        List<String> challengerImages = joinChallengeRepository.findTop3ChallengerImages(challengeId);
+        return ChallengeConverter.challengePreviewWithStatusResponseDTO(challenge, status, isScrapped, challengerCount, challengerImages);
 
     }
 
