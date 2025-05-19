@@ -35,7 +35,7 @@ public class AmazonConfig {
     private String challengesPath;
     @Value("${cloud.aws.s3.path.challenge-missions}")
     private String challengeMissionPath;
-    @Value("${cloud.aws.s3.path.expense}")
+    @Value("${cloud.aws.s3.path.expenses}")
     private String expensesPath;
     @Value("${cloud.aws.s3.path.memebers}")
     private String memebersPath;
