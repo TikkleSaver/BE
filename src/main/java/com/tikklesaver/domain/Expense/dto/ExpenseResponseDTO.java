@@ -12,7 +12,7 @@ public class ExpenseResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class CreateExpenseRequestResultDTO {
+    public static class CreateExpenseResultDTO {
         Long expenseId;
         Long memberId;
         String expenseName;
