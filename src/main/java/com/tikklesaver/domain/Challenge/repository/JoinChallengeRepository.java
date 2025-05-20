@@ -25,4 +25,6 @@ public interface JoinChallengeRepository extends JpaRepository<JoinChallenge, Lo
             nativeQuery = true
     )
     List<String> findTop3ChallengerImages(Long challengeId);
+
+
 }

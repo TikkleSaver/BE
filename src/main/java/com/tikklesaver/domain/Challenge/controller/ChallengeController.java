@@ -52,7 +52,7 @@ public class ChallengeController {
     @Operation(summary = "챌린지 신청 페이지 조회 API")
     public ApiResponse<ChallengeResponseDTO.ChallengePreviewWithStatusResponseDTO> getChallengePreview(@PathVariable(name = "challengeId") Long challengeId){
 
-        Long memberId = 1L;
+        Long memberId = 2L;
 
         ChallengeResponseDTO.ChallengePreviewWithStatusResponseDTO challengePreview = challengeQueryService.getChallengePreview(memberId,challengeId);
 

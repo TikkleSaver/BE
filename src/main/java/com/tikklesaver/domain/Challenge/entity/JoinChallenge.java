@@ -2,6 +2,7 @@ package com.tikklesaver.domain.Challenge.entity;
 
 import com.tikklesaver.domain.Challenge.entity.enums.Status;
 import com.tikklesaver.domain.member.entity.Member;
+import com.tikklesaver.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,17 +10,14 @@ import java.util.Date;
 
 @Builder
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
-public class JoinChallenge {
+public class JoinChallenge extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    // 가입일
-    @Column(nullable = false)
-    private Date createdAt;
 
     // 상태
     @Enumerated(EnumType.STRING)
@@ -35,5 +33,6 @@ public class JoinChallenge {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "challenge_id")
     private Challenge challenge;
+
 
 }

@@ -7,4 +7,5 @@ import org.springframework.web.multipart.MultipartFile;
 public interface ChallengeCommandService {
 
     Challenge createChallenge(Long memberId, ChallengeRequestDTO.CreateChallengeDTO request, MultipartFile file);
+
 }
