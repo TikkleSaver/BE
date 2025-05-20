@@ -33,4 +33,16 @@ public class ExpenseController {
         Expense expense = expenseCommandService.addExpense(memberId, request, file);
         return ApiResponse.onSuccess(ExpenseConverter.toExpenseResultDTO(expense));
     }
+
+    // 지출 수정
+    @PatchMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "지출 수정 API")
+    public ApiResponse<ExpenseResponseDTO.UpdateExpenseResultDTO> updateExpense(
+            @RequestPart("request") @Valid ExpenseRequestDTO.UpdateExpenseRequestDTO request,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
+
+        Long memberId = 1L;
+        Expense expense = expenseCommandService.updateExpense(memberId, request, file);
+        return ApiResponse.onSuccess(ExpenseConverter.toUpdateExpenseResultDTO(expense));
+    }
 }
