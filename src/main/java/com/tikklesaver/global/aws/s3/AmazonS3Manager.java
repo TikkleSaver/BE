@@ -1,6 +1,7 @@
 package com.tikklesaver.global.aws.s3;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.tikklesaver.global.common.Uuid;
@@ -38,6 +39,10 @@ public class AmazonS3Manager{
     }
     public String generateChallengeMissionsKeyName(Uuid uuid) {
         return amazonConfig.getChallengeMissionPath()+ '/' + uuid.getUuid();
+    }
+
+    public void deleteFile(String keyName) {
+        amazonS3.deleteObject(new DeleteObjectRequest(amazonConfig.getBucket(), keyName));
     }
 
 

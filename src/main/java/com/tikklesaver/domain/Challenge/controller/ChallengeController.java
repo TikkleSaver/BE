@@ -11,7 +11,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,14 +23,15 @@ public class ChallengeController {
     private final ChallengeQueryService challengeQueryService;
     private final ChallengeCommandService challengeCommandService;
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "챌린지 생성 API")
     public ApiResponse<ChallengeResponseDTO.challengeResultDTO> createChallenge(
-            @RequestBody @Valid ChallengeRequestDTO.CreateChallengeDTO request) {
+            @RequestPart("request") @Valid ChallengeRequestDTO.CreateChallengeDTO request,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
 
         //임시 memberId
         Long memberId = 1L;
-        Challenge challenge = challengeCommandService.createChallenge(memberId, request);
+        Challenge challenge = challengeCommandService.createChallenge(memberId, request, file);
         return ApiResponse.onSuccess(ChallengeConverter.toChallengeResultDTO(challenge));
     }
 
