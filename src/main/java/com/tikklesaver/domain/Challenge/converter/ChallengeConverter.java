@@ -72,6 +72,7 @@ public class ChallengeConverter {
                 .isScrapped(isScrapped)
                 .challengerCount(challengerCount)
                 .challengerImages(challengerImages)
+                .imgUrl(challenge.getChallengeUrl())
                 .build();
 
     }
