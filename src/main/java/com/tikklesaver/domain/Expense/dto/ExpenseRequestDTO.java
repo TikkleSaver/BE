@@ -27,4 +27,22 @@ public class ExpenseRequestDTO {
         @NotNull
         Long categoryId;
     }
+
+    // 지출 수정
+    @Setter
+    @Getter
+    public static class UpdateExpenseRequestDTO {
+        @NotNull
+        Long memberId;
+        @NotNull
+        Long expenseId;
+        String expenseName;
+        String expensePlace;
+        Long cost;
+        @NotNull
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+        Date expenseDate;
+        @NotNull
+        Long categoryId;
+    }
 }

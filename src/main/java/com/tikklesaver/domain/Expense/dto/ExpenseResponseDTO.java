@@ -24,4 +24,20 @@ public class ExpenseResponseDTO {
         LocalDateTime createdAt;
     }
 
+    // 지출 수정
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateExpenseResultDTO {
+        Long expenseId;
+        Long memberId;
+        String expenseName;
+        String expensePlace;
+        Long cost;
+        Date expenseDate;
+        String image;
+        Long categoryId;
+        LocalDateTime updatedAt;
+    }
 }

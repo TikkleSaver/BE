@@ -21,4 +21,19 @@ public class ExpenseConverter {
                 .createdAt(LocalDateTime.now())
                 .build();
     }
+
+    // 지출 수정
+    public static ExpenseResponseDTO.UpdateExpenseResultDTO toUpdateExpenseResultDTO(Expense expense) {
+        return ExpenseResponseDTO.UpdateExpenseResultDTO.builder()
+                .expenseId(expense.getId())
+                .memberId(expense.getMember().getId())
+                .expenseName(expense.getExpenseName())
+                .expensePlace(expense.getExpensePlace())
+                .cost(expense.getCost())
+                .expenseDate(expense.getExpenseDate())
+                .image(expense.getImage())
+                .categoryId(expense.getCategory().getId())
+                .updatedAt(LocalDateTime.now())
+                .build();
+    }
 }
