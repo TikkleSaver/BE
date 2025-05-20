@@ -1,5 +1,7 @@
 package com.tikklesaver.domain.Expense.entity;
 
+import com.tikklesaver.domain.Category.entity.Category;
+import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -36,7 +38,12 @@ public class Expense extends BaseEntity {
     private String image;
 
     // 카테고리 ID (FK)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     // 지출한 사용자 ID (FK)
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 }

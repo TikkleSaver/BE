@@ -1,8 +1,13 @@
 package com.tikklesaver.domain.member.entity;
 
+import com.tikklesaver.domain.Expense.entity.Expense;
+import com.tikklesaver.domain.Expense.entity.ExpenseComment;
 import com.tikklesaver.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @Getter
@@ -35,4 +40,12 @@ public class Member extends BaseEntity {
     
     // 활동 상태
     private String status;
+
+    // 지출
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Expense> expenseList = new ArrayList<>();
+
+    // 지출 댓글
+    @OneToMany(mappedBy = "commenter", cascade = CascadeType.ALL)
+    private List<ExpenseComment> expenseCommentList = new ArrayList<>();
 }
