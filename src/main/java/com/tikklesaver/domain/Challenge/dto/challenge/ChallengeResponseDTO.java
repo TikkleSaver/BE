@@ -61,6 +61,7 @@ public class ChallengeResponseDTO {
         private String imgUrl;
         private List<String> missionMethods;
         private Status status;
+        private Long leaderId;
         private String isPublic;
         private boolean isScrapped;
         private List<String> challengerImages;

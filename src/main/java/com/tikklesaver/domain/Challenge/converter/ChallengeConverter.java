@@ -71,6 +71,7 @@ public class ChallengeConverter {
                 .missionMethods(challenge.getMissionMethods())
                 .category(challenge.getCategory().getCategory_name())
                 .status(status)
+                .leaderId(challenge.getMember().getId())
                 .isPublic(challenge.getPublicStatus().toString())
                 .isScrapped(isScrapped)
                 .challengerCount(challengerCount)

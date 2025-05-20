@@ -27,4 +27,5 @@ public interface JoinChallengeRepository extends JpaRepository<JoinChallenge, Lo
     List<String> findTop3ChallengerImages(Long challengeId);
 
 
+    Integer countJoinChallengeByChallengeIdAndStatus(Long challengeId, Status status);
 }

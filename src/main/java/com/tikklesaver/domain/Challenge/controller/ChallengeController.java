@@ -48,17 +48,6 @@ public class ChallengeController {
 
     }
 
-    @GetMapping("/join-challenge/{challengeId}")
-    @Operation(summary = "챌린지 신청 페이지 조회 API")
-    public ApiResponse<ChallengeResponseDTO.ChallengePreviewWithStatusResponseDTO> getChallengePreview(@PathVariable(name = "challengeId") Long challengeId){
-
-        Long memberId = 2L;
-
-        ChallengeResponseDTO.ChallengePreviewWithStatusResponseDTO challengePreview = challengeQueryService.getChallengePreview(memberId,challengeId);
-
-        return ApiResponse.onSuccess(challengePreview);
-
-    }
 
 
 }
