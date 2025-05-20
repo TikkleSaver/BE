@@ -10,6 +10,7 @@ import com.tikklesaver.domain.wish.entity.enums.PurchaseStatus;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Component
 public class WishConverter {
@@ -30,6 +31,13 @@ public class WishConverter {
         return WishResponseDTO.WishResultDTO.builder()
                 .wishId(wish.getId())
                 .createdAt(LocalDateTime.now())
+                .build();
+    }
+
+    // 나의 위시리스트 목록 구매 예정 조회
+    public static WishResponseDTO.MyWishPlannedPreviewListDTO myWishPlannedPreviewListDTO(List<WishResponseDTO.MyWishPlannedPreviewDTO> myWishPlannedList){
+        return WishResponseDTO.MyWishPlannedPreviewListDTO.builder()
+                .myWishPlannedLst(myWishPlannedList)
                 .build();
     }
 }

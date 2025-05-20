@@ -6,15 +6,15 @@ import com.tikklesaver.domain.wish.converter.WishConverter;
 import com.tikklesaver.domain.wish.dto.WishRequestDTO;
 import com.tikklesaver.domain.wish.dto.WishResponseDTO;
 import com.tikklesaver.domain.wish.entity.Wish;
+import com.tikklesaver.domain.wish.service.WishQueryService;
 import com.tikklesaver.domain.wish.service.WishCommandService;
 import com.tikklesaver.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class WishController {
 
     private final WishCommandService wishCommandService;
+    private final WishQueryService wishQueryService;
     private final ProductCommandService productCommandService;
 
     // 존재하는 상품 위시로 추가
@@ -37,5 +38,17 @@ public class WishController {
         Wish newWish = wishCommandService.CreateWishFromExistingProduct(memberId, newProduct, request);
 
         return ApiResponse.onSuccess(WishConverter.toWishResultDTO(newWish));
+    }
+
+    // 나의 위시리스트 구매예정 목록 조회
+    @GetMapping("/mine/planned")
+    @Operation(summary = "나의 위시리스트 구매예정 목록 조회 API")
+    public ApiResponse<WishResponseDTO.MyWishPlannedPreviewListDTO> getMyWishPlanned() {
+
+        //임시 memberId
+        Long memberId = 5L;
+
+        List<WishResponseDTO.MyWishPlannedPreviewDTO> myWishPlannedList = wishQueryService.getMyWishPlannedList(memberId);
+        return ApiResponse.onSuccess(WishConverter.myWishPlannedPreviewListDTO(myWishPlannedList));
     }
 }
