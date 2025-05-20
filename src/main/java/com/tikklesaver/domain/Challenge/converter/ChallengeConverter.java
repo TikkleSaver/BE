@@ -1,8 +1,9 @@
 package com.tikklesaver.domain.Challenge.converter;
 
 import com.tikklesaver.domain.Category.entity.Category;
-import com.tikklesaver.domain.Challenge.dto.ChallengeRequestDTO;
-import com.tikklesaver.domain.Challenge.dto.ChallengeResponseDTO;
+import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeRequestDTO;
+import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeResponseDTO;
+import com.tikklesaver.domain.Challenge.dto.challengeScrap.ChallengeScrapResponseDTO;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
 import com.tikklesaver.domain.Challenge.entity.enums.Status;
 import com.tikklesaver.domain.member.entity.Member;
@@ -74,5 +75,17 @@ public class ChallengeConverter {
                 .build();
 
     }
+
+
+    public static ChallengeScrapResponseDTO challengeScrapResponseDTO(Challenge challenge,Member member,  boolean isScrapped, String message) {
+        return ChallengeScrapResponseDTO.builder()
+                .challengeId(challenge.getId())
+                .memberId(member.getId())
+                .isScrapped(isScrapped)
+                .message(message)
+                .build();
+    }
+
+
 
 }

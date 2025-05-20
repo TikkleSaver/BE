@@ -7,7 +7,6 @@ import lombok.*;
 
 @Builder
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class ChallengeScraped extends BaseEntity {
@@ -25,8 +24,14 @@ public class ChallengeScraped extends BaseEntity {
     @JoinColumn(name = "challenge_id")
     private Challenge challenge;
 
+    protected ChallengeScraped() {}
 
-
+    public static ChallengeScraped of(Challenge challenge, Member member) {
+        ChallengeScraped scraped = new ChallengeScraped();
+        scraped.challenge = challenge;
+        scraped.member = member;
+        return scraped;
+    }
 
 
 

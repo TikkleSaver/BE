@@ -1,8 +1,8 @@
 package com.tikklesaver.domain.Challenge.controller;
 
 import com.tikklesaver.domain.Challenge.converter.ChallengeConverter;
-import com.tikklesaver.domain.Challenge.dto.ChallengeRequestDTO;
-import com.tikklesaver.domain.Challenge.dto.ChallengeResponseDTO;
+import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeRequestDTO;
+import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeResponseDTO;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
 import com.tikklesaver.domain.Challenge.service.Challenge.ChallengeCommandService;
 import com.tikklesaver.domain.Challenge.service.Challenge.ChallengeQueryService;
