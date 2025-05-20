@@ -4,7 +4,10 @@ import com.tikklesaver.domain.Category.entity.Category;
 import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeRequestDTO;
 import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeResponseDTO;
 import com.tikklesaver.domain.Challenge.dto.challengeScrap.ChallengeScrapResponseDTO;
+import com.tikklesaver.domain.Challenge.dto.joinChallenge.JoinChallengeResponseDTO;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
+import com.tikklesaver.domain.Challenge.entity.JoinChallenge;
+import com.tikklesaver.domain.Challenge.entity.enums.PublicStatus;
 import com.tikklesaver.domain.Challenge.entity.enums.Status;
 import com.tikklesaver.domain.member.entity.Member;
 import org.springframework.data.domain.Page;
@@ -68,6 +71,7 @@ public class ChallengeConverter {
                 .missionMethods(challenge.getMissionMethods())
                 .category(challenge.getCategory().getCategory_name())
                 .status(status)
+                .leaderId(challenge.getMember().getId())
                 .isPublic(challenge.getPublicStatus().toString())
                 .isScrapped(isScrapped)
                 .challengerCount(challengerCount)
@@ -86,6 +90,35 @@ public class ChallengeConverter {
                 .message(message)
                 .build();
     }
+
+    public static JoinChallenge toJoinPublicChallenge(Member member, Challenge challenge) {
+        return JoinChallenge.builder()
+                .challenge(challenge)
+                .member(member)
+                .status(Status.JOINED)
+                .build();
+    }
+
+    public static JoinChallenge toJoinPrivateChallenge(Member member, Challenge challenge) {
+        return JoinChallenge.builder()
+                .challenge(challenge)
+                .member(member)
+                .status(Status.PENDING)
+                .build();
+    }
+
+    public static JoinChallengeResponseDTO toJoinChallengeResultDTO(JoinChallenge joinChallenge) {
+        return JoinChallengeResponseDTO.builder()
+                .id(joinChallenge.getId())
+                .memberId(joinChallenge.getMember().getId())
+                .challengeId(joinChallenge.getChallenge().getId())
+                .status(joinChallenge.getStatus())
+                .createdAt(LocalDateTime.now())
+                .build();
+    }
+
+
+
 
 
 
