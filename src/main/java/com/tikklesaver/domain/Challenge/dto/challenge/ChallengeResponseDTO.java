@@ -1,4 +1,4 @@
-package com.tikklesaver.domain.Challenge.dto;
+package com.tikklesaver.domain.Challenge.dto.challenge;
 
 import com.tikklesaver.domain.Challenge.entity.enums.Status;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,5 @@
-package com.tikklesaver.domain.Challenge.dto;
+package com.tikklesaver.domain.Challenge.dto.challenge;
 
-import com.tikklesaver.domain.Category.entity.Category;
 import com.tikklesaver.domain.Challenge.entity.enums.PublicStatus;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotEmpty;

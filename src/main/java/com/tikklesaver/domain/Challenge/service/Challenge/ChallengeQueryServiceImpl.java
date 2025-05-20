@@ -3,7 +3,7 @@ package com.tikklesaver.domain.Challenge.service.Challenge;
 import com.tikklesaver.domain.Category.entity.Category;
 import com.tikklesaver.domain.Category.repository.CategoryRepository;
 import com.tikklesaver.domain.Challenge.converter.ChallengeConverter;
-import com.tikklesaver.domain.Challenge.dto.ChallengeResponseDTO;
+import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeResponseDTO;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
 import com.tikklesaver.domain.Challenge.entity.enums.Status;
 import com.tikklesaver.domain.Challenge.repository.ChallengeRepository;
