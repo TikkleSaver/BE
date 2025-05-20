@@ -19,9 +19,11 @@ public class ExpenseController {
     private final ExpenseQueryService expenseQueryService;
     private final ExpenseCommandService expenseCommandService;
 
+
+    // 지출 생성
     @PostMapping
     @Operation(summary = "지출 생성 API")
-    public ApiResponse<ExpenseResponseDTO.CreateExpenseRequestResultDTO> addExpense(
+    public ApiResponse<ExpenseResponseDTO.CreateExpenseResultDTO> addExpense(
             @RequestBody @Valid ExpenseRequestDTO.CreateExpenseRequestDTO request) {
 
         //임시 memberId

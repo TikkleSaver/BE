@@ -6,8 +6,10 @@ import com.tikklesaver.domain.Expense.entity.Expense;
 import java.time.LocalDateTime;
 
 public class ExpenseConverter {
-    public static ExpenseResponseDTO.CreateExpenseRequestResultDTO toExpenseResultDTO(Expense expense) {
-        return ExpenseResponseDTO.CreateExpenseRequestResultDTO.builder()
+
+    // 지출 생성
+    public static ExpenseResponseDTO.CreateExpenseResultDTO toExpenseResultDTO(Expense expense) {
+        return ExpenseResponseDTO.CreateExpenseResultDTO.builder()
                 .expenseId(expense.getId())
                 .memberId(expense.getMember().getId())
                 .expenseName(expense.getExpenseName())

@@ -19,6 +19,7 @@ public class ExpenseCommandServiceImpl implements ExpenseCommandService {
     private final CategoryRepository categoryRepository;
     private final ExpenseRepository expenseRepository;
 
+    // 지출 생성
     @Override
     @Transactional
     public  Expense addExpense(Long memberId, ExpenseRequestDTO.CreateExpenseRequestDTO requestDTO) {
