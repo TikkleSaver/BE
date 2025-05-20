@@ -1,5 +1,7 @@
 package com.tikklesaver.domain.product.entity;
 
+import com.tikklesaver.domain.Category.entity.Category;
+import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,17 +37,22 @@ public class Product extends BaseEntity {
     private String category1;
     
     // 중분류
-    @Column(nullable = false)
     private String category2;
     
     // 소분류
-    @Column(nullable = false)
     private String category3;
     
     // 세분류
-    @Column(nullable = false)
     private String category4;
 
+    // 작성자 ID (FK)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     // 카테고리 ID (FK)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
 }
