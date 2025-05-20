@@ -36,4 +36,20 @@ public class ExpenseConverter {
                 .updatedAt(LocalDateTime.now())
                 .build();
     }
+
+    // 지출 조회
+    public static ExpenseResponseDTO.GetExpenseResultDTO toGetExpenseResultDTO(Expense expense) {
+        return ExpenseResponseDTO.GetExpenseResultDTO.builder()
+                .expenseId(expense.getId())
+                .memberId(expense.getMember().getId())
+                .expenseName(expense.getExpenseName())
+                .expensePlace(expense.getExpensePlace())
+                .cost(expense.getCost())
+                .expenseDate(expense.getExpenseDate())
+                .image(expense.getImage())
+                .categoryId(expense.getCategory().getId())
+                .createdAt(expense.getCreatedAt())
+                .updatedAt(expense.getUpdatedAt())
+                .build();
+    }
 }
