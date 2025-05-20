@@ -11,9 +11,15 @@ import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.domain.member.repository.MemberRepository;
 import com.tikklesaver.global.apiPayload.code.status.ErrorStatus;
 import com.tikklesaver.global.apiPayload.exception.handler.ChallengeHandler;
+import com.tikklesaver.global.aws.s3.AmazonS3Manager;
+import com.tikklesaver.global.common.Uuid;
+import com.tikklesaver.global.repository.UuidRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -22,9 +28,11 @@ public class ChallengeCommandServiceImpl implements ChallengeCommandService {
     private final MemberRepository memberRepository;
     private final ChallengeRepository challengeRepository;
     private final CategoryRepository categoryRepository;
+    private final AmazonS3Manager amazonS3Manager;
+    private final UuidRepository uuidRepository;
 
     @Override
-    public Challenge createChallenge(Long memberId, ChallengeRequestDTO.CreateChallengeDTO request) {
+    public Challenge createChallenge(Long memberId, ChallengeRequestDTO.CreateChallengeDTO request, MultipartFile file) {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
@@ -32,7 +40,15 @@ public class ChallengeCommandServiceImpl implements ChallengeCommandService {
         Category category = categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(() -> new EntityNotFoundException("Category not found ID: " + request.getCategoryId()));
 
-        String imageUrl = "String";
+        String imageUrl = null;
+
+        String uuid = UUID.randomUUID().toString();
+        Uuid savedUuid = uuidRepository.save(Uuid.builder()
+                .uuid(uuid).build());
+
+        if (file != null && !file.isEmpty()) {
+            imageUrl = amazonS3Manager.uploadFile(amazonS3Manager.generateChallengesKeyName(savedUuid),file);
+        }
 
         if (request.getTitle() == null || request.getTitle().isEmpty()) {
             throw new ChallengeHandler(ErrorStatus.TITLE_NOT_PROVIDED);
