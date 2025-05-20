@@ -3,6 +3,7 @@ package com.tikklesaver.domain.Expense.dto;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -21,8 +22,8 @@ public class ExpenseRequestDTO {
         @NotNull
         Long cost;
         @NotNull
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
         Date expenseDate;
-        String image;
         @NotNull
         Long categoryId;
     }
