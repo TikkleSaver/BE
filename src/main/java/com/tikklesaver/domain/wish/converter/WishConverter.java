@@ -20,7 +20,6 @@ public class WishConverter {
         return Wish.builder()
                 .purchaseStatus(PurchaseStatus.PLANNED)
                 .publicStatus(request.getPublicStatus())
-                .productType(ProductType.PRODUCT)
                 .member(member)
                 .product(product)
                 .build();

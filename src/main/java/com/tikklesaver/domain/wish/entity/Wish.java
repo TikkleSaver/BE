@@ -1,7 +1,6 @@
 package com.tikklesaver.domain.wish.entity;
 
 import com.tikklesaver.domain.member.entity.Member;
-import com.tikklesaver.domain.product.entity.MyProduct;
 import com.tikklesaver.domain.product.entity.Product;
 import com.tikklesaver.domain.wish.entity.enums.ProductType;
 import com.tikklesaver.domain.wish.entity.enums.PublicStatus;
@@ -36,20 +35,10 @@ public class Wish extends BaseEntity {
     @Column(columnDefinition = "VARCHAR(30)")
     private PublicStatus publicStatus;
 
-    // 상품 타입 구분
-    @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "VARCHAR(30)")
-    private ProductType productType;
-
     // 상품 ID (FK)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
-
-    // 직접 추가 상품 ID (FK)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "my_product_id")
-    private MyProduct myProduct;
 
     // 회원 ID (FK)
     @ManyToOne(fetch = FetchType.LAZY)

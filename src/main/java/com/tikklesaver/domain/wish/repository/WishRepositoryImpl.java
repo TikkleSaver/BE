@@ -3,6 +3,7 @@ package com.tikklesaver.domain.wish.repository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.JPAExpressions;
+import com.tikklesaver.domain.product.entity.QProduct;
 import com.tikklesaver.domain.wish.dto.WishResponseDTO;
 import com.tikklesaver.domain.wish.entity.QVote;
 import com.tikklesaver.domain.wish.entity.QWish;
@@ -35,20 +36,11 @@ public class WishRepositoryImpl implements WishRepositoryCustom {
                         wish.id,
                         wish.member.id,
                         wish.member.nickname,
-                        new CaseBuilder()
-                                .when(wish.productType.eq(ProductType.PRODUCT))
-                                .then(wish.product.title)
-                                .otherwise(wish.myProduct.title),
-                        new CaseBuilder()
-                                .when(wish.productType.eq(ProductType.PRODUCT))
-                                .then(wish.product.price)
-                                .otherwise(wish.myProduct.price),
-                        new CaseBuilder()
-                                .when(wish.productType.eq(ProductType.PRODUCT))
-                                .then(wish.product.image)
-                                .otherwise(wish.myProduct.image),
+                        wish.product.title,
+                        wish.product.price,
+                        wish.product.image,
                         wish.publicStatus,
-                        wish.productType,
+                        wish.product.productType,
                         JPAExpressions.select(vote.count())
                                 .from(vote)
                                 .where(vote.wish.id.eq(wish.id),
@@ -63,8 +55,6 @@ public class WishRepositoryImpl implements WishRepositoryCustom {
                         wish.createdAt
                 ))
                 .from(wish)
-                .leftJoin(wish.product)
-                .leftJoin(wish.myProduct)
                 .where(
                         wish.member.id.eq(memberId),
                         wish.purchaseStatus.eq(PurchaseStatus.PLANNED)
