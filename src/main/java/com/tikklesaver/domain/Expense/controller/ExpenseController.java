@@ -11,7 +11,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -60,5 +62,20 @@ public class ExpenseController {
         Long memberId = 1L;
         Expense expense = expenseCommandService.updateExpense(memberId, request, file);
         return ApiResponse.onSuccess(ExpenseConverter.toUpdateExpenseResultDTO(expense));
+    }
+
+    // 지출 삭제
+    @DeleteMapping("/{expenseId}/{memberId}")
+    @Operation(summary = "지출 삭제 API")
+    @Parameters({
+            @Parameter(name = "memberId", description = "사용자 ID, path variable 입니다!"),
+            @Parameter(name = "expenseId", description = "지출 ID, path variable 입니다!")
+    })
+    public ApiResponse<String> deleteExpense(
+            @PathVariable Long memberId,
+            @PathVariable Long expenseId) {
+
+        expenseQueryService.deleteExpense(memberId, expenseId);
+        return ApiResponse.onSuccess("삭제가 완료되었습니다.");
     }
 }

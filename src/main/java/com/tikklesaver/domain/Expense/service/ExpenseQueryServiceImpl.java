@@ -30,7 +30,7 @@ public class ExpenseQueryServiceImpl implements ExpenseQueryService {
     private final UuidRepository uuidRepository;
     private final ExpenseRepositoryCustom expenseRepositoryCustom;
 
-    // 지출 수정
+    // 지출 조회
     @Override
     @Transactional
     public Expense getExpense(Long memberId, Long expenseId) {
@@ -42,5 +42,23 @@ public class ExpenseQueryServiceImpl implements ExpenseQueryService {
 
         return expenseRepositoryCustom.findByMemberIdAndExpenseId(memberId, expenseId)
                 .orElseThrow(() -> new ExpenseHandler(ErrorStatus.EXPENSE_AND_MEMBER_NOT_FOUND));
+    }
+
+
+    // 지출 삭제
+    @Override
+    @Transactional
+    public void deleteExpense(Long memberId, Long expenseId) {
+        memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+
+        expenseRepository.findById(expenseId)
+                .orElseThrow(() -> new ExpenseHandler(ErrorStatus.EXPENSE_NOT_FOUND));
+
+        Expense expense = expenseRepositoryCustom.findByMemberIdAndExpenseId(memberId, expenseId)
+                .orElseThrow(() -> new ExpenseHandler(ErrorStatus.EXPENSE_AND_MEMBER_NOT_FOUND));
+
+        amazonS3Manager.deleteFile(expense.getImage());
+        expenseRepository.delete(expense);
     }
 }
