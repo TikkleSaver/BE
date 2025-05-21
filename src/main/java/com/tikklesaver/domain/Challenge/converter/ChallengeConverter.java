@@ -118,6 +118,30 @@ public class ChallengeConverter {
     }
 
 
+    public static ChallengeResponseDTO.DetailChallengerTabListResponseDTO detailChallengerTabListDTO(Page<JoinChallenge> memberList) {
+        List<ChallengeResponseDTO.DetailChallengerTabResponseDTO> memberDTOList = memberList.stream().map(ChallengeConverter::detailChallengerTabDTO).collect(Collectors.toList());
+
+        return ChallengeResponseDTO.DetailChallengerTabListResponseDTO.builder()
+                .isFirst(memberList.isFirst())
+                .isLast(memberList.isLast())
+                .totalPage(memberList.getTotalPages())
+                .totalElements(memberList.getTotalElements())
+                .listSize(memberDTOList.size())
+                .memberList(memberDTOList)
+                .build();
+    }
+
+
+    public static ChallengeResponseDTO.DetailChallengerTabResponseDTO detailChallengerTabDTO(JoinChallenge joinChallenge) {
+        return ChallengeResponseDTO.DetailChallengerTabResponseDTO.builder()
+                .memberId(joinChallenge.getMember().getId())
+                .memberName(joinChallenge.getMember().getNickname())
+                .memberImgUrl(joinChallenge.getMember().getProfileUrl())
+                .build();
+
+    }
+
+
 
 
 
