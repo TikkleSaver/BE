@@ -47,9 +47,7 @@ public class JoinChallengeController {
     @GetMapping("/{challengeId}/challenger-list")
     @Operation(summary = "챌린지 소속 챌린저 조회 API ")
     public ApiResponse<ChallengeResponseDTO.DetailChallengerTabListResponseDTO> getChallengerList(@PathVariable(name = "challengeId") Long challengeId, @RequestParam(name="page")Integer page){
-
-        Long memberId = 2L;
-
+        
         Page<JoinChallenge> challengerList = joinChallengeQueryService.getChallengeMembers(challengeId, page);
 
         return ApiResponse.onSuccess(ChallengeConverter.detailChallengerTabListDTO(challengerList));
