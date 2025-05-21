@@ -39,4 +39,11 @@ public class WishConverter {
                 .myWishPlannedLst(myWishPlannedList)
                 .build();
     }
+
+    // 나의 위시리스트 목록 구매 예정 조회
+    public static WishResponseDTO.MyWishPurchasedPreviewListDTO myWishPurchasedPreviewListDTO(List<WishResponseDTO.MyWishPurchasedPreviewDTO> myWishPurchasedList){
+        return WishResponseDTO.MyWishPurchasedPreviewListDTO.builder()
+                .myWishPurchasedLst(myWishPurchasedList)
+                .build();
+    }
 }

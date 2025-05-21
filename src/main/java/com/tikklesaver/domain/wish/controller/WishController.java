@@ -51,4 +51,16 @@ public class WishController {
         List<WishResponseDTO.MyWishPlannedPreviewDTO> myWishPlannedList = wishQueryService.getMyWishPlannedList(memberId);
         return ApiResponse.onSuccess(WishConverter.myWishPlannedPreviewListDTO(myWishPlannedList));
     }
+
+    // 나의 위시리스트 구매완료 목록 조회
+    @GetMapping("/mine/purchased")
+    @Operation(summary = "나의 위시리스트 구매완료 목록 조회 API")
+    public ApiResponse<WishResponseDTO.MyWishPurchasedPreviewListDTO> getMyWishPurchased() {
+
+        //임시 memberId
+        Long memberId = 5L;
+
+        List<WishResponseDTO.MyWishPurchasedPreviewDTO> myWishPurchasedList = wishQueryService.getMyWishPurchasedList(memberId);
+        return ApiResponse.onSuccess(WishConverter.myWishPurchasedPreviewListDTO(myWishPurchasedList));
+    }
 }

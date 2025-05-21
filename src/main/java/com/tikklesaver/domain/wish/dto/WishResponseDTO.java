@@ -2,6 +2,7 @@ package com.tikklesaver.domain.wish.dto;
 
 import com.tikklesaver.domain.wish.entity.enums.ProductType;
 import com.tikklesaver.domain.wish.entity.enums.PublicStatus;
+import com.tikklesaver.domain.wish.entity.enums.SatisfactionStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,6 +46,38 @@ public class WishResponseDTO {
         Integer price;
         String image;
         PublicStatus publicStatus;
+        ProductType productType;
+        Long likeCnt;
+        Long unLikeCnt;
+        Long  commentCnt;
+        LocalDateTime createdAt;
+    }
+
+    // 나의 위시리스트 구매 완료 목록 조회 (목록용)
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MyWishPurchasedPreviewListDTO {
+
+        List<MyWishPurchasedPreviewDTO> myWishPurchasedLst;
+    }
+
+    // 나의 위시리스트 구매 완료 목록 조회 (세부 상자)
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MyWishPurchasedPreviewDTO {
+        Long wishId;
+        Long memberId;
+        String nickname;
+        //        String profileImg;
+        String title;
+        Integer price;
+        String image;
+        PublicStatus publicStatus;
+        SatisfactionStatus satisfactionStatus;
         ProductType productType;
         Long likeCnt;
         Long unLikeCnt;
