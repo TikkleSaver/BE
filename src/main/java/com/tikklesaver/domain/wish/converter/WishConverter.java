@@ -42,6 +42,14 @@ public class WishConverter {
                 .build();
     }
 
+    // 위시 수정 결과
+    public static WishResponseDTO.UpdateWishResultDTO toWishUpdateResultDTO(Wish wish){
+        return WishResponseDTO.UpdateWishResultDTO.builder()
+                .wishId(wish.getId())
+                .updatedAt(wish.getUpdatedAt())
+                .build();
+    }
+
     // 나의 위시리스트 목록 구매 예정 조회
     public static WishResponseDTO.MyWishPlannedPreviewListDTO myWishPlannedPreviewListDTO(List<WishResponseDTO.MyWishPlannedPreviewDTO> myWishPlannedList){
         return WishResponseDTO.MyWishPlannedPreviewListDTO.builder()
