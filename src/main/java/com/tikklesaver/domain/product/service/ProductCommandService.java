@@ -5,5 +5,9 @@ import com.tikklesaver.domain.wish.dto.WishRequestDTO;
 
 public interface ProductCommandService {
 
-    Product createProduct(Long memberId, WishRequestDTO.CreateWishFromExistingProductDTO request);
+    // 존재하는 상품 추가
+    Product createExistingProduct(Long memberId, WishRequestDTO.CreateWishFromExistingProductDTO request);
+
+    // 존재하는 상품 수정
+    Product updateExistingProduct(Long memberId, Product product, WishRequestDTO.UpdateWishFromExistingProductDTO request);
 }
