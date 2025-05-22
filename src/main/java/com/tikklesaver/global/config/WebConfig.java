@@ -17,6 +17,8 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
+    private final CurrentMemberArgumentResolver currentMemberArgumentResolver;
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -26,6 +28,12 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowCredentials(true)
                 .maxAge(3600);
     }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(currentMemberArgumentResolver);
+    }
+
     // model mapper
     @Bean
     public ModelMapper modelMapper() {
