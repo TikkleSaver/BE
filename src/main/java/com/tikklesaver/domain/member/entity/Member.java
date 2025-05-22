@@ -1,11 +1,16 @@
 package com.tikklesaver.domain.member.entity;
 
 import com.tikklesaver.domain.member.entity.enums.MemberStatus;
+import com.tikklesaver.domain.Expense.entity.Expense;
+import com.tikklesaver.domain.Expense.entity.ExpenseComment;
 import com.tikklesaver.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.List;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -58,5 +63,13 @@ public class Member extends BaseEntity {
     public void updateRefreshToken(String updateRefreshToken) {
         this.refreshToken = updateRefreshToken;
     }
+
+    // 지출
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Expense> expenseList = new ArrayList<>();
+
+    // 지출 댓글
+    @OneToMany(mappedBy = "commenter", cascade = CascadeType.ALL)
+    private List<ExpenseComment> expenseCommentList = new ArrayList<>();
 
 }

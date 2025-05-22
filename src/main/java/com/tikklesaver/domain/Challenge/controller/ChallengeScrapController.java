@@ -17,10 +17,10 @@ public class ChallengeScrapController {
 
     @PatchMapping("/{challengeId}/scrap")
     @Operation(summary = "챌린지 스크랩 추가/삭제 API")
-    public ApiResponse<ChallengeScrapResponseDTO> challengeScrap(@PathVariable(name = "challengeId") Long challengeId){
+    public ApiResponse<ChallengeScrapResponseDTO> joinChallenge(@PathVariable(name = "challengeId") Long challengeId){
 
         //임시 memberId
-        Long memberId = 1L;
+        Long memberId = 2L;
         ChallengeScrapResponseDTO challengeScrap = challengeScrapCommandService.changeScrap(challengeId,memberId);
         return ApiResponse.onSuccess(challengeScrap);
     }

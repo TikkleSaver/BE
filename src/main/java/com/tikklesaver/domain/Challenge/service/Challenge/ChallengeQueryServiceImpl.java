@@ -50,7 +50,7 @@ public class ChallengeQueryServiceImpl implements ChallengeQueryService {
         Status status = joinChallengeRepository.getJoinChallengeStatusByChallengeIdAndMemberId(challengeId, memberId)
                 .orElse(Status.NOT_APPLIED);
         boolean isScrapped = challengeScrapRepository.existsByChallengeIdAndMemberId(challengeId, memberId);
-        Integer challengerCount = joinChallengeRepository.countJoinChallengeByChallengeId(challengeId);
+        Integer challengerCount = joinChallengeRepository.countJoinChallengeByChallengeIdAndStatus(challengeId, Status.JOINED);
 
         List<String> challengerImages = joinChallengeRepository.findTop3ChallengerImages(challengeId);
         return ChallengeConverter.challengePreviewWithStatusResponseDTO(challenge, status, isScrapped, challengerCount, challengerImages);
