@@ -21,4 +21,7 @@ public interface WishCommandService {
 
     // 존재하는 상품 위시 삭제
     Wish deleteWishFromExistingProduct(Long memberId, Long wishId);
+
+    // 존재하지 않는 상품 위시 삭제 (직접 추가한 상품)
+    Wish deleteWishFromMyProduct(Long memberId, Long wishId);
 }

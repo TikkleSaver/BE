@@ -129,4 +129,17 @@ public class ProductCommandServiceImpl implements ProductCommandService {
 
         productRepository.delete(product);
     }
+
+
+    // 존재하지 않는 상품 삭제 (직접 추가한 상품)
+    @Override
+    public void deleteMyProduct(Long memberId, Product product){
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+
+        // s3 이미지 삭제
+        amazonS3Manager.deleteFile(product.getImage());
+
+        productRepository.delete(product);
+    }
 }

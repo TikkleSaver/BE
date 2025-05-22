@@ -20,4 +20,7 @@ public interface ProductCommandService {
 
     // 존재하는 상품 삭제
     void deleteExistingProduct(Long memberId, Product product);
+
+    // 존재하지 않는 상품 삭제 (직접 추가한 상품)
+    void deleteMyProduct(Long memberId, Product product);
 }
