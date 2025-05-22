@@ -1,6 +1,7 @@
 package com.tikklesaver.domain.wish.dto;
 
 import com.tikklesaver.domain.wish.entity.enums.PublicStatus;
+import com.tikklesaver.domain.wish.entity.enums.SatisfactionStatus;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -27,6 +28,31 @@ public class WishRequestDTO {
 
         @NotEmpty
         String image;
+
+        @NotEmpty
+        String category1;
+
+        String category2;
+
+        String category3;
+
+        String category4;
+
+        @NotNull
+        Long categoryId;
+    }
+
+    // 존재하는 상품 위시 수정
+    @Getter
+    public static class UpdateWishFromExistingProductDTO {
+
+        @NotNull
+        PublicStatus publicStatus;
+
+        SatisfactionStatus satisfactionStatus;
+
+        @NotNull
+        Integer price;
 
         @NotEmpty
         String category1;

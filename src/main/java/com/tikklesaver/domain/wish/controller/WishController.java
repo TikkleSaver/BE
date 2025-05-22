@@ -10,6 +10,8 @@ import com.tikklesaver.domain.wish.service.WishQueryService;
 import com.tikklesaver.domain.wish.service.WishCommandService;
 import com.tikklesaver.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -34,10 +36,29 @@ public class WishController {
         //임시 memberId
         Long memberId = 5L;
 
-        Product newProduct = productCommandService.createProduct(memberId, request);
+        Product newProduct = productCommandService.createExistingProduct(memberId, request);
         Wish newWish = wishCommandService.CreateWishFromExistingProduct(memberId, newProduct, request);
 
         return ApiResponse.onSuccess(WishConverter.toWishResultDTO(newWish));
+    }
+
+    // 존재하는 상품 위시 수정
+    @PatchMapping("/{wishId}/existing-product")
+    @Operation(summary = "이미 존재하는 상품의 위시 내용 수정 API")
+    @Parameters({
+            @Parameter(name = "wishId", description = "위시의 ID, path variable 입니다!")
+    })
+    public ApiResponse<WishResponseDTO.WishResultDTO> updateWishFromExistingProduct(
+            @PathVariable(name = "wishId") Long wishId,
+            @RequestBody @Valid WishRequestDTO.UpdateWishFromExistingProductDTO request) {
+
+        //임시 memberId
+        Long memberId = 5L;
+
+        Wish wish = wishCommandService.UpdateWishFromExistingProduct(memberId, wishId, request);
+        productCommandService.updateExistingProduct(memberId, wish.getProduct(), request);
+
+        return ApiResponse.onSuccess(WishConverter.toWishResultDTO(wish));
     }
 
     // 나의 위시리스트 구매예정 목록 조회

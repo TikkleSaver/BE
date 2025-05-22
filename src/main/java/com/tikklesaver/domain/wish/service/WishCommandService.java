@@ -8,4 +8,7 @@ public interface WishCommandService {
     
     // 존재하는 상품 위시에 추가
     Wish CreateWishFromExistingProduct(Long memberId, Product product, WishRequestDTO.CreateWishFromExistingProductDTO request);
+
+    // 존재하는 상품 위시 수정
+    Wish UpdateWishFromExistingProduct(Long memberId, Long wishId, WishRequestDTO.UpdateWishFromExistingProductDTO request);
 }
