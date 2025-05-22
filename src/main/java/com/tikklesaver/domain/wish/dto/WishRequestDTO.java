@@ -42,6 +42,28 @@ public class WishRequestDTO {
         Long categoryId;
     }
 
+    // 존재하지 않는 상품 위시로 추가
+    @Getter
+    public static class CreateWishFromMyProductDTO {
+
+        // 위시 관련
+        @NotNull
+        PublicStatus publicStatus;
+
+        // 상품 관련
+        @NotEmpty
+        String title;
+
+        @NotEmpty
+        String brand;
+
+        @NotNull
+        Integer price;
+
+        @NotNull
+        Long categoryId;
+    }
+
     // 존재하는 상품 위시 수정
     @Getter
     public static class UpdateWishFromExistingProductDTO {

@@ -8,9 +8,15 @@ import com.tikklesaver.domain.product.converter.ProductConverter;
 import com.tikklesaver.domain.product.entity.Product;
 import com.tikklesaver.domain.product.repository.ProductRepository;
 import com.tikklesaver.domain.wish.dto.WishRequestDTO;
+import com.tikklesaver.global.aws.s3.AmazonS3Manager;
+import com.tikklesaver.global.common.Uuid;
+import com.tikklesaver.global.repository.UuidRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +25,8 @@ public class ProductCommandServiceImpl implements ProductCommandService {
     private final MemberRepository memberRepository;
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
+    private final AmazonS3Manager amazonS3Manager;
+    private final UuidRepository uuidRepository;
 
     // 존재하는 상품 추가
     @Override
@@ -31,6 +39,31 @@ public class ProductCommandServiceImpl implements ProductCommandService {
                 .orElseThrow(() -> new EntityNotFoundException("Category not found ID: " + request.getCategoryId()));
 
         Product newProduct = ProductConverter.toProduct(member, request, category);
+
+        return productRepository.save(newProduct);
+    }
+
+    // 존재하지 않는 상품 추가
+    @Override
+    public Product createMyProduct(Long memberId, WishRequestDTO.CreateWishFromMyProductDTO request, MultipartFile file){
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+
+        Category category = categoryRepository.findById(request.getCategoryId())
+                .orElseThrow(() -> new EntityNotFoundException("Category not found ID: " + request.getCategoryId()));
+
+        
+        // 이미지 저장
+        String imageUrl = null;
+        String uuid = UUID.randomUUID().toString();
+        Uuid savedUuid = uuidRepository.save(Uuid.builder()
+                .uuid(uuid).build());
+        if (file != null && !file.isEmpty()) {  // 이미지 필수
+            imageUrl = amazonS3Manager.uploadFile(amazonS3Manager.generateProductsKeyName(savedUuid),file);
+        }
+
+        Product newProduct = ProductConverter.toMyProduct(member, request, category, imageUrl);
 
         return productRepository.save(newProduct);
     }

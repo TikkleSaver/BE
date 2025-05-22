@@ -14,7 +14,9 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -38,6 +40,22 @@ public class WishController {
 
         Product newProduct = productCommandService.createExistingProduct(memberId, request);
         Wish newWish = wishCommandService.createWishFromExistingProduct(memberId, newProduct, request);
+
+        return ApiResponse.onSuccess(WishConverter.toWishResultDTO(newWish));
+    }
+
+    // 존재하지 않는 상품 위시로 추가
+    @PostMapping(value =  "/my-product", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @Operation(summary = "원하는 상품 직접 추가해서 위시로 생성 API")
+    public ApiResponse<WishResponseDTO.WishResultDTO> createWishFromMyProduct(
+            @RequestPart("request") @Valid WishRequestDTO.CreateWishFromMyProductDTO request,
+            @RequestPart("file") MultipartFile file) {
+
+        //임시 memberId
+        Long memberId = 5L;
+
+        Product newProduct = productCommandService.createMyProduct(memberId, request, file);
+        Wish newWish = wishCommandService.createWishFromMyProduct(memberId, newProduct, request);
 
         return ApiResponse.onSuccess(WishConverter.toWishResultDTO(newWish));
     }
