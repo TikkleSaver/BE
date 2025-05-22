@@ -37,7 +37,7 @@ public class WishController {
         Long memberId = 5L;
 
         Product newProduct = productCommandService.createExistingProduct(memberId, request);
-        Wish newWish = wishCommandService.CreateWishFromExistingProduct(memberId, newProduct, request);
+        Wish newWish = wishCommandService.createWishFromExistingProduct(memberId, newProduct, request);
 
         return ApiResponse.onSuccess(WishConverter.toWishResultDTO(newWish));
     }
@@ -55,10 +55,28 @@ public class WishController {
         //임시 memberId
         Long memberId = 5L;
 
-        Wish wish = wishCommandService.UpdateWishFromExistingProduct(memberId, wishId, request);
+        Wish wish = wishCommandService.updateWishFromExistingProduct(memberId, wishId, request);
         productCommandService.updateExistingProduct(memberId, wish.getProduct(), request);
 
         return ApiResponse.onSuccess(WishConverter.toWishResultDTO(wish));
+    }
+
+    // 존재하는 상품 위시 삭제
+    @DeleteMapping("/{wishId}/existing-product")
+    @Operation(summary = "이미 존재하는 상품의 위시 삭제 API")
+    @Parameters({
+            @Parameter(name = "wishId", description = "위시의 ID, path variable 입니다!")
+    })
+    public ApiResponse<String> deleteWishFromExistingProduct(
+            @PathVariable(name = "wishId") Long wishId) {
+
+        //임시 memberId
+        Long memberId = 5L;
+
+        Wish wish = wishCommandService.deleteWishFromExistingProduct(memberId, wishId);
+        productCommandService.deleteExistingProduct(memberId, wish.getProduct());
+
+        return ApiResponse.onSuccess("삭제가 완료되었습니다.");
     }
 
     // 나의 위시리스트 구매예정 목록 조회

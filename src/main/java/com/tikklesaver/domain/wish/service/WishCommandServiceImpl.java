@@ -22,7 +22,7 @@ public class WishCommandServiceImpl implements WishCommandService {
 
     // 존재하는 상품 위시에 추가 
     @Override
-    public Wish CreateWishFromExistingProduct(Long memberId, Product product, WishRequestDTO.CreateWishFromExistingProductDTO request){
+    public Wish createWishFromExistingProduct(Long memberId, Product product, WishRequestDTO.CreateWishFromExistingProductDTO request){
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
 
@@ -32,7 +32,7 @@ public class WishCommandServiceImpl implements WishCommandService {
 
     // 존재하는 상품 위시 수정
     @Override
-    public Wish UpdateWishFromExistingProduct(Long memberId, Long wishId, WishRequestDTO.UpdateWishFromExistingProductDTO request){
+    public Wish updateWishFromExistingProduct(Long memberId, Long wishId, WishRequestDTO.UpdateWishFromExistingProductDTO request){
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
 
@@ -44,5 +44,20 @@ public class WishCommandServiceImpl implements WishCommandService {
             wish.setSatisfactionStatus(request.getSatisfactionStatus());
 
         return wishRepository.save(wish);
+    }
+
+
+    // 존재하는 상품 위시 삭제
+    @Override
+    public Wish deleteWishFromExistingProduct(Long memberId, Long wishId){
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+
+        Wish wish = wishRepository.findById(wishId)
+                .orElseThrow(() -> new WishHandler(ErrorStatus.WISH_NOT_FOUND));
+
+        wishRepository.delete(wish);
+
+        return wish;
     }
 }

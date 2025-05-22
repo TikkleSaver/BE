@@ -10,4 +10,8 @@ public interface ProductCommandService {
 
     // 존재하는 상품 수정
     Product updateExistingProduct(Long memberId, Product product, WishRequestDTO.UpdateWishFromExistingProductDTO request);
+
+
+    // 존재하는 상품 삭제
+    void deleteExistingProduct(Long memberId, Product product);
 }

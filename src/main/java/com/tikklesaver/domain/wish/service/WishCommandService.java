@@ -7,8 +7,12 @@ import com.tikklesaver.domain.wish.entity.Wish;
 public interface WishCommandService {
     
     // 존재하는 상품 위시에 추가
-    Wish CreateWishFromExistingProduct(Long memberId, Product product, WishRequestDTO.CreateWishFromExistingProductDTO request);
+    Wish createWishFromExistingProduct(Long memberId, Product product, WishRequestDTO.CreateWishFromExistingProductDTO request);
 
     // 존재하는 상품 위시 수정
-    Wish UpdateWishFromExistingProduct(Long memberId, Long wishId, WishRequestDTO.UpdateWishFromExistingProductDTO request);
+    Wish updateWishFromExistingProduct(Long memberId, Long wishId, WishRequestDTO.UpdateWishFromExistingProductDTO request);
+
+
+    // 존재하는 상품 위시 삭제
+    Wish deleteWishFromExistingProduct(Long memberId, Long wishId);
 }
