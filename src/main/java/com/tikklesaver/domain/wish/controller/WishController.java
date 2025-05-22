@@ -117,6 +117,24 @@ public class WishController {
         return ApiResponse.onSuccess("삭제가 완료되었습니다.");
     }
 
+    // 존재하지 않는 상품 위시 삭제 (직접 추가한 상품)
+    @DeleteMapping("/{wishId}/my-product")
+    @Operation(summary = "원하는 상품 직접 추가했던 상품의 위시 삭제 API")
+    @Parameters({
+            @Parameter(name = "wishId", description = "위시의 ID, path variable 입니다!")
+    })
+    public ApiResponse<String> deleteWishFromMyProduct(
+            @PathVariable(name = "wishId") Long wishId) {
+
+        //임시 memberId
+        Long memberId = 5L;
+
+        Wish wish = wishCommandService.deleteWishFromMyProduct(memberId, wishId);
+        productCommandService.deleteMyProduct(memberId, wish.getProduct());
+
+        return ApiResponse.onSuccess("삭제가 완료되었습니다.");
+    }
+
     // 나의 위시리스트 구매예정 목록 조회
     @GetMapping("/mine/planned")
     @Operation(summary = "나의 위시리스트 구매예정 목록 조회 API")
