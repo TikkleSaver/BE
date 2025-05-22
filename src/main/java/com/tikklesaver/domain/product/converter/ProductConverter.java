@@ -26,4 +26,17 @@ public class ProductConverter {
                 .member(member)
                 .build();
     }
+
+    // 존재하지 않는 상품 생성
+    public static Product toMyProduct(Member member, WishRequestDTO.CreateWishFromMyProductDTO request, Category category, String imageUrl){
+        return Product.builder()
+                .productType(ProductType.MYPRODUCT)
+                .title(request.getTitle())
+                .brand(request.getBrand())
+                .price(request.getPrice())
+                .image(imageUrl)
+                .category(category)
+                .member(member)
+                .build();
+    }
 }

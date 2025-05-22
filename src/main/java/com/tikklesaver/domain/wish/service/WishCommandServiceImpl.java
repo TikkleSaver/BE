@@ -30,6 +30,16 @@ public class WishCommandServiceImpl implements WishCommandService {
         return wishRepository.save(newWish);
     }
 
+    // 존재하는 상품 위시에 추가
+    @Override
+    public Wish createWishFromMyProduct(Long memberId, Product product, WishRequestDTO.CreateWishFromMyProductDTO request){
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+
+        Wish newWish = WishConverter.toWishMyProduct(member, product, request);
+        return wishRepository.save(newWish);
+    }
+
     // 존재하는 상품 위시 수정
     @Override
     public Wish updateWishFromExistingProduct(Long memberId, Long wishId, WishRequestDTO.UpdateWishFromExistingProductDTO request){
