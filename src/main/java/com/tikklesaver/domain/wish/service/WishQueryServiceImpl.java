@@ -13,6 +13,12 @@ public class WishQueryServiceImpl implements WishQueryService {
 
     private final WishRepository wishRepository;
 
+    // 위시리스트 상세 조회
+    @Override
+    public WishResponseDTO.WishDetailDTO getWishDetail(Long wishId){
+        return wishRepository.getWishDetail(wishId);
+    }
+
     // 나의 위시리스트 목록 구매 예정 조회
     @Override
     public List<WishResponseDTO.MyWishPlannedPreviewDTO> getMyWishPlannedList(Long memberId){

@@ -135,6 +135,17 @@ public class WishController {
         return ApiResponse.onSuccess("삭제가 완료되었습니다.");
     }
 
+    // 위시리스트 상세 조회
+    @GetMapping("/{wishId}")
+    @Operation(summary = "위시 상세 조회 API")
+    public ApiResponse<WishResponseDTO.WishDetailDTO> getWishDetail(@PathVariable(name = "wishId") Long wishId) {
+
+        //임시 memberId
+        Long memberId = 5L;
+
+        return ApiResponse.onSuccess(wishQueryService.getWishDetail(wishId));
+    }
+
     // 나의 위시리스트 구매예정 목록 조회
     @GetMapping("/mine/planned")
     @Operation(summary = "나의 위시리스트 구매예정 목록 조회 API")
