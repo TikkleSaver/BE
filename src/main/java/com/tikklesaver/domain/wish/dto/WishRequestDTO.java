@@ -88,4 +88,20 @@ public class WishRequestDTO {
         @NotNull
         Long categoryId;
     }
+
+    // 존재하지 않는 상품 위시 수정 (직접 추가한 상품)
+    @Getter
+    public static class UpdateWishFromMyProductDTO {
+
+        @NotNull
+        PublicStatus publicStatus;
+
+        SatisfactionStatus satisfactionStatus;
+
+        @NotNull
+        Integer price;
+
+        @NotNull
+        Long categoryId;
+    }
 }

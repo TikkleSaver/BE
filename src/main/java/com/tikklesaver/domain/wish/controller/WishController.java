@@ -44,7 +44,7 @@ public class WishController {
         return ApiResponse.onSuccess(WishConverter.toWishResultDTO(newWish));
     }
 
-    // 존재하지 않는 상품 위시로 추가
+    // 존재하지 않는 상품 위시로 추가 (직접 추가한 상품)
     @PostMapping(value =  "/my-product", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "원하는 상품 직접 추가해서 위시로 생성 API")
     public ApiResponse<WishResponseDTO.WishResultDTO> createWishFromMyProduct(
@@ -66,7 +66,7 @@ public class WishController {
     @Parameters({
             @Parameter(name = "wishId", description = "위시의 ID, path variable 입니다!")
     })
-    public ApiResponse<WishResponseDTO.WishResultDTO> updateWishFromExistingProduct(
+    public ApiResponse<WishResponseDTO.UpdateWishResultDTO> updateWishFromExistingProduct(
             @PathVariable(name = "wishId") Long wishId,
             @RequestBody @Valid WishRequestDTO.UpdateWishFromExistingProductDTO request) {
 
@@ -76,7 +76,27 @@ public class WishController {
         Wish wish = wishCommandService.updateWishFromExistingProduct(memberId, wishId, request);
         productCommandService.updateExistingProduct(memberId, wish.getProduct(), request);
 
-        return ApiResponse.onSuccess(WishConverter.toWishResultDTO(wish));
+        return ApiResponse.onSuccess(WishConverter.toWishUpdateResultDTO(wish));
+    }
+
+    // 존재하지 않는 상품 위시 수정 (직접 추가한 상품)
+    @PatchMapping(value = "/{wishId}/my-product", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @Operation(summary = "원하는 상품 직접 추가했던 위시 내용 수정 API")
+    @Parameters({
+            @Parameter(name = "wishId", description = "위시의 ID, path variable 입니다!")
+    })
+    public ApiResponse<WishResponseDTO.UpdateWishResultDTO> updateWishFromMyProduct(
+            @PathVariable(name = "wishId") Long wishId,
+            @RequestPart("request") @Valid WishRequestDTO.UpdateWishFromMyProductDTO request,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
+
+        //임시 memberId
+        Long memberId = 5L;
+
+        Wish wish = wishCommandService.updateWishFromMyProduct(memberId, wishId, request);
+        productCommandService.updateMyProduct(memberId, wish.getProduct(), request, file);
+
+        return ApiResponse.onSuccess(WishConverter.toWishUpdateResultDTO(wish));
     }
 
     // 존재하는 상품 위시 삭제

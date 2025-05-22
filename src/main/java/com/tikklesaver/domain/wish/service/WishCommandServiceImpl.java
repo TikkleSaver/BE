@@ -12,6 +12,7 @@ import com.tikklesaver.global.apiPayload.exception.handler.WishHandler;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +31,7 @@ public class WishCommandServiceImpl implements WishCommandService {
         return wishRepository.save(newWish);
     }
 
-    // 존재하는 상품 위시에 추가
+    // 존재하지 않는 상품 위시에 추가 (직접 추가한 상품)
     @Override
     public Wish createWishFromMyProduct(Long memberId, Product product, WishRequestDTO.CreateWishFromMyProductDTO request){
         Member member = memberRepository.findById(memberId)
@@ -43,6 +44,23 @@ public class WishCommandServiceImpl implements WishCommandService {
     // 존재하는 상품 위시 수정
     @Override
     public Wish updateWishFromExistingProduct(Long memberId, Long wishId, WishRequestDTO.UpdateWishFromExistingProductDTO request){
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+
+        Wish wish = wishRepository.findById(wishId)
+                .orElseThrow(() -> new WishHandler(ErrorStatus.WISH_NOT_FOUND));
+
+        wish.setPublicStatus(request.getPublicStatus());
+        if (request.getSatisfactionStatus() != null)
+            wish.setSatisfactionStatus(request.getSatisfactionStatus());
+
+        return wishRepository.save(wish);
+    }
+
+
+    // 존재하지 않는 상품 위시 수정 (직접 추가한 상품)
+    @Override
+    public Wish updateWishFromMyProduct(Long memberId, Long wishId, WishRequestDTO.UpdateWishFromMyProductDTO request){
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
 

@@ -91,6 +91,35 @@ public class ProductCommandServiceImpl implements ProductCommandService {
         return productRepository.save(product);
     }
 
+    // 존재하지 않는 상품 수정 (직접 추가한)
+    @Override
+    public Product updateMyProduct(Long memberId, Product product, WishRequestDTO.UpdateWishFromMyProductDTO request, MultipartFile file){
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+
+        Category category = categoryRepository.findById(request.getCategoryId())
+                .orElseThrow(() -> new EntityNotFoundException("Category not found ID: " + request.getCategoryId()));
+
+
+        if (file != null && !file.isEmpty()) {  // 이미지도 수정할 시
+            // 이전 이미지 삭제
+            amazonS3Manager.deleteFile(product.getImage());
+            // 새로운 이미지 저장
+            String imageUrl = null;
+            String uuid = UUID.randomUUID().toString();
+            Uuid savedUuid = uuidRepository.save(Uuid.builder()
+                    .uuid(uuid).build());
+            imageUrl = amazonS3Manager.uploadFile(amazonS3Manager.generateProductsKeyName(savedUuid), file);
+
+            product.setImage(imageUrl);
+        }
+
+        product.setPrice(request.getPrice());
+        product.setCategory(category);
+
+        return productRepository.save(product);
+    }
 
     // 존재하는 상품 삭제
     @Override

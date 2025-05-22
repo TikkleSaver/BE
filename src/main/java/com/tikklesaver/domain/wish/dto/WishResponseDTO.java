@@ -13,6 +13,7 @@ import java.util.List;
 
 public class WishResponseDTO {
 
+    // 위시 생성 결과
     @Builder
     @Getter
     @NoArgsConstructor
@@ -20,6 +21,16 @@ public class WishResponseDTO {
     public static class WishResultDTO {
         Long wishId;
         LocalDateTime createdAt;
+    }
+
+    // 위시 수정 결과
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateWishResultDTO {
+        Long wishId;
+        LocalDateTime updatedAt;
     }
 
     // 나의 위시리스트 구매 예정 목록 조회 (목록용)
