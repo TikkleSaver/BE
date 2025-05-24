@@ -58,7 +58,10 @@ public class ExpenseQueryServiceImpl implements ExpenseQueryService {
         Expense expense = expenseRepositoryCustom.findByMemberIdAndExpenseId(memberId, expenseId)
                 .orElseThrow(() -> new ExpenseHandler(ErrorStatus.EXPENSE_AND_MEMBER_NOT_FOUND));
 
-        amazonS3Manager.deleteFile(expense.getImage());
+        if (expense.getImage() != null) {
+            amazonS3Manager.deleteFile(expense.getImage());
+        }
+        
         expenseRepository.delete(expense);
     }
 }

@@ -68,12 +68,12 @@ public class ExpenseController {
     @DeleteMapping("/{expenseId}/{memberId}")
     @Operation(summary = "지출 삭제 API")
     @Parameters({
-            @Parameter(name = "memberId", description = "사용자 ID, path variable 입니다!"),
-            @Parameter(name = "expenseId", description = "지출 ID, path variable 입니다!")
+            @Parameter(name = "expenseId", description = "지출 ID, path variable 입니다!"),
+            @Parameter(name = "memberId", description = "사용자 ID, path variable 입니다!")
     })
     public ApiResponse<String> deleteExpense(
-            @PathVariable Long memberId,
-            @PathVariable Long expenseId) {
+            @PathVariable("memberId") Long memberId,
+            @PathVariable("expenseId") Long expenseId) {
 
         expenseQueryService.deleteExpense(memberId, expenseId);
         return ApiResponse.onSuccess("삭제가 완료되었습니다.");
