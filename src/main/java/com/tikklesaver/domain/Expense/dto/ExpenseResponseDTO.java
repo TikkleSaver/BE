@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 public class ExpenseResponseDTO {
 
@@ -57,5 +58,36 @@ public class ExpenseResponseDTO {
         Long categoryId;
         LocalDateTime createdAt;
         LocalDateTime updatedAt;
+    }
+
+
+    // 지출 모아보기 (한 칸씩)
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ExpensePreviewResultDTO {
+        Long memberId;
+        Long expenseId;
+        String expenseName;
+        String expensePlace;
+        Long cost;
+        Date expenseDate;
+        String image;
+        Long categoryId;
+    }
+
+    // 지출 모아보기 (전체 리스트)
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ExpensePreviewListResultDTO {
+        private List<ExpensePreviewResultDTO> expensePreviewDTOList;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
     }
 }

@@ -1,23 +1,23 @@
 package com.tikklesaver.domain.Expense.service;
 
 import com.tikklesaver.domain.Category.repository.CategoryRepository;
-import com.tikklesaver.domain.Expense.dto.ExpenseRequestDTO;
 import com.tikklesaver.domain.Expense.entity.Expense;
 import com.tikklesaver.domain.Expense.repository.ExpenseRepository;
 import com.tikklesaver.domain.Expense.repository.ExpenseRepositoryCustom;
-import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.domain.member.repository.MemberRepository;
 import com.tikklesaver.global.apiPayload.code.status.ErrorStatus;
 import com.tikklesaver.global.apiPayload.exception.handler.ExpenseHandler;
 import com.tikklesaver.global.aws.s3.AmazonS3Manager;
-import com.tikklesaver.global.common.Uuid;
 import com.tikklesaver.global.repository.UuidRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Service
@@ -44,6 +44,17 @@ public class ExpenseQueryServiceImpl implements ExpenseQueryService {
                 .orElseThrow(() -> new ExpenseHandler(ErrorStatus.EXPENSE_AND_MEMBER_NOT_FOUND));
     }
 
+    // 지출 리스트 조회
+    @Override
+    @Transactional
+    public Page<Expense> getExpenseList(Integer page, Long memberId, Date expenseDate) {
+        memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+
+        Pageable pageable = PageRequest.of(page, 9);
+
+        return expenseRepositoryCustom.findAll(pageable, memberId, expenseDate);
+    }
 
     // 지출 삭제
     @Override
@@ -58,7 +69,10 @@ public class ExpenseQueryServiceImpl implements ExpenseQueryService {
         Expense expense = expenseRepositoryCustom.findByMemberIdAndExpenseId(memberId, expenseId)
                 .orElseThrow(() -> new ExpenseHandler(ErrorStatus.EXPENSE_AND_MEMBER_NOT_FOUND));
 
-        amazonS3Manager.deleteFile(expense.getImage());
+        if (expense.getImage() != null) {
+            amazonS3Manager.deleteFile(expense.getImage());
+        }
+        
         expenseRepository.delete(expense);
     }
 }
