@@ -11,12 +11,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import io.swagger.v3.oas.annotations.Parameters;
+
+import java.util.Date;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,6 +40,18 @@ public class ExpenseController {
 
         Expense expense = expenseQueryService.getExpense(memberId, expenseId);
         return ApiResponse.onSuccess(ExpenseConverter.toGetExpenseResultDTO(expense));
+    }
+
+    // 지출 모아보기
+    @GetMapping
+    @Operation(summary = "지출 리스트 조회 API")
+    public ApiResponse<ExpenseResponseDTO.ExpensePreviewListResultDTO> getExpenseList(@RequestParam(name = "page") Integer page,
+                                                                                @RequestParam(name = "memberId") Long memberId,
+                                                                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date expenseDate
+    ){
+
+        Page<Expense> expenseList = expenseQueryService.getExpenseList(page - 1, memberId, expenseDate);
+        return ApiResponse.onSuccess(ExpenseConverter.toGetExpenseResultListDTO(expenseList));
     }
 
     // 지출 생성
