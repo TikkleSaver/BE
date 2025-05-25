@@ -10,9 +10,11 @@ import com.tikklesaver.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
+import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Date;
 
 @RestController
 @RequiredArgsConstructor
@@ -51,4 +53,16 @@ public class ExpenseCommentController {
         expenseCommentQueryService.deleteExpenseComment(request);
         return ApiResponse.onSuccess("지출 피드백 삭제가 완료되었습니다.");
     }
+
+    // 지출 피드백 리스트 조회
+    @GetMapping
+    @Operation(summary = "지출 피드백 리스트 조회 API")
+    public ApiResponse<ExpenseCommentResponseDTO.ExpenseCommentListResultDTO> getExpenseCommentList(@RequestParam(name = "page") Integer page,
+                                                                                      @RequestParam(name = "memberId") Long memberId,
+                                                                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date expenseDate
+    ){
+        Page<ExpenseComment> expenseCommentList = expenseCommentQueryService.getExpenseCommentList(page - 1, memberId, expenseDate);
+        return ApiResponse.onSuccess(ExpenseCommentConverter.toGetExpenseCommentResultListDTO(expenseCommentList));
+    }
+
 }

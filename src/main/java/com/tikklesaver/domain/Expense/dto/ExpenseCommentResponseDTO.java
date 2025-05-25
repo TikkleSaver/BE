@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 public class ExpenseCommentResponseDTO {
 
@@ -43,5 +44,36 @@ public class ExpenseCommentResponseDTO {
         String content;
         Date expenseDate;
         LocalDateTime updatedAt;
+    }
+
+    // 지출 피드백 모아보기 (한 칸씩)
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ExpenseCommentResultDTO {
+        Long memberId;
+        Long commenterId;
+        Long expenseCommentId;
+        String nickname;
+        String profileUrl;
+        String content;
+        Date expenseDate;
+        LocalDateTime createdAt;
+        LocalDateTime updatedAt;
+    }
+
+    // 지출 피드백 모아보기 (전체 리스트)
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ExpenseCommentListResultDTO {
+        private List<ExpenseCommentResponseDTO.ExpenseCommentResultDTO> expenseCommentDTOList;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
     }
 }
