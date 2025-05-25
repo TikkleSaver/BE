@@ -1,7 +1,7 @@
 package com.tikklesaver.domain.product.service;
 
 import com.tikklesaver.domain.product.entity.Product;
-import com.tikklesaver.domain.wish.dto.WishRequestDTO;
+import com.tikklesaver.domain.wish.dto.wish.WishRequestDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface ProductCommandService {

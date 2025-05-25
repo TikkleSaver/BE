@@ -1,4 +1,4 @@
-package com.tikklesaver.domain.wish.dto;
+package com.tikklesaver.domain.wish.dto.wish;
 
 import com.tikklesaver.domain.wish.entity.enums.ProductType;
 import com.tikklesaver.domain.wish.entity.enums.PublicStatus;

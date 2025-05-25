@@ -1,15 +1,12 @@
-package com.tikklesaver.domain.wish.repository;
+package com.tikklesaver.domain.wish.repository.wish;
 
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.JPAExpressions;
-import com.tikklesaver.domain.product.entity.QProduct;
-import com.tikklesaver.domain.wish.dto.WishResponseDTO;
+import com.tikklesaver.domain.wish.dto.wish.WishResponseDTO;
 import com.tikklesaver.domain.wish.entity.QVote;
 import com.tikklesaver.domain.wish.entity.QWish;
 import com.tikklesaver.domain.wish.entity.QWishComment;
 import com.tikklesaver.domain.wish.entity.enums.LikeStatus;
-import com.tikklesaver.domain.wish.entity.enums.ProductType;
 import com.tikklesaver.domain.wish.entity.enums.PurchaseStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

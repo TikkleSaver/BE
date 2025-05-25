@@ -1,6 +1,6 @@
-package com.tikklesaver.domain.wish.repository;
+package com.tikklesaver.domain.wish.repository.wish;
 
-import com.tikklesaver.domain.wish.dto.WishResponseDTO;
+import com.tikklesaver.domain.wish.dto.wish.WishResponseDTO;
 
 import java.util.List;
 
