@@ -24,6 +24,9 @@ public enum ErrorStatus implements BaseErrorCode {
     WISH_ALREADY_PURCHASED(HttpStatus.BAD_REQUEST, "WISH4002", "이미 구매 상태인 위시입니다."),
     WISH_NOT_PURCHASED(HttpStatus.BAD_REQUEST, "WISH4003", "아직 구매 상태가 아닌 위시입니다."),
 
+    // 위시 투표
+    ALREADY_VOTED(HttpStatus.BAD_REQUEST, "VOTE4001", "이미 투표를 했습니다."),
+
 
     //지출
     EXPENSE_NOT_FOUND(HttpStatus.NOT_FOUND, "EXPENSE4001", "ID에 해당하는 지출이 없습니다."),
