@@ -6,6 +6,7 @@ import com.tikklesaver.domain.product.entity.Product;
 import com.tikklesaver.domain.wish.converter.WishConverter;
 import com.tikklesaver.domain.wish.dto.WishRequestDTO;
 import com.tikklesaver.domain.wish.entity.Wish;
+import com.tikklesaver.domain.wish.entity.enums.PublicStatus;
 import com.tikklesaver.domain.wish.repository.WishRepository;
 import com.tikklesaver.global.apiPayload.code.status.ErrorStatus;
 import com.tikklesaver.global.apiPayload.exception.handler.WishHandler;
@@ -101,5 +102,23 @@ public class WishCommandServiceImpl implements WishCommandService {
         wishRepository.delete(wish);
 
         return wish;
+    }
+
+    // 나의 위시 공개/비공개 설정
+    @Override
+    public Wish updateWishPublicStatus(Long memberId, Long wishId){
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+
+        Wish wish = wishRepository.findById(wishId)
+                .orElseThrow(() -> new WishHandler(ErrorStatus.WISH_NOT_FOUND));
+
+        if (wish.getPublicStatus() == PublicStatus.PUBLIC){
+            wish.setPublicStatus(PublicStatus.PRIVATE);
+        } else {
+            wish.setPublicStatus(PublicStatus.PUBLIC);
+        }
+
+        return wishRepository.save(wish);
     }
 }
