@@ -41,4 +41,14 @@ public class ExpenseCommentController {
         ExpenseComment expenseComment = expenseCommentCommandService.updateExpenseComment(request);
         return ApiResponse.onSuccess(ExpenseCommentConverter.toUpdateExpenseCommentResultDTO(expenseComment));
     }
+
+    // 지출 피드백 삭제
+    @DeleteMapping
+    @Operation(summary = "지출 피드백 삭제 API")
+    public ApiResponse<String> deleteExpenseComment(
+            @RequestBody @Valid ExpenseCommentRequestDTO.DeleteExpenseCommentRequestDTO request) {
+
+        expenseCommentQueryService.deleteExpenseComment(request);
+        return ApiResponse.onSuccess("지출 피드백 삭제가 완료되었습니다.");
+    }
 }

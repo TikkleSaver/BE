@@ -38,4 +38,14 @@ public class ExpenseCommentRequestDTO {
         @NotEmpty
         String content;
     }
+
+    // 지출 피드백 삭제
+    @Setter
+    @Getter
+    public static class DeleteExpenseCommentRequestDTO {
+        @NotNull
+        Long expenseCommentId;
+        @NotNull
+        Long commenterId;
+    }
 }
