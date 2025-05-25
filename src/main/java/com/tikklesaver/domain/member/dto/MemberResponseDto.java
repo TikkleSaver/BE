@@ -20,30 +20,4 @@ public class MemberResponseDto {
             String profileUrl;
         }
 
-        @Builder
-        @Getter
-        @NoArgsConstructor
-        @AllArgsConstructor
-        public static class MemberProfileDTO {
-            @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-            LocalDateTime createdAt;
-            Long id;
-            String nickname;
-            String profileUrl;
-            //        Role role;
-            String accessToken;
-        }
-
-        @Builder
-        @Getter
-        @NoArgsConstructor
-        @AllArgsConstructor
-        public static class MemberProfileDTO2 {
-            @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-            LocalDateTime createdAt;
-            Long id;
-            String nickname;
-            String profileUrl;
-//        Role role;
-        }
     }

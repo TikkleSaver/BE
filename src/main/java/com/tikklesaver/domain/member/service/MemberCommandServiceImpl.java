@@ -7,8 +7,11 @@ import com.tikklesaver.domain.member.repository.MemberRepository;
 import com.tikklesaver.global.apiPayload.code.status.ErrorStatus;
 import com.tikklesaver.global.apiPayload.exception.handler.JwtHandler;
 import com.tikklesaver.global.apiPayload.exception.handler.MemberHandler;
+import com.tikklesaver.global.aws.s3.AmazonS3Manager;
+import com.tikklesaver.global.common.Uuid;
 import com.tikklesaver.global.jwt.dto.JwtDto;
 import com.tikklesaver.global.jwt.util.JwtUtil;
+import com.tikklesaver.global.repository.UuidRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -19,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -30,9 +34,9 @@ import java.util.*;
 public class MemberCommandServiceImpl implements MemberCommandService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtService;
-    private final ModelMapper modelMapper;
     private final JwtUtil jwtUtil;
+    private final AmazonS3Manager s3Manager;
+    private final UuidRepository uuidRepository;
 
     @Value("${jwt.access.header}")
     private String accessHeader;
@@ -149,6 +153,37 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
         // 변경된 회원 정보 저장
         memberRepository.save(member);
+    }
+
+
+    @Override
+    public Member updateProfile(Member member, String nickname, MultipartFile profilePicture)  {
+        // 닉네임이 제공된 경우 업데이트
+        log.info(nickname);
+        if (nickname != null) {
+            member.setNickname(nickname);
+        }
+
+        // 프로필 URL이 제공된 경우 업데이트
+        if (profilePicture != null) {
+            String uuid = UUID.randomUUID().toString();
+            Uuid savedUuid = uuidRepository.save(Uuid.builder()
+                    .uuid(uuid).build());
+
+            String pictureUrl = s3Manager.uploadFile(s3Manager.generateMembersKeyName(savedUuid),profilePicture);
+
+            //원래 이미지 삭제
+
+            if (member.getProfileUrl() != null) {
+                s3Manager.deleteFile(member.getProfileUrl());
+            }
+
+            member.setProfileUrl(pictureUrl);
+        }
+        // 변경된 회원 정보 저장
+        memberRepository.save(member);
+
+        return member;
     }
 
 }

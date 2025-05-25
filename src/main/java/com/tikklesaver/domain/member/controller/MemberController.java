@@ -1,10 +1,7 @@
 package com.tikklesaver.domain.member.controller;
 
 import com.tikklesaver.domain.member.converter.MemberConverter;
-import com.tikklesaver.domain.member.dto.LoginRequestDto;
-import com.tikklesaver.domain.member.dto.MemberResponseDto;
-import com.tikklesaver.domain.member.dto.PassWordDto;
-import com.tikklesaver.domain.member.dto.SignUpRequestDto;
+import com.tikklesaver.domain.member.dto.*;
 import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.domain.member.service.MemberCommandService;
 import com.tikklesaver.global.annotation.CurrentMember;
@@ -83,4 +80,11 @@ public class MemberController {
         return ApiResponse.onSuccess("비밀번호 변경에 성공했습니다.");
     }
 
+    @PatchMapping(value = "/users", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ApiResponse<MemberResponseDto.MemberInfoDTO> updateProfile
+            (@Parameter(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+             @Valid @RequestPart MemberRequestDto.UpdateProfileDTO requestDTO,
+             @RequestPart("profileImg") MultipartFile profileImg,@CurrentMember Member member) {
+        return ApiResponse.onSuccess(MemberConverter.toMemberInfoDTO(memberCommandService.updateProfile(member, requestDTO.getNickname(), profileImg)));
+    }
 }
