@@ -3,6 +3,7 @@ package com.tikklesaver.domain.wish.service;
 import com.tikklesaver.domain.product.entity.Product;
 import com.tikklesaver.domain.wish.dto.WishRequestDTO;
 import com.tikklesaver.domain.wish.entity.Wish;
+import com.tikklesaver.domain.wish.entity.enums.SatisfactionStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface WishCommandService {
@@ -30,4 +31,7 @@ public interface WishCommandService {
 
     // 나의 위시 구매 설정
     Wish updateWishPurchaseStatus(Long memberId, Long wishId);
+
+    // 나의 위시 만족/불만족 설정
+    Wish updateWishSatisfactionStatus(Long memberId, Long wishId, SatisfactionStatus status);
 }
