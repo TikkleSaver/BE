@@ -37,4 +37,21 @@ public class VoteController {
 
         return ApiResponse.onSuccess(VoteConverter.toVoteResultDTO(vote));
     }
+
+    // 위시 찬성/반대 투표 취소
+    @DeleteMapping( "/{wishId}/vote")
+    @Operation(summary = "위시 찬성/반대 투표 취소 API")
+    @Parameters({
+            @Parameter(name = "wishId", description = "위시의 ID, path variable 입니다!")
+    })
+    public ApiResponse<String> cancelVote(
+            @PathVariable(name = "wishId") Long wishId) {
+
+        //임시 memberId
+        Long memberId = 5L;
+
+        voteCommandService.cancelVote(memberId, wishId);
+
+        return ApiResponse.onSuccess("삭제가 완료되었습니다.");
+    }
 }

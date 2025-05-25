@@ -7,4 +7,8 @@ public interface VoteCommandService {
     
     // 위시 찬성/반대 투표
     Vote voteOnWish(Long memberId, Long wishId, LikeStatus status);
+
+
+    // 위시 찬성/반대 투표 취소
+    void cancelVote(Long memberId, Long wishId);
 }
