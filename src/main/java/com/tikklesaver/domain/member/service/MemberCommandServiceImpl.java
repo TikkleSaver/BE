@@ -138,6 +138,19 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         }
     }
 
+    @Override
+    public void updatePassWord(Member member, String password, String newPassword) {
+        if (!passwordEncoder.matches(password, member.getPassword())) {
+            throw new MemberHandler(ErrorStatus.PASSWORD_UNAUTHORIZED);
+        }
+
+        member.setPassword(newPassword);
+        member.passwordEncode(passwordEncoder);
+
+        // 변경된 회원 정보 저장
+        memberRepository.save(member);
+    }
+
 }
 
 

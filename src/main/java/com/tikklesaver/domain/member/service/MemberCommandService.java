@@ -16,4 +16,6 @@ public interface MemberCommandService {
     void logout(Member member);
 
     void checkId(String loginId);
+
+    void updatePassWord(Member member, String password, String newPassword);
 }
