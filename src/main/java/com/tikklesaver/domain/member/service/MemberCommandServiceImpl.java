@@ -131,6 +131,13 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         memberRepository.save(member); // 변경사항 저장
     }
 
+    @Override
+    public void checkId(String loginId) {
+        if (memberRepository.existsByLoginId(loginId)) {
+            throw new MemberHandler(ErrorStatus.MEMBER_ALREADY_EXISTS);
+        }
+    }
+
 }
 
 

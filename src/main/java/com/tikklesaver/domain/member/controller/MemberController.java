@@ -74,4 +74,10 @@ public class MemberController {
         return ApiResponse.onSuccess("로그아웃에 성공하였습니다.");
     }
 
+    @PostMapping("/check-id/{id}")
+    @Operation(summary = "이메일 중복 검사", description = "")
+    public ApiResponse<String> checkId(@PathVariable(name = "id") String id) throws Exception {
+        memberCommandService.checkId(id);
+        return ApiResponse.onSuccess("사용가능한 이메일입니다.");
+    }
 }

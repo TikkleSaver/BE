@@ -32,7 +32,7 @@ public class SecurityConfig {
 //    private final CustomAccessDeniedHandler accessDeniedHandler;
 //    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
 
-    private static final String[] AUTH_WHITELIST = {"/api/login", "/api/signup","/api/refresh-token"};
+    private static final String[] AUTH_WHITELIST = {"/api/login", "/api/signup","/api/refresh-token","/api/check-id"};
 
 
     @Bean
@@ -46,7 +46,8 @@ public class SecurityConfig {
 //                        .requestMatchers("/").permitAll()
 //                        .requestMatchers("/**").permitAll()
 //                        .requestMatchers("/api/**").permitAll()
-                        .requestMatchers(AUTH_WHITELIST).permitAll()
+                        .requestMatchers("/api/check-id/**").permitAll()
+                                .requestMatchers(AUTH_WHITELIST).permitAll()
                         .anyRequest().authenticated()
                 );
 
