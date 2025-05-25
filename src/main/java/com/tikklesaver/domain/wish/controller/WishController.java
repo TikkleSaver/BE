@@ -6,6 +6,7 @@ import com.tikklesaver.domain.wish.converter.WishConverter;
 import com.tikklesaver.domain.wish.dto.WishRequestDTO;
 import com.tikklesaver.domain.wish.dto.WishResponseDTO;
 import com.tikklesaver.domain.wish.entity.Wish;
+import com.tikklesaver.domain.wish.entity.enums.SatisfactionStatus;
 import com.tikklesaver.domain.wish.service.WishQueryService;
 import com.tikklesaver.domain.wish.service.WishCommandService;
 import com.tikklesaver.global.apiPayload.ApiResponse;
@@ -200,6 +201,25 @@ public class WishController {
         Long memberId = 5L;
 
         Wish wish = wishCommandService.updateWishPurchaseStatus(memberId, wishId);
+
+        return ApiResponse.onSuccess(WishConverter.toWishUpdateResultDTO(wish));
+    }
+
+    // 나의 위시 만족/불만족 설정
+    @PatchMapping( "/{wishId}/satisfaction-status")
+    @Operation(summary = "나의 위시 만족/불만족 수정 API")
+    @Parameters({
+            @Parameter(name = "wishId", description = "위시의 ID, path variable 입니다!"),
+            @Parameter(name = "status", description = "만족 상태 (SATISFIED = 만족, DISSATISFIED = 불만족)")
+    })
+    public ApiResponse<WishResponseDTO.UpdateWishResultDTO> updateWishSatisfactionStatus(
+            @PathVariable(name = "wishId") Long wishId,
+            @RequestParam(name = "status") SatisfactionStatus status) {
+
+        //임시 memberId
+        Long memberId = 5L;
+
+        Wish wish = wishCommandService.updateWishSatisfactionStatus(memberId, wishId, status);
 
         return ApiResponse.onSuccess(WishConverter.toWishUpdateResultDTO(wish));
     }

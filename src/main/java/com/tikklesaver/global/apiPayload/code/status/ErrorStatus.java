@@ -22,6 +22,7 @@ public enum ErrorStatus implements BaseErrorCode {
     // 위시
     WISH_NOT_FOUND(HttpStatus.NOT_FOUND, "WISH4001", "존재하지 않는 위시입니다."),
     WISH_ALREADY_PURCHASED(HttpStatus.BAD_REQUEST, "WISH4002", "이미 구매 상태인 위시입니다."),
+    WISH_NOT_PURCHASED(HttpStatus.BAD_REQUEST, "WISH4003", "아직 구매 상태가 아닌 위시입니다."),
 
 
     //지출
