@@ -1,8 +1,10 @@
 package com.tikklesaver.domain.Expense.repository;
 
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.tikklesaver.domain.Expense.dto.ExpenseResponseDTO;
 import com.tikklesaver.domain.Expense.entity.Expense;
 import com.tikklesaver.domain.Expense.entity.QExpense;
 import com.tikklesaver.domain.member.entity.QMember;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -85,5 +88,30 @@ public class ExpenseRepositoryImpl implements ExpenseRepositoryCustom {
         if (total == null) total = 0L;
 
         return new PageImpl<>(content, pageable, total);
+    }
+
+    // 일별 지출 총액 리스트 조회
+    @Override
+    public List<Expense> findDailyExpenseTotalByMemberIdAndYearMonth(Long memberId, int year, int month) {
+        // 조회할 연도의 해당 월 1일
+        LocalDate startLocalDate = LocalDate.of(year, month, 1);
+        // 다음 달 1일 (조회 종료일 + 1)
+        LocalDate nextMonthStartLocalDate = startLocalDate.plusMonths(1);
+
+        // java.sql.Date 타입 변환
+        Date startDate = java.sql.Date.valueOf(startLocalDate);
+        Date nextMonthStartDate = java.sql.Date.valueOf(nextMonthStartLocalDate);
+
+        return jpaQueryFactory
+                .selectFrom(qExpense)
+                // INNER JOIN 대신 LEFT JOIN으로 바꿔서 데이터 누락 체크 가능
+                .leftJoin(qExpense.member, qMember).fetchJoin()
+                .where(
+                        qMember.id.eq(memberId),
+                        qExpense.expenseDate.goe(startDate),   // >= startDate
+                        qExpense.expenseDate.lt(nextMonthStartDate) // < 다음 달 1일
+                )
+                .orderBy(qExpense.expenseDate.asc())
+                .fetch();
     }
 }

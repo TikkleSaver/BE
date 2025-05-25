@@ -5,7 +5,10 @@ import com.tikklesaver.domain.Expense.entity.Expense;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ExpenseConverter {
@@ -81,6 +84,32 @@ public class ExpenseConverter {
                 .totalElements(expensePage.getTotalElements())
                 .isFirst(expensePage.isFirst())
                 .isLast(expensePage.isLast())
+                .build();
+    }
+
+    // 일별 지출 종 금액 리스트 조회 API
+    public static ExpenseResponseDTO.GetDailyExpenseResultDTO dailyExpenseDTO(Date expenseDate, Long totalCost) {
+        return ExpenseResponseDTO.GetDailyExpenseResultDTO.builder()
+                .totalCost(totalCost)
+                .expenseDate(expenseDate)
+                .build();
+    }
+
+    public static ExpenseResponseDTO.GetDailyExpenseResultDTOList toGetDailyExpenseResultDTO(List<Expense> expenseList, Long memberId) {
+        Map<Date, Long> dailyTotalMap = expenseList.stream()
+                .collect(Collectors.groupingBy(
+                        Expense::getExpenseDate,
+                        Collectors.summingLong(Expense::getCost)
+                ));
+
+        List<ExpenseResponseDTO.GetDailyExpenseResultDTO> dailyExpenseDTOList = dailyTotalMap.entrySet().stream()
+                .map(entry -> dailyExpenseDTO(entry.getKey(), entry.getValue()))
+                .sorted(Comparator.comparing(ExpenseResponseDTO.GetDailyExpenseResultDTO::getExpenseDate))
+                .collect(Collectors.toList());
+
+        return ExpenseResponseDTO.GetDailyExpenseResultDTOList.builder()
+                .memberId(memberId)
+                .dailyExpenseDTOList(dailyExpenseDTOList)
                 .build();
     }
 }

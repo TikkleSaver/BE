@@ -90,4 +90,25 @@ public class ExpenseResponseDTO {
         Boolean isFirst;
         Boolean isLast;
     }
+
+
+    // 일별 지출 총액 조회 - 하루
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetDailyExpenseResultDTO {
+        Long totalCost;
+        Date expenseDate;
+    }
+
+    // 일별 지출 총액 조회 - 한달(하루 리스트)
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetDailyExpenseResultDTOList {
+        Long memberId;
+        List<GetDailyExpenseResultDTO> dailyExpenseDTOList;
+    }
 }
