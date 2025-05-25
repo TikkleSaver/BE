@@ -187,4 +187,21 @@ public class WishController {
         return ApiResponse.onSuccess(WishConverter.toWishUpdateResultDTO(wish));
     }
 
+    // 나의 위시 구매 설정
+    @PatchMapping( "/{wishId}/purchase-status")
+    @Operation(summary = "나의 위시 구매 상태로 변경 API")
+    @Parameters({
+            @Parameter(name = "wishId", description = "위시의 ID, path variable 입니다!")
+    })
+    public ApiResponse<WishResponseDTO.UpdateWishResultDTO> updateWishPurchaseStatus(
+            @PathVariable(name = "wishId") Long wishId) {
+
+        //임시 memberId
+        Long memberId = 5L;
+
+        Wish wish = wishCommandService.updateWishPurchaseStatus(memberId, wishId);
+
+        return ApiResponse.onSuccess(WishConverter.toWishUpdateResultDTO(wish));
+    }
+
 }

@@ -27,4 +27,7 @@ public interface WishCommandService {
 
     // 나의 위시 공개/비공개 설정
     Wish updateWishPublicStatus(Long memberId, Long wishId);
+
+    // 나의 위시 구매 설정
+    Wish updateWishPurchaseStatus(Long memberId, Long wishId);
 }
