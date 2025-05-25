@@ -10,6 +10,9 @@ import com.tikklesaver.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Builder
 @Getter
 @Setter
@@ -45,4 +48,8 @@ public class Wish extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+    
+    // 투표 (양방향 매핑)
+    @OneToMany(mappedBy = "wish", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<Vote> votes = new HashSet<>();
 }

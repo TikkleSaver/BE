@@ -43,4 +43,20 @@ public class VoteCommandServiceImpl implements VoteCommandService {
 
         return voteRepository.save(newVote);
     }
+
+    // 위시 찬성/반대 투표 취소
+    @Override
+    public void cancelVote(Long memberId, Long wishId){
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+
+        Wish wish = wishRepository.findById(wishId)
+                .orElseThrow(() -> new VoteHandler(ErrorStatus.WISH_NOT_FOUND));
+
+        Vote vote = voteRepository.findByMemberAndWish(member, wish)
+                .orElseThrow(() -> new VoteHandler(ErrorStatus.VOTE_NOT_FOUND));
+
+        voteRepository.delete(vote);
+    }
 }
