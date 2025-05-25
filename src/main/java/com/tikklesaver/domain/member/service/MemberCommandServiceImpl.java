@@ -6,6 +6,7 @@ import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.domain.member.repository.MemberRepository;
 import com.tikklesaver.global.apiPayload.code.status.ErrorStatus;
 import com.tikklesaver.global.apiPayload.exception.handler.JwtHandler;
+import com.tikklesaver.global.apiPayload.exception.handler.MemberHandler;
 import com.tikklesaver.global.jwt.dto.JwtDto;
 import com.tikklesaver.global.jwt.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -122,6 +123,12 @@ public class MemberCommandServiceImpl implements MemberCommandService {
             }
         }
         return new JwtDto(accessToken, refreshToken);
+    }
+
+    @Override
+    public void logout(Member member) {
+        member.setRefreshToken(null); // 토큰 제거
+        memberRepository.save(member); // 변경사항 저장
     }
 
 }

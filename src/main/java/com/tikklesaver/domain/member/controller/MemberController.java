@@ -67,4 +67,11 @@ public class MemberController {
         return ApiResponse.onSuccess(memberCommandService.refreshAccessToken(accessToken, refreshToken));
     }
 
+    @PostMapping("/logout")
+    @Operation(summary = "로그아웃",description = "로그아웃 하는 API입니다.accessToken 필요")
+    public ApiResponse<String> logout(@CurrentMember Member member) {
+        memberCommandService.logout(member);
+        return ApiResponse.onSuccess("로그아웃에 성공하였습니다.");
+    }
+
 }
