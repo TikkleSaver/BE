@@ -45,7 +45,8 @@ public enum ErrorStatus implements BaseErrorCode {
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER404", "사용자가 존재하지 않습니다."),
     MEMBER_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "MEMBER400", "이미 존재하는 사용자입니다."),
     NICKNAME_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "MEMBER400", "이미 존재하는 닉네임입니다."),
-    MEMBER_PREFERRED_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER_PREFERRED_CATEGORY404", "사용자 취향 카테고리가 존재하지 않습니다.");
+    MEMBER_PREFERRED_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER_PREFERRED_CATEGORY404", "사용자 취향 카테고리가 존재하지 않습니다."),
+    PASSWORD_UNAUTHORIZED(HttpStatus.UNAUTHORIZED,"MEMBER401","비밀번호가 일치하지 않습니다.");
 
 
     private final HttpStatus httpStatus;

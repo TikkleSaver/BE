@@ -22,25 +22,5 @@ public class MemberConverter {
                 .build();
     }
 
-    public static MemberResponseDto.MemberProfileDTO2 toMemberProfileDTO(Member member) {
-        return MemberResponseDto.MemberProfileDTO2.builder()
-                .createdAt(member.getCreatedAt())
-                .id(member.getId())
-                .nickname(member.getNickname())
-                .profileUrl(member.getProfileUrl())
-//                .role(member.getRole())
-                .build();
-    }
-
-    public static MemberResponseDto.MemberProfileDTO toMemberProfileDTO(Member member, String accessToken) {
-        return MemberResponseDto.MemberProfileDTO.builder()
-                .createdAt(member.getCreatedAt())
-                .id(member.getId())
-                .nickname(member.getNickname())
-                .profileUrl(member.getProfileUrl())
-//                .role(member.getRole())
-                .accessToken(accessToken)
-                .build();
-    }
 
 }

@@ -37,6 +37,7 @@ public class AmazonS3Manager{
     public String generateChallengesKeyName(Uuid uuid) {
         return amazonConfig.getChallengesPath()+ '/' + uuid.getUuid();
     }
+
     public String generateChallengeMissionsKeyName(Uuid uuid) {
         return amazonConfig.getChallengeMissionPath()+ '/' + uuid.getUuid();
     }

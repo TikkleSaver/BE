@@ -1,9 +1,7 @@
 package com.tikklesaver.domain.member.controller;
 
 import com.tikklesaver.domain.member.converter.MemberConverter;
-import com.tikklesaver.domain.member.dto.LoginRequestDto;
-import com.tikklesaver.domain.member.dto.MemberResponseDto;
-import com.tikklesaver.domain.member.dto.SignUpRequestDto;
+import com.tikklesaver.domain.member.dto.*;
 import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.domain.member.service.MemberCommandService;
 import com.tikklesaver.global.annotation.CurrentMember;
@@ -36,7 +34,6 @@ public class MemberController {
     private final MemberCommandService memberCommandService;
 
     @PostMapping("/signup")
-    @Operation(summary = "회원가입", description = "회원가입 API입니다. ")
     public ApiResponse<MemberResponseDto.MemberInfoDTO> signUp(@RequestBody @Valid SignUpRequestDto memberSignUpDTO) throws Exception {
         Member member = memberCommandService.signUp(memberSignUpDTO);
         return ApiResponse.onSuccess(MemberConverter.toMemberInfoDTO(member));
@@ -50,16 +47,14 @@ public class MemberController {
         return ApiResponse.onSuccess(token);
     }
 
-    //JWT 서비스 테스트를 위한 API
+    //JWT 테스트를 위한 API
     @GetMapping("/jwt-test")
-    @Operation(summary = "jwtTest 요청", description = "서버 테스트용 api입니다. 연동x")
     public ApiResponse<String> jwtTest(@CurrentMember Member member) {
         log.info(member.getLoginId());
         return ApiResponse.onSuccess("jwtTest 요청 성공");
     }
 
     @PostMapping("/refresh-token")
-    @Operation(summary = "액세스 토큰 재발급", description = "accessToken 재발급하는 API입니다.accessToken 필요")
     public ApiResponse<JwtDto> refresh(@RequestHeader("Authorization") String accessToken, @RequestHeader("Authorization-refresh") String refreshToken) throws Exception {
         String jwtToken = accessToken.substring(7); // "Bearer " 제거
         log.info("AccessToken: {}", jwtToken);
@@ -68,16 +63,28 @@ public class MemberController {
     }
 
     @PostMapping("/logout")
-    @Operation(summary = "로그아웃",description = "로그아웃 하는 API입니다.accessToken 필요")
     public ApiResponse<String> logout(@CurrentMember Member member) {
         memberCommandService.logout(member);
         return ApiResponse.onSuccess("로그아웃에 성공하였습니다.");
     }
 
     @PostMapping("/check-id/{id}")
-    @Operation(summary = "이메일 중복 검사", description = "")
     public ApiResponse<String> checkId(@PathVariable(name = "id") String id) throws Exception {
         memberCommandService.checkId(id);
         return ApiResponse.onSuccess("사용가능한 이메일입니다.");
+    }
+
+    @PatchMapping("/users/password")
+    public ApiResponse<String> updatePassWord(@CurrentMember Member member, @RequestBody PassWordDto dto) throws Exception {
+        memberCommandService.updatePassWord(member, dto.getPassword(), dto.getNewPassword());
+        return ApiResponse.onSuccess("비밀번호 변경에 성공했습니다.");
+    }
+
+    @PatchMapping(value = "/users", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ApiResponse<MemberResponseDto.MemberInfoDTO> updateProfile
+            (@Parameter(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+             @Valid @RequestPart MemberRequestDto.UpdateProfileDTO requestDTO,
+             @RequestPart("profileImg") MultipartFile profileImg,@CurrentMember Member member) {
+        return ApiResponse.onSuccess(MemberConverter.toMemberInfoDTO(memberCommandService.updateProfile(member, requestDTO.getNickname(), profileImg)));
     }
 }
