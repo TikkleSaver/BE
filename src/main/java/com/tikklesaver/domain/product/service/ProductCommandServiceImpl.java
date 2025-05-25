@@ -7,7 +7,7 @@ import com.tikklesaver.domain.member.repository.MemberRepository;
 import com.tikklesaver.domain.product.converter.ProductConverter;
 import com.tikklesaver.domain.product.entity.Product;
 import com.tikklesaver.domain.product.repository.ProductRepository;
-import com.tikklesaver.domain.wish.dto.WishRequestDTO;
+import com.tikklesaver.domain.wish.dto.wish.WishRequestDTO;
 import com.tikklesaver.global.aws.s3.AmazonS3Manager;
 import com.tikklesaver.global.common.Uuid;
 import com.tikklesaver.global.repository.UuidRepository;

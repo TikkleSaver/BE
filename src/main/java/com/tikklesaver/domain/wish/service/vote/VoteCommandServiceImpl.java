@@ -6,7 +6,7 @@ import com.tikklesaver.domain.wish.converter.VoteConverter;
 import com.tikklesaver.domain.wish.entity.Vote;
 import com.tikklesaver.domain.wish.entity.Wish;
 import com.tikklesaver.domain.wish.entity.enums.LikeStatus;
-import com.tikklesaver.domain.wish.repository.WishRepository;
+import com.tikklesaver.domain.wish.repository.wish.WishRepository;
 import com.tikklesaver.domain.wish.repository.vote.VoteRepository;
 import com.tikklesaver.global.apiPayload.code.status.ErrorStatus;
 import com.tikklesaver.global.apiPayload.exception.handler.VoteHandler;

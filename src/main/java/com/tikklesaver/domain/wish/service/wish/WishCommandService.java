@@ -1,10 +1,9 @@
-package com.tikklesaver.domain.wish.service;
+package com.tikklesaver.domain.wish.service.wish;
 
 import com.tikklesaver.domain.product.entity.Product;
-import com.tikklesaver.domain.wish.dto.WishRequestDTO;
+import com.tikklesaver.domain.wish.dto.wish.WishRequestDTO;
 import com.tikklesaver.domain.wish.entity.Wish;
 import com.tikklesaver.domain.wish.entity.enums.SatisfactionStatus;
-import org.springframework.web.multipart.MultipartFile;
 
 public interface WishCommandService {
     

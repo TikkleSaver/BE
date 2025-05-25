@@ -2,8 +2,8 @@ package com.tikklesaver.domain.wish.converter;
 
 import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.domain.product.entity.Product;
-import com.tikklesaver.domain.wish.dto.WishRequestDTO;
-import com.tikklesaver.domain.wish.dto.WishResponseDTO;
+import com.tikklesaver.domain.wish.dto.wish.WishRequestDTO;
+import com.tikklesaver.domain.wish.dto.wish.WishResponseDTO;
 import com.tikklesaver.domain.wish.entity.Wish;
 import com.tikklesaver.domain.wish.entity.enums.PurchaseStatus;
 import org.springframework.stereotype.Component;

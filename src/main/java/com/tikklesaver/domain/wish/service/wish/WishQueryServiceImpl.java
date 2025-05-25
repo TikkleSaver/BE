@@ -1,7 +1,7 @@
-package com.tikklesaver.domain.wish.service;
+package com.tikklesaver.domain.wish.service.wish;
 
-import com.tikklesaver.domain.wish.dto.WishResponseDTO;
-import com.tikklesaver.domain.wish.repository.WishRepository;
+import com.tikklesaver.domain.wish.dto.wish.WishResponseDTO;
+import com.tikklesaver.domain.wish.repository.wish.WishRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

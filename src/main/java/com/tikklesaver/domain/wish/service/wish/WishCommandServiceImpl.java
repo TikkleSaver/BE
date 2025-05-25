@@ -1,21 +1,20 @@
-package com.tikklesaver.domain.wish.service;
+package com.tikklesaver.domain.wish.service.wish;
 
 import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.domain.member.repository.MemberRepository;
 import com.tikklesaver.domain.product.entity.Product;
 import com.tikklesaver.domain.wish.converter.WishConverter;
-import com.tikklesaver.domain.wish.dto.WishRequestDTO;
+import com.tikklesaver.domain.wish.dto.wish.WishRequestDTO;
 import com.tikklesaver.domain.wish.entity.Wish;
 import com.tikklesaver.domain.wish.entity.enums.PublicStatus;
 import com.tikklesaver.domain.wish.entity.enums.PurchaseStatus;
 import com.tikklesaver.domain.wish.entity.enums.SatisfactionStatus;
-import com.tikklesaver.domain.wish.repository.WishRepository;
+import com.tikklesaver.domain.wish.repository.wish.WishRepository;
 import com.tikklesaver.global.apiPayload.code.status.ErrorStatus;
 import com.tikklesaver.global.apiPayload.exception.handler.WishHandler;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor

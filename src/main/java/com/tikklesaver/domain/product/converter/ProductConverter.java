@@ -3,7 +3,7 @@ package com.tikklesaver.domain.product.converter;
 import com.tikklesaver.domain.Category.entity.Category;
 import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.domain.product.entity.Product;
-import com.tikklesaver.domain.wish.dto.WishRequestDTO;
+import com.tikklesaver.domain.wish.dto.wish.WishRequestDTO;
 import com.tikklesaver.domain.wish.entity.enums.ProductType;
 import org.springframework.stereotype.Component;
 
