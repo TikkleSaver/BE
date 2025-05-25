@@ -7,4 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface ExpenseCommentCommandService {
     // 지출 피드백 생성
     ExpenseComment addExpenseComment(ExpenseCommentRequestDTO.CreateExpenseCommentRequestDTO requestDTO);
+
+    // 지출 피드백 수정
+    ExpenseComment updateExpenseComment(ExpenseCommentRequestDTO.UpdateExpenseCommentRequestDTO requestDTO);
 }

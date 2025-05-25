@@ -31,4 +31,14 @@ public class ExpenseCommentController {
         ExpenseComment expenseComment = expenseCommentCommandService.addExpenseComment(request);
         return ApiResponse.onSuccess(ExpenseCommentConverter.toExpenseCommentResultDTO(expenseComment));
     }
+
+    // 지출 피드백 수정
+    @PatchMapping
+    @Operation(summary = "지출 피드백 수정 API")
+    public ApiResponse<ExpenseCommentResponseDTO.UpdateExpenseCommentResultDTO> updateExpenseComment(
+            @RequestBody @Valid ExpenseCommentRequestDTO.UpdateExpenseCommentRequestDTO request) {
+
+        ExpenseComment expenseComment = expenseCommentCommandService.updateExpenseComment(request);
+        return ApiResponse.onSuccess(ExpenseCommentConverter.toUpdateExpenseCommentResultDTO(expenseComment));
+    }
 }

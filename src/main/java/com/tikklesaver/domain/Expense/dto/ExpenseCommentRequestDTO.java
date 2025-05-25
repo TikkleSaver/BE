@@ -25,4 +25,17 @@ public class ExpenseCommentRequestDTO {
         Date expenseDate;
     }
 
+    // 지출 피드백 수정
+    @Setter
+    @Getter
+    public static class UpdateExpenseCommentRequestDTO {
+        @NotNull
+        Long expenseCommentId;
+        @NotNull
+        Long memberId;
+        @NotNull
+        Long commenterId;
+        @NotEmpty
+        String content;
+    }
 }

@@ -19,4 +19,18 @@ public class ExpenseCommentConverter {
                 .createdAt(LocalDateTime.now())
                 .build();
     }
+
+    // 지출 피드백 수정
+    public static ExpenseCommentResponseDTO.UpdateExpenseCommentResultDTO toUpdateExpenseCommentResultDTO(ExpenseComment expenseComment) {
+        return ExpenseCommentResponseDTO.UpdateExpenseCommentResultDTO.builder()
+                .expenseCommentId(expenseComment.getId())
+                .memberId(expenseComment.getMember().getId())
+                .commenterId(expenseComment.getCommenter().getId())
+                .nickname(expenseComment.getCommenter().getNickname())
+                .profileUrl(expenseComment.getCommenter().getProfileUrl())
+                .content(expenseComment.getContent())
+                .expenseDate(expenseComment.getExpenseDate())
+                .updatedAt(LocalDateTime.now())
+                .build();
+    }
 }

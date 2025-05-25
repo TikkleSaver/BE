@@ -29,4 +29,19 @@ public class ExpenseCommentResponseDTO {
         LocalDateTime createdAt;
     }
 
+    // 지출 피드백 수정
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateExpenseCommentResultDTO {
+        Long expenseCommentId;
+        Long memberId;
+        Long commenterId;
+        String nickname;
+        String profileUrl;
+        String content;
+        Date expenseDate;
+        LocalDateTime updatedAt;
+    }
 }
