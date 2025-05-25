@@ -1,0 +1,28 @@
+package com.tikklesaver.domain.Expense.dto;
+
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
+
+public class ExpenseCommentRequestDTO {
+
+    // 지출 피드백 생성
+    @Setter
+    @Getter
+    public static class CreateExpenseCommentRequestDTO {
+        @NotNull
+        Long memberId;
+        @NotNull
+        Long commenterId;
+        @NotEmpty
+        String content;
+        @NotNull
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+        Date expenseDate;
+    }
+
+}
