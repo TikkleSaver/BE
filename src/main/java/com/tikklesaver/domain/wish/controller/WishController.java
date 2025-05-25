@@ -169,4 +169,22 @@ public class WishController {
         List<WishResponseDTO.MyWishPurchasedPreviewDTO> myWishPurchasedList = wishQueryService.getMyWishPurchasedList(memberId);
         return ApiResponse.onSuccess(WishConverter.myWishPurchasedPreviewListDTO(myWishPurchasedList));
     }
+
+    // 나의 위시 공개/비공개 설정
+    @PatchMapping( "/{wishId}/public-status")
+    @Operation(summary = "나의 위시 공개면 비공개, 비공개면 공개로 변경 API")
+    @Parameters({
+            @Parameter(name = "wishId", description = "위시의 ID, path variable 입니다!")
+    })
+    public ApiResponse<WishResponseDTO.UpdateWishResultDTO> updateWishPublicStatus(
+            @PathVariable(name = "wishId") Long wishId) {
+
+        //임시 memberId
+        Long memberId = 5L;
+
+        Wish wish = wishCommandService.updateWishPublicStatus(memberId, wishId);
+
+        return ApiResponse.onSuccess(WishConverter.toWishUpdateResultDTO(wish));
+    }
+
 }
