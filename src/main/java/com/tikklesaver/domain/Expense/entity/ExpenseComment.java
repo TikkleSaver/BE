@@ -9,6 +9,7 @@ import java.util.Date;
 
 @Builder
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
@@ -17,10 +18,10 @@ public class ExpenseComment extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 지출한 사용자 ID (CK)
-    @Id
-    @Column(name = "member_id", nullable = false)
-    private Long memberId;
+    // 지출한 사용자 ID (FK)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     // 내용
     @Column(nullable = false)
@@ -32,6 +33,6 @@ public class ExpenseComment extends BaseEntity {
 
     // 댓글 작성자 ID (FK)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "commenter_id")
     private Member commenter;
 }

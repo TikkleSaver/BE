@@ -70,6 +70,10 @@ public class Member extends BaseEntity {
 
     // 지출 댓글
     @OneToMany(mappedBy = "commenter", cascade = CascadeType.ALL)
-    private List<ExpenseComment> expenseCommentList = new ArrayList<>();
+    private List<ExpenseComment> expenseCommentCommenterList = new ArrayList<>();
+
+    // 지출 댓글
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<ExpenseComment> expenseCommentMemberList = new ArrayList<>();
 
 }
