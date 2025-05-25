@@ -7,6 +7,7 @@ import com.tikklesaver.domain.wish.converter.WishConverter;
 import com.tikklesaver.domain.wish.dto.WishRequestDTO;
 import com.tikklesaver.domain.wish.entity.Wish;
 import com.tikklesaver.domain.wish.entity.enums.PublicStatus;
+import com.tikklesaver.domain.wish.entity.enums.PurchaseStatus;
 import com.tikklesaver.domain.wish.repository.WishRepository;
 import com.tikklesaver.global.apiPayload.code.status.ErrorStatus;
 import com.tikklesaver.global.apiPayload.exception.handler.WishHandler;
@@ -121,4 +122,23 @@ public class WishCommandServiceImpl implements WishCommandService {
 
         return wishRepository.save(wish);
     }
+
+    // 나의 위시 구매 설정
+    @Override
+    public Wish updateWishPurchaseStatus(Long memberId, Long wishId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+
+        Wish wish = wishRepository.findById(wishId)
+                .orElseThrow(() -> new WishHandler(ErrorStatus.WISH_NOT_FOUND));
+
+        // 이미 구매 상태인 위시 예외처리
+        if (wish.getPurchaseStatus() == PurchaseStatus.PURCHASE)
+            throw new WishHandler(ErrorStatus.WISH_ALREADY_PURCHASED);
+
+        wish.setPurchaseStatus(PurchaseStatus.PURCHASE);
+
+        return wishRepository.save(wish);
+    }
+
 }
