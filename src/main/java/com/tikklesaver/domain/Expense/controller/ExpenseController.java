@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import io.swagger.v3.oas.annotations.Parameters;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -91,5 +92,28 @@ public class ExpenseController {
 
         expenseQueryService.deleteExpense(memberId, expenseId);
         return ApiResponse.onSuccess("삭제가 완료되었습니다.");
+    }
+
+    // 일별 지출 종 금액 리스트 조회 API
+    @GetMapping("/dailyTotalExpense")
+    @Operation(summary = "일별 지출 총 금액 리스트 조회 API")
+    @Parameters({
+            @Parameter(name = "memberId", description = "지출의 주인인 사용자 ID, path variable 입니다!"),
+            @Parameter(name = "year", description = "조회할 연도 (ex. 2025)", required = true),
+            @Parameter(name = "month", description = "조회할 월 (1~12)", required = true)
+    })
+    public ApiResponse<ExpenseResponseDTO.GetDailyExpenseResultDTOList> getDailyExpense(
+            @RequestParam(name = "memberId") Long memberId,
+            @RequestParam int year,
+            @RequestParam int month) {
+
+        List<Expense> expenseList =
+                expenseQueryService.getDailyExpense(memberId, year, month);
+
+        System.out.println("DEBUG: toGetDailyExpenseResultDTO 시작");
+        System.out.println("expenseList size: " + expenseList.size());
+        System.out.println("DEBUG: toGetDailyExpenseResultDTO 끝");
+
+        return ApiResponse.onSuccess(ExpenseConverter.toGetDailyExpenseResultDTO(expenseList, memberId));
     }
 }

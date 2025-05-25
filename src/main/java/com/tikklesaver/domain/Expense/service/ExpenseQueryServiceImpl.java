@@ -1,6 +1,7 @@
 package com.tikklesaver.domain.Expense.service;
 
 import com.tikklesaver.domain.Category.repository.CategoryRepository;
+import com.tikklesaver.domain.Expense.dto.ExpenseResponseDTO;
 import com.tikklesaver.domain.Expense.entity.Expense;
 import com.tikklesaver.domain.Expense.repository.ExpenseRepository;
 import com.tikklesaver.domain.Expense.repository.ExpenseRepositoryCustom;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -72,7 +74,14 @@ public class ExpenseQueryServiceImpl implements ExpenseQueryService {
         if (expense.getImage() != null) {
             amazonS3Manager.deleteFile(expense.getImage());
         }
-        
+
         expenseRepository.delete(expense);
+    }
+
+    // 일별 지출 총액 리스트 조회
+    @Override
+    @Transactional
+    public List<Expense> getDailyExpense(Long memberId, int year, int month) {
+        return expenseRepositoryCustom.findDailyExpenseTotalByMemberIdAndYearMonth(memberId, year, month);
     }
 }
