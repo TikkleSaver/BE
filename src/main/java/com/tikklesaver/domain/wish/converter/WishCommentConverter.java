@@ -28,4 +28,13 @@ public class WishCommentConverter {
                 .createdAt(LocalDateTime.now())
                 .build();
     }
+
+
+    // 위시 댓글 수정 결과
+    public static WishCommentResponseDTO.UpdateWishCommentResultDTO toUpdateWishCommentResultDTO(WishComment wishComment){
+        return WishCommentResponseDTO.UpdateWishCommentResultDTO.builder()
+                .wishCommentId(wishComment.getId())
+                .updatedAt(wishComment.getUpdatedAt())
+                .build();
+    }
 }

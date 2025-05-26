@@ -22,7 +22,7 @@ public class WishCommentContoller {
 
     // 위시 댓글 생성
     @PostMapping("/{wishId}/comment")
-    @Operation(summary = "이미 존재하는 상품을 위시로 생성 API")
+    @Operation(summary = "위시 댓글 생성 API")
     @Parameters({
             @Parameter(name = "wishId", description = "위시의 ID, path variable 입니다!")
     })
@@ -36,5 +36,23 @@ public class WishCommentContoller {
         WishComment newWishComment = wishCommentCommandService.createWishComment(memberId, wishId, request);
 
         return ApiResponse.onSuccess(WishCommentConverter.toWishCommentResultDTO(newWishComment));
+    }
+
+    // 위시 댓글 수정
+    @PatchMapping("/comment/{commentId}")
+    @Operation(summary = "위시 댓글 수정 API")
+    @Parameters({
+            @Parameter(name = "commentId", description = "위시 댓글의 ID, path variable 입니다!")
+    })
+    public ApiResponse<WishCommentResponseDTO.UpdateWishCommentResultDTO> updateWishComment(
+            @PathVariable(name = "commentId") Long commentId,
+            @RequestBody @Valid WishCommentRequestDTO.UpdateWishCommentDTO request) {
+
+        //임시 memberId
+        Long memberId = 5L;
+
+        WishComment wishComment = wishCommentCommandService.updateWishComment(memberId, commentId, request);
+
+        return ApiResponse.onSuccess(WishCommentConverter.toUpdateWishCommentResultDTO(wishComment));
     }
 }

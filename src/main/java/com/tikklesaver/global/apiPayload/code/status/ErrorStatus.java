@@ -27,6 +27,10 @@ public enum ErrorStatus implements BaseErrorCode {
     // 위시 투표
     VOTE_NOT_FOUND(HttpStatus.NOT_FOUND, "VOTE4001", "존재하지 않는 투표입니다."),
     ALREADY_VOTED(HttpStatus.BAD_REQUEST, "VOTE4002", "이미 투표를 했습니다."),
+    
+    // 위시 댓글
+    WISH_COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "WISHCOMMENT4001", "존재하지 않는 위시 댓글입니다."),
+    
 
     // 지출 피드백
     EXPENSE_COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "EXPENSECOMMENT4001", "ID에 해당하는 지출 피드백이 없습니다."),

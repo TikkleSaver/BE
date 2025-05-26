@@ -9,7 +9,7 @@ import com.tikklesaver.domain.wish.entity.WishComment;
 import com.tikklesaver.domain.wish.repository.wish.WishRepository;
 import com.tikklesaver.domain.wish.repository.wishComment.WishCommentRepository;
 import com.tikklesaver.global.apiPayload.code.status.ErrorStatus;
-import com.tikklesaver.global.apiPayload.exception.handler.WishHandler;
+import com.tikklesaver.global.apiPayload.exception.handler.WishCommentHandler;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,11 +30,27 @@ public class WIshCommentCommandServiceImpl implements WishCommentCommandService 
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
 
         Wish wish = wishRepository.findById(wishId)
-                .orElseThrow(() -> new WishHandler(ErrorStatus.WISH_NOT_FOUND));
+                .orElseThrow(() -> new WishCommentHandler(ErrorStatus.WISH_NOT_FOUND));
 
 
         WishComment newWishComment = WishCommentConverter.toWishComment(member, wish, request);
         return wishCommentRepository.save(newWishComment);
+    }
+
+
+    // 위시 댓글 수정
+    @Override
+    public WishComment updateWishComment(Long memberId, Long commentId, WishCommentRequestDTO.UpdateWishCommentDTO request){
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+
+        WishComment wishComment = wishCommentRepository.findById(commentId)
+                .orElseThrow(() -> new WishCommentHandler(ErrorStatus.WISH_COMMENT_NOT_FOUND));
+
+        wishComment.setContents(request.getContents());
+
+        return wishCommentRepository.save(wishComment);
     }
 
 }

@@ -23,4 +23,14 @@ public class WishCommentResponseDTO {
         Long wishCommentId;
         LocalDateTime createdAt;
     }
+
+    // 위시 댓글 수정 결과
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateWishCommentResultDTO {
+        Long wishCommentId;
+        LocalDateTime updatedAt;
+    }
 }
