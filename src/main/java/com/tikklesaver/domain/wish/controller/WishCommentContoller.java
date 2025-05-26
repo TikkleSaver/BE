@@ -55,4 +55,21 @@ public class WishCommentContoller {
 
         return ApiResponse.onSuccess(WishCommentConverter.toUpdateWishCommentResultDTO(wishComment));
     }
+
+    // 위시 댓글 삭제
+    @DeleteMapping("/comment/{commentId}")
+    @Operation(summary = "위시 댓글 삭제 API")
+    @Parameters({
+            @Parameter(name = "commentId", description = "위시 댓글의 ID, path variable 입니다!")
+    })
+    public ApiResponse<String> deleteWishComment(
+            @PathVariable(name = "commentId") Long commentId) {
+
+        //임시 memberId
+        Long memberId = 5L;
+
+         wishCommentCommandService.deleteWishComment(memberId, commentId);
+
+        return ApiResponse.onSuccess("삭제가 완료되었습니다.");
+    }
 }

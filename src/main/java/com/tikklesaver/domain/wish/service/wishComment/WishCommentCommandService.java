@@ -10,4 +10,7 @@ public interface WishCommentCommandService {
 
     // 위시 댓글 수정
     WishComment updateWishComment(Long memberId, Long commentId, WishCommentRequestDTO.UpdateWishCommentDTO request);
+
+    // 위시 댓글 삭제
+    void deleteWishComment(Long memberId, Long commentId);
 }
