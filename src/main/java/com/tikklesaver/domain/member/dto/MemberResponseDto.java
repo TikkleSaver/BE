@@ -38,4 +38,15 @@ public class MemberResponseDto {
         List<ChallengeResponseDTO.ChallengePreViewDTO> challengeScrapedList;  // 타입 변경
     }
 
+
+    // 특정 사용자의 지출 목표 금액 수정
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MemberGoalCostDTO {
+        Long memberId;
+        Long goalCost;
+    }
+
 }

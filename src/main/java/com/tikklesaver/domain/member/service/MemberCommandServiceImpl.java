@@ -258,6 +258,26 @@ public class MemberCommandServiceImpl implements MemberCommandService {
                 .collect(Collectors.toList());
     }
 
+
+    // 지출 목표 금액 수정(지출 달력 페이지)
+    @Override
+    public Member saveExpenseGoalCost(Long memberId, Long goalCost) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));
+
+        member.setGoalCost(goalCost);
+
+        return memberRepository.save(member);
+    }
+
+    // 지출 목표 금액 조회(지출 달력 페이지)
+    @Override
+    public Long getExpenseGoalCost(Long memberId){
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));
+
+        return member.getGoalCost();
+    }
 }
 
 
