@@ -47,6 +47,7 @@ public class SecurityConfig {
 //                        .requestMatchers("/**").permitAll()
 //                        .requestMatchers("/api/**").permitAll()
                         .requestMatchers("/api/check-id/**").permitAll()
+                        .requestMatchers("api/users/onboarding/**").permitAll()
                                 .requestMatchers(AUTH_WHITELIST).permitAll()
                         .anyRequest().authenticated()
                 );

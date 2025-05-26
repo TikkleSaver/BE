@@ -87,4 +87,19 @@ public class MemberController {
              @RequestPart("profileImg") MultipartFile profileImg,@CurrentMember Member member) {
         return ApiResponse.onSuccess(MemberConverter.toMemberInfoDTO(memberCommandService.updateProfile(member, requestDTO.getNickname(), profileImg)));
     }
+
+    //온보딩
+    @PostMapping("/users/onboarding/category")
+    public ApiResponse<String> saveCategories(@Valid @RequestBody MemberRequestDto.CategoryDTO requestDTO) throws Exception {
+        memberCommandService.saveCategories(requestDTO.getMemberId(), requestDTO.getCategoryList());
+        return ApiResponse.onSuccess("카테고리 저장 완료");
+    }
+
+//    @PostMapping("/users/onboarding/goalCost")
+//    public ApiResponse<String> saveGoalCost(@Valid @RequestBody MemberRequestDto.CategoryDTO requestDTO throws Exception {
+//        memberCommandService.saveGenreKeyword(member, requestDTO.getPreferCategory1(), requestDTO.getPreferBookId());
+//        memberCommandService.saveFormatKeyword(member, requestDTO.getPreferCategory2());
+//        return ApiResponse.onSuccess("선호 카테고리 저장 완료");
+//    }
+
 }

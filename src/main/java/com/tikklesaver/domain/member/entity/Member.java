@@ -56,14 +56,6 @@ public class Member extends BaseEntity {
         this.password = passwordEncoder.encode(this.password);
     }
 
-    public void updatePassword(PasswordEncoder passwordEncoder, String password){
-        this.password = passwordEncoder.encode(password);
-    }
-
-    public void updateRefreshToken(String updateRefreshToken) {
-        this.refreshToken = updateRefreshToken;
-    }
-
     // 지출
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Expense> expenseList = new ArrayList<>();
