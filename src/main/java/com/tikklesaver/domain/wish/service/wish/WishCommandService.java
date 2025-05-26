@@ -19,11 +19,8 @@ public interface WishCommandService {
     // 존재하지 않는 상품 위시 수정 (직접 추가한 상품)
     Wish updateWishFromMyProduct(Long memberId, Long wishId, WishRequestDTO.UpdateWishFromMyProductDTO request);
 
-    // 존재하는 상품 위시 삭제
-    Wish deleteWishFromExistingProduct(Long memberId, Long wishId);
-
-    // 존재하지 않는 상품 위시 삭제 (직접 추가한 상품)
-    Wish deleteWishFromMyProduct(Long memberId, Long wishId);
+    // 상품 위시 삭제
+    Wish deleteWish(Long memberId, Long wishId);
 
     // 나의 위시 공개/비공개 설정
     Wish updateWishPublicStatus(Long memberId, Long wishId);

@@ -100,38 +100,20 @@ public class WishController {
         return ApiResponse.onSuccess(WishConverter.toWishUpdateResultDTO(wish));
     }
 
-    // 존재하는 상품 위시 삭제
-    @DeleteMapping("/{wishId}/existing-product")
-    @Operation(summary = "이미 존재하는 상품의 위시 삭제 API")
+    // 상품 위시 삭제
+    @DeleteMapping("/{wishId}")
+    @Operation(summary = "상품의 위시 삭제 API")
     @Parameters({
             @Parameter(name = "wishId", description = "위시의 ID, path variable 입니다!")
     })
-    public ApiResponse<String> deleteWishFromExistingProduct(
+    public ApiResponse<String> deleteWish(
             @PathVariable(name = "wishId") Long wishId) {
 
         //임시 memberId
         Long memberId = 5L;
 
-        Wish wish = wishCommandService.deleteWishFromExistingProduct(memberId, wishId);
-        productCommandService.deleteExistingProduct(memberId, wish.getProduct());
-
-        return ApiResponse.onSuccess("삭제가 완료되었습니다.");
-    }
-
-    // 존재하지 않는 상품 위시 삭제 (직접 추가한 상품)
-    @DeleteMapping("/{wishId}/my-product")
-    @Operation(summary = "원하는 상품 직접 추가했던 상품의 위시 삭제 API")
-    @Parameters({
-            @Parameter(name = "wishId", description = "위시의 ID, path variable 입니다!")
-    })
-    public ApiResponse<String> deleteWishFromMyProduct(
-            @PathVariable(name = "wishId") Long wishId) {
-
-        //임시 memberId
-        Long memberId = 5L;
-
-        Wish wish = wishCommandService.deleteWishFromMyProduct(memberId, wishId);
-        productCommandService.deleteMyProduct(memberId, wish.getProduct());
+        Wish wish = wishCommandService.deleteWish(memberId, wishId);
+        productCommandService.deleteProduct(memberId, wish.getProduct());
 
         return ApiResponse.onSuccess("삭제가 완료되었습니다.");
     }

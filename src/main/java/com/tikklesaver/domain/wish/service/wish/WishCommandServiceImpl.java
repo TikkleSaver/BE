@@ -77,23 +77,9 @@ public class WishCommandServiceImpl implements WishCommandService {
     }
 
 
-    // 존재하는 상품 위시 삭제
+    // 상품 위시 삭제
     @Override
-    public Wish deleteWishFromExistingProduct(Long memberId, Long wishId){
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
-
-        Wish wish = wishRepository.findById(wishId)
-                .orElseThrow(() -> new WishHandler(ErrorStatus.WISH_NOT_FOUND));
-
-        wishRepository.delete(wish);
-
-        return wish;
-    }
-
-    // 존재하지 않는 상품 위시 삭제 (직접 추가한 상품)
-    @Override
-    public Wish deleteWishFromMyProduct(Long memberId, Long wishId){
+    public Wish deleteWish(Long memberId, Long wishId){
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
 
