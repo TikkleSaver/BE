@@ -214,6 +214,17 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         }
     }
 
+    @Override
+    public void saveGoalCost(Long memberId, Long goalCost) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));
+
+        member.setGoalCost(goalCost);
+
+        // 변경된 회원 정보 저장
+        memberRepository.save(member);
+    }
+
 }
 
 

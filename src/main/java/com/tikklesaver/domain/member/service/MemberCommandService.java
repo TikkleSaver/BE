@@ -26,4 +26,6 @@ public interface MemberCommandService {
     Member updateProfile(Member member, @NotNull(message = "닉네임은 필수입니다.") String nickname, MultipartFile profilePicture);
 
     void saveCategories(@NotNull(message = "아이디는 필수") Long memberId, @NotNull List<Long> categoryList);
+
+    void saveGoalCost(@NotNull(message = "아이디는 필수") Long memberId, @NotNull Long goalCost);
 }

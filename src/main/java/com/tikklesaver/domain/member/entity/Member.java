@@ -37,7 +37,7 @@ public class Member extends BaseEntity {
     private String nickname;
     
     // 하루 지출 목표 금액
-    private String goalCost;
+    private Long goalCost;
     
     // 프로필 이미지
     private String profileUrl;

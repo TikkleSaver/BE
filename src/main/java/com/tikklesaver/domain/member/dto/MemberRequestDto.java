@@ -31,4 +31,16 @@ public class MemberRequestDto
         private List<Long> categoryList;
     }
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GoalCostDTO {
+        @NotNull(message = "아이디는 필수")
+        private Long memberId;
+
+        @NotNull
+        private Long goalCost;
+    }
+
 }

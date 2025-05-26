@@ -90,16 +90,15 @@ public class MemberController {
 
     //온보딩
     @PostMapping("/users/onboarding/category")
-    public ApiResponse<String> saveCategories(@Valid @RequestBody MemberRequestDto.CategoryDTO requestDTO) throws Exception {
+    public ApiResponse<String> saveCategories(@Valid @RequestBody MemberRequestDto.CategoryDTO requestDTO)  {
         memberCommandService.saveCategories(requestDTO.getMemberId(), requestDTO.getCategoryList());
         return ApiResponse.onSuccess("카테고리 저장 완료");
     }
 
-//    @PostMapping("/users/onboarding/goalCost")
-//    public ApiResponse<String> saveGoalCost(@Valid @RequestBody MemberRequestDto.CategoryDTO requestDTO throws Exception {
-//        memberCommandService.saveGenreKeyword(member, requestDTO.getPreferCategory1(), requestDTO.getPreferBookId());
-//        memberCommandService.saveFormatKeyword(member, requestDTO.getPreferCategory2());
-//        return ApiResponse.onSuccess("선호 카테고리 저장 완료");
-//    }
+    @PatchMapping("/users/onboarding/goalCost")
+    public ApiResponse<String> saveGoalCost(@Valid @RequestBody MemberRequestDto.GoalCostDTO requestDTO) {
+        memberCommandService.saveGoalCost(requestDTO.getMemberId(), requestDTO.getGoalCost());
+        return ApiResponse.onSuccess("목표 지출액 저장 완료");
+    }
 
 }
