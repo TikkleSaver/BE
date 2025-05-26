@@ -37,7 +37,7 @@ public class Member extends BaseEntity {
     private String nickname;
     
     // 하루 지출 목표 금액
-    private String goalCost;
+    private Long goalCost;
     
     // 프로필 이미지
     private String profileUrl;
@@ -54,14 +54,6 @@ public class Member extends BaseEntity {
     // 비밀번호 암호화 메소드
     public void passwordEncode(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);
-    }
-
-    public void updatePassword(PasswordEncoder passwordEncoder, String password){
-        this.password = passwordEncoder.encode(password);
-    }
-
-    public void updateRefreshToken(String updateRefreshToken) {
-        this.refreshToken = updateRefreshToken;
     }
 
     // 지출

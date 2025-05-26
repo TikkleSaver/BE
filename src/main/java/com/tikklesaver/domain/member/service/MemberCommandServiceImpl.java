@@ -1,12 +1,24 @@
 package com.tikklesaver.domain.member.service;
+import com.tikklesaver.domain.Category.entity.Category;
+import com.tikklesaver.domain.Category.repository.CategoryRepository;
+import com.tikklesaver.domain.Challenge.converter.ChallengeConverter;
+import com.tikklesaver.domain.Challenge.entity.Challenge;
+import com.tikklesaver.domain.Challenge.entity.ChallengeScraped;
+import com.tikklesaver.domain.Challenge.repository.ChallengeRepository;
+import com.tikklesaver.domain.Challenge.repository.ChallengeScrapRepository;
+import com.tikklesaver.domain.Expense.entity.Expense;
 import com.tikklesaver.domain.member.dto.CustomUserInfoDto;
 import com.tikklesaver.domain.member.dto.LoginRequestDto;
 import com.tikklesaver.domain.member.dto.SignUpRequestDto;
 import com.tikklesaver.domain.member.entity.Member;
+import com.tikklesaver.domain.member.entity.MemberCategory;
+import com.tikklesaver.domain.member.repository.MemberCategoryRepository;
 import com.tikklesaver.domain.member.repository.MemberRepository;
+import com.tikklesaver.domain.wish.repository.wish.WishRepository;
 import com.tikklesaver.global.apiPayload.code.status.ErrorStatus;
 import com.tikklesaver.global.apiPayload.exception.handler.JwtHandler;
 import com.tikklesaver.global.apiPayload.exception.handler.MemberHandler;
+import com.tikklesaver.global.apiPayload.exception.handler.TempHandler;
 import com.tikklesaver.global.aws.s3.AmazonS3Manager;
 import com.tikklesaver.global.common.Uuid;
 import com.tikklesaver.global.jwt.dto.JwtDto;
@@ -25,6 +37,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -33,10 +46,16 @@ import java.util.*;
 @Service
 public class MemberCommandServiceImpl implements MemberCommandService {
     private final MemberRepository memberRepository;
+    private final MemberCategoryRepository memberCategoryRepository;
+    private final CategoryRepository categoryRepository;
+    private final WishRepository wishRepository;
+    private final ChallengeRepository challengeRepository;
+
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final AmazonS3Manager s3Manager;
     private final UuidRepository uuidRepository;
+    private final ChallengeScrapRepository challengeScrapRepository;
 
     @Value("${jwt.access.header}")
     private String accessHeader;
@@ -184,6 +203,59 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         memberRepository.save(member);
 
         return member;
+    }
+
+    @Override
+    public void saveCategories(Long memberId, List<Long> categoryList) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));
+
+        for (Long categoryId : categoryList) {
+            Category category = categoryRepository.findById(categoryId)
+                    .orElseThrow(() -> new TempHandler(ErrorStatus.CATEGORY_NOT_FOUND));
+
+            MemberCategory memberCategory = MemberCategory.builder()
+                    .member(member)
+                    .category(category)
+                    .build();
+            memberCategoryRepository.save(memberCategory);
+        }
+    }
+
+    @Override
+    public void saveGoalCost(Long memberId, Long goalCost) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));
+
+        member.setGoalCost(goalCost);
+
+        // 변경된 회원 정보 저장
+        memberRepository.save(member);
+    }
+
+    @Override
+    public int getWishListCount(Member member) {
+        return wishRepository.countByMember(member);
+    }
+
+    @Override
+    public int getChallengeCount(Member member) {
+        return challengeRepository.countByMember(member);
+    }
+
+    @Override
+    public int getFriendCount(Member member) {
+        return 0;
+    }
+
+    public List<Challenge> getScrappedChallenges(Member member) {
+        List<ChallengeScraped> scrapedList = challengeScrapRepository.findAllByMember(member);
+
+        return Optional.ofNullable(scrapedList)
+                .orElseGet(Collections::emptyList)
+                .stream()
+                .map(ChallengeScraped::getChallenge)
+                .collect(Collectors.toList());
     }
 
 }

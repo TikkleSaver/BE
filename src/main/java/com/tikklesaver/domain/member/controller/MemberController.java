@@ -1,5 +1,7 @@
 package com.tikklesaver.domain.member.controller;
 
+import com.tikklesaver.domain.Challenge.entity.Challenge;
+import com.tikklesaver.domain.Challenge.entity.ChallengeScraped;
 import com.tikklesaver.domain.member.converter.MemberConverter;
 import com.tikklesaver.domain.member.dto.*;
 import com.tikklesaver.domain.member.entity.Member;
@@ -24,6 +26,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -86,5 +90,32 @@ public class MemberController {
              @Valid @RequestPart MemberRequestDto.UpdateProfileDTO requestDTO,
              @RequestPart("profileImg") MultipartFile profileImg,@CurrentMember Member member) {
         return ApiResponse.onSuccess(MemberConverter.toMemberInfoDTO(memberCommandService.updateProfile(member, requestDTO.getNickname(), profileImg)));
+    }
+
+    //온보딩
+    @PostMapping("/users/onboarding/category")
+    public ApiResponse<String> saveCategories(@Valid @RequestBody MemberRequestDto.CategoryDTO requestDTO)  {
+        memberCommandService.saveCategories(requestDTO.getMemberId(), requestDTO.getCategoryList());
+        return ApiResponse.onSuccess("카테고리 저장 완료");
+    }
+
+    @PatchMapping("/users/onboarding/goalCost")
+    public ApiResponse<String> saveGoalCost(@Valid @RequestBody MemberRequestDto.GoalCostDTO requestDTO) {
+        memberCommandService.saveGoalCost(requestDTO.getMemberId(), requestDTO.getGoalCost());
+        return ApiResponse.onSuccess("목표 지출액 저장 완료");
+    }
+
+    //유저 정보 조회
+    @GetMapping("/users")
+    public ApiResponse<MemberResponseDto.MemberProfileDTO> getProfile(@CurrentMember Member member) throws Exception {
+        int wishListNum = memberCommandService.getWishListCount(member);
+        int challengeNum = memberCommandService.getChallengeCount(member);
+        int friendNum = memberCommandService.getFriendCount(member);
+        List<Challenge> challengeScrapedList = memberCommandService.getScrappedChallenges(member);
+//        List<Challenge> challengeScrapedList =  new ArrayList<>();
+
+        return ApiResponse.onSuccess(
+                MemberConverter.toMemberProfileDTO(member, wishListNum,
+                challengeNum, friendNum, challengeScrapedList));
     }
 }
