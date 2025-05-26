@@ -132,6 +132,16 @@ public class MemberController {
             @RequestParam Long goalCost) {
 
         Member goalCostMember =  memberCommandService.saveExpenseGoalCost(member.getId(), goalCost);
-        return ApiResponse.onSuccess(MemberConverter.toMemberGoalCostDTO(goalCostMember));
+        return ApiResponse.onSuccess(MemberConverter.toUpdateMemberGoalCostDTO(goalCostMember));
+    }
+
+    // 지출 목표 금액 조회(지출 달력 페이지)
+    @GetMapping("/users/goalCost")
+    @Operation(summary = "특정 사용자의 지출 목표 금액 조회 API")
+    public ApiResponse<MemberResponseDto.MemberGoalCostDTO> getExpenseGoalCost(
+            @CurrentMember Member member) {
+
+        Long goalCost =  memberCommandService.getExpenseGoalCost(member.getId());
+        return ApiResponse.onSuccess(MemberConverter.toGetMemberGoalCostDTO(member.getId(), goalCost));
     }
 }

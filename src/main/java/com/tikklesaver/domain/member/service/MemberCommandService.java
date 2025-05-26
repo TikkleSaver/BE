@@ -41,4 +41,7 @@ public interface MemberCommandService {
 
     // 지출 목표 금액 수정(지출 달력 페이지)
     Member saveExpenseGoalCost(Long memberId, Long goalCost);
+
+    // 지출 목표 금액 조회(지출 달력 페이지)
+    Long getExpenseGoalCost(Long memberId);
 }

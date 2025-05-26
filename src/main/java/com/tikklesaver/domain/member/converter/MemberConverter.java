@@ -47,11 +47,18 @@ public class MemberConverter {
     }
 
     // 지출 목표 금액 수정(지출 달력 페이지)
-    public static MemberResponseDto.MemberGoalCostDTO toMemberGoalCostDTO(Member member) {
+    public static MemberResponseDto.MemberGoalCostDTO toUpdateMemberGoalCostDTO(Member member) {
         return MemberResponseDto.MemberGoalCostDTO.builder()
                 .memberId(member.getId())
                 .goalCost(member.getGoalCost())
                 .build();
     }
-
+    
+    // 지출 목표 금액 조회(지출 달력 페이지)
+    public static MemberResponseDto.MemberGoalCostDTO toGetMemberGoalCostDTO(Long memberId, Long goalCost) {
+        return MemberResponseDto.MemberGoalCostDTO.builder()
+                .memberId(memberId)
+                .goalCost(goalCost)
+                .build();
+    }
 }
