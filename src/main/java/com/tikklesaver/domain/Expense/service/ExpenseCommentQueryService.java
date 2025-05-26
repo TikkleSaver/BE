@@ -9,8 +9,8 @@ import java.util.Date;
 
 public interface ExpenseCommentQueryService {
     // 지출 피드백 삭제
-    void deleteExpenseComment(ExpenseCommentRequestDTO.DeleteExpenseCommentRequestDTO request);
+    void deleteExpenseComment(Long commenterId, ExpenseCommentRequestDTO.DeleteExpenseCommentRequestDTO request);
 
     // 지출 피드백 리스트 조회
-    Page<ExpenseComment> getExpenseCommentList(Integer page, Long memberId, Date expenseDate);
+    Page<ExpenseComment> getExpenseCommentList(Long viewerId, Integer page, Long memberId, Date expenseDate);
 }

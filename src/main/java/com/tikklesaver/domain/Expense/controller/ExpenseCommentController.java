@@ -6,6 +6,8 @@ import com.tikklesaver.domain.Expense.dto.ExpenseCommentResponseDTO;
 import com.tikklesaver.domain.Expense.entity.ExpenseComment;
 import com.tikklesaver.domain.Expense.service.ExpenseCommentCommandService;
 import com.tikklesaver.domain.Expense.service.ExpenseCommentQueryService;
+import com.tikklesaver.domain.member.entity.Member;
+import com.tikklesaver.global.annotation.CurrentMember;
 import com.tikklesaver.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -28,9 +30,10 @@ public class ExpenseCommentController {
     @PostMapping
     @Operation(summary = "지출 피드백 생성 API")
     public ApiResponse<ExpenseCommentResponseDTO.CreateExpenseCommentResultDTO> addExpenseComment(
+            @CurrentMember Member commenter,
             @RequestBody @Valid ExpenseCommentRequestDTO.CreateExpenseCommentRequestDTO request) {
 
-        ExpenseComment expenseComment = expenseCommentCommandService.addExpenseComment(request);
+        ExpenseComment expenseComment = expenseCommentCommandService.addExpenseComment(commenter.getId(), request);
         return ApiResponse.onSuccess(ExpenseCommentConverter.toExpenseCommentResultDTO(expenseComment));
     }
 
@@ -38,9 +41,10 @@ public class ExpenseCommentController {
     @PatchMapping
     @Operation(summary = "지출 피드백 수정 API")
     public ApiResponse<ExpenseCommentResponseDTO.UpdateExpenseCommentResultDTO> updateExpenseComment(
+            @CurrentMember Member commenter,
             @RequestBody @Valid ExpenseCommentRequestDTO.UpdateExpenseCommentRequestDTO request) {
 
-        ExpenseComment expenseComment = expenseCommentCommandService.updateExpenseComment(request);
+        ExpenseComment expenseComment = expenseCommentCommandService.updateExpenseComment(commenter.getId(), request);
         return ApiResponse.onSuccess(ExpenseCommentConverter.toUpdateExpenseCommentResultDTO(expenseComment));
     }
 
@@ -48,20 +52,23 @@ public class ExpenseCommentController {
     @DeleteMapping
     @Operation(summary = "지출 피드백 삭제 API")
     public ApiResponse<String> deleteExpenseComment(
+            @CurrentMember Member commenter,
             @RequestBody @Valid ExpenseCommentRequestDTO.DeleteExpenseCommentRequestDTO request) {
 
-        expenseCommentQueryService.deleteExpenseComment(request);
+        expenseCommentQueryService.deleteExpenseComment(commenter.getId(), request);
         return ApiResponse.onSuccess("지출 피드백 삭제가 완료되었습니다.");
     }
 
     // 지출 피드백 리스트 조회
     @GetMapping
     @Operation(summary = "지출 피드백 리스트 조회 API")
-    public ApiResponse<ExpenseCommentResponseDTO.ExpenseCommentListResultDTO> getExpenseCommentList(@RequestParam(name = "page") Integer page,
-                                                                                      @RequestParam(name = "memberId") Long memberId,
-                                                                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date expenseDate
+    public ApiResponse<ExpenseCommentResponseDTO.ExpenseCommentListResultDTO> getExpenseCommentList(
+            @CurrentMember Member viewer,
+            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "memberId") Long memberId,
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date expenseDate
     ){
-        Page<ExpenseComment> expenseCommentList = expenseCommentQueryService.getExpenseCommentList(page - 1, memberId, expenseDate);
+        Page<ExpenseComment> expenseCommentList = expenseCommentQueryService.getExpenseCommentList(viewer.getId(), page - 1, memberId, expenseDate);
         return ApiResponse.onSuccess(ExpenseCommentConverter.toGetExpenseCommentResultListDTO(expenseCommentList));
     }
 

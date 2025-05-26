@@ -1,7 +1,6 @@
 package com.tikklesaver.domain.Expense.converter;
 
 import com.tikklesaver.domain.Expense.dto.ExpenseCommentResponseDTO;
-import com.tikklesaver.domain.Expense.entity.Expense;
 import com.tikklesaver.domain.Expense.entity.ExpenseComment;
 import org.springframework.data.domain.Page;
 

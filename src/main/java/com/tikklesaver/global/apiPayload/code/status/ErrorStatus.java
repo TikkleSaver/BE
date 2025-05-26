@@ -34,6 +34,7 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 지출 피드백
     EXPENSE_COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "EXPENSECOMMENT4001", "ID에 해당하는 지출 피드백이 없습니다."),
+    EXPENSE_COMMENT_COMMENTER_NOT_EQUAL_VIEWER(HttpStatus.BAD_REQUEST, "EXPENSECOMMENT4002", "뷰어와 지출 피드백 작성자가 동일하지 않습니다."),
 
     //지출
     EXPENSE_NOT_FOUND(HttpStatus.NOT_FOUND, "EXPENSE4001", "ID에 해당하는 지출이 없습니다."),
