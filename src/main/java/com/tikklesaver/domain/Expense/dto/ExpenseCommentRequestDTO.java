@@ -16,8 +16,6 @@ public class ExpenseCommentRequestDTO {
     public static class CreateExpenseCommentRequestDTO {
         @NotNull
         Long memberId;
-        @NotNull
-        Long commenterId;
         @NotEmpty
         String content;
         @NotNull
@@ -33,8 +31,6 @@ public class ExpenseCommentRequestDTO {
         Long expenseCommentId;
         @NotNull
         Long memberId;
-        @NotNull
-        Long commenterId;
         @NotEmpty
         String content;
     }
@@ -46,6 +42,6 @@ public class ExpenseCommentRequestDTO {
         @NotNull
         Long expenseCommentId;
         @NotNull
-        Long commenterId;
+        Long memberId;
     }
 }

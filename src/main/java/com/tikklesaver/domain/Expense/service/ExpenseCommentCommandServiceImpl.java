@@ -7,9 +7,6 @@ import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.domain.member.repository.MemberRepository;
 import com.tikklesaver.global.apiPayload.code.status.ErrorStatus;
 import com.tikklesaver.global.apiPayload.exception.handler.ExpenseCommentHandler;
-import com.tikklesaver.global.apiPayload.exception.handler.ExpenseHandler;
-import com.tikklesaver.global.aws.s3.AmazonS3Manager;
-import com.tikklesaver.global.repository.UuidRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,18 +18,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class ExpenseCommentCommandServiceImpl implements ExpenseCommentCommandService {
     private final MemberRepository memberRepository;
     private final ExpenseCommentRepository expenseCommentRepository;
-    private final AmazonS3Manager amazonS3Manager;
-    private final UuidRepository uuidRepository;
 
     // 지출 피드백 생성
     @Override
     @Transactional
-    public ExpenseComment addExpenseComment(ExpenseCommentRequestDTO.CreateExpenseCommentRequestDTO requestDTO) {
+    public ExpenseComment addExpenseComment(Long commenterId, ExpenseCommentRequestDTO.CreateExpenseCommentRequestDTO requestDTO) {
+        Member commenter = memberRepository.findById(commenterId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + commenterId));
+
         Member member = memberRepository.findById(requestDTO.getMemberId())
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + requestDTO.getMemberId()));
-
-        Member commenter = memberRepository.findById(requestDTO.getCommenterId())
-                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + requestDTO.getCommenterId()));
 
 
         ExpenseComment expenseComment = ExpenseComment.builder()
@@ -48,12 +43,12 @@ public class ExpenseCommentCommandServiceImpl implements ExpenseCommentCommandSe
     // 지출 피드백 수정
     @Override
     @Transactional
-    public ExpenseComment updateExpenseComment(ExpenseCommentRequestDTO.UpdateExpenseCommentRequestDTO requestDTO) {
+    public ExpenseComment updateExpenseComment(Long commenterId, ExpenseCommentRequestDTO.UpdateExpenseCommentRequestDTO requestDTO) {
+        memberRepository.findById(commenterId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + commenterId));
+
         memberRepository.findById(requestDTO.getMemberId())
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + requestDTO.getMemberId()));
-
-        memberRepository.findById(requestDTO.getCommenterId())
-                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + requestDTO.getCommenterId()));
 
         ExpenseComment expenseComment = expenseCommentRepository.findById(requestDTO.getExpenseCommentId())
                 .orElseThrow(() -> new ExpenseCommentHandler(ErrorStatus.EXPENSE_COMMENT_NOT_FOUND));

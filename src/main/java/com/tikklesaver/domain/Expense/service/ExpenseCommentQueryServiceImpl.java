@@ -29,21 +29,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ExpenseCommentQueryServiceImpl implements ExpenseCommentQueryService {
     private final MemberRepository memberRepository;
-    private final AmazonS3Manager amazonS3Manager;
     private final ExpenseCommentRepositoryCustom expenseCommentRepositoryCustom;
     private final ExpenseCommentRepository expenseCommentRepository;
 
     // 지출 피드백 삭제
     @Override
     @Transactional
-    public void deleteExpenseComment(ExpenseCommentRequestDTO.DeleteExpenseCommentRequestDTO request) {
-        memberRepository.findById(request.getCommenterId())
-                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + request.getCommenterId()));
+    public void deleteExpenseComment(Long commenterId, ExpenseCommentRequestDTO.DeleteExpenseCommentRequestDTO request) {
+        memberRepository.findById(commenterId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + commenterId));
 
         expenseCommentRepository.findById(request.getExpenseCommentId())
                 .orElseThrow(() -> new ExpenseCommentHandler(ErrorStatus.EXPENSE_COMMENT_NOT_FOUND));
 
-        ExpenseComment expenseComment = expenseCommentRepositoryCustom.findByCommenterIdAndExpenseCommentId(request.getCommenterId(), request.getExpenseCommentId())
+        ExpenseComment expenseComment = expenseCommentRepositoryCustom.findByCommenterIdAndExpenseCommentId(commenterId, request.getExpenseCommentId())
                 .orElseThrow(() -> new ExpenseCommentHandler(ErrorStatus.EXPENSE_COMMENT_NOT_FOUND));
 
         expenseCommentRepository.delete(expenseComment);
@@ -52,7 +51,10 @@ public class ExpenseCommentQueryServiceImpl implements ExpenseCommentQueryServic
     // 지출 피드백 리스트 조회
     @Override
     @Transactional
-    public Page<ExpenseComment> getExpenseCommentList(Integer page, Long memberId, Date expenseDate){
+    public Page<ExpenseComment> getExpenseCommentList(Long viewId, Integer page, Long memberId, Date expenseDate){
+        memberRepository.findById(viewId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + viewId));
+
         memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
 

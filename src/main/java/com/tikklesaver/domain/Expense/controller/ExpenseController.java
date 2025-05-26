@@ -6,6 +6,8 @@ import com.tikklesaver.domain.Expense.dto.ExpenseResponseDTO;
 import com.tikklesaver.domain.Expense.entity.Expense;
 import com.tikklesaver.domain.Expense.service.ExpenseCommandService;
 import com.tikklesaver.domain.Expense.service.ExpenseQueryService;
+import com.tikklesaver.domain.member.entity.Member;
+import com.tikklesaver.global.annotation.CurrentMember;
 import com.tikklesaver.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -29,29 +31,30 @@ public class ExpenseController {
     private final ExpenseCommandService expenseCommandService;
 
     // 지출 조회
-    @GetMapping("/{expenseId}/{memberId}")
+    @GetMapping("/{expenseId}")
     @Operation(summary = "지출 조회 API")
     @Parameters({
-            @Parameter(name = "memberId", description = "사용자 ID, path variable 입니다!"),
             @Parameter(name = "expenseId", description = "지출 ID, path variable 입니다!")
     })
     public ApiResponse<ExpenseResponseDTO.GetExpenseResultDTO> getExpense(
-            @PathVariable Long memberId,
+            @CurrentMember Member member,
             @PathVariable Long expenseId) {
 
-        Expense expense = expenseQueryService.getExpense(memberId, expenseId);
+        Expense expense = expenseQueryService.getExpense(member.getId(), expenseId);
         return ApiResponse.onSuccess(ExpenseConverter.toGetExpenseResultDTO(expense));
     }
 
     // 지출 모아보기
     @GetMapping
     @Operation(summary = "지출 리스트 조회 API")
-    public ApiResponse<ExpenseResponseDTO.ExpensePreviewListResultDTO> getExpenseList(@RequestParam(name = "page") Integer page,
-                                                                                @RequestParam(name = "memberId") Long memberId,
-                                                                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date expenseDate
+    public ApiResponse<ExpenseResponseDTO.ExpensePreviewListResultDTO> getExpenseList(
+            @CurrentMember Member viewer,
+            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "memberId") Long memberId,
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date expenseDate
     ){
 
-        Page<Expense> expenseList = expenseQueryService.getExpenseList(page - 1, memberId, expenseDate);
+        Page<Expense> expenseList = expenseQueryService.getExpenseList(viewer, page - 1, memberId, expenseDate);
         return ApiResponse.onSuccess(ExpenseConverter.toGetExpenseResultListDTO(expenseList));
     }
 
@@ -59,11 +62,11 @@ public class ExpenseController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "지출 생성 API")
     public ApiResponse<ExpenseResponseDTO.CreateExpenseResultDTO> addExpense(
+            @CurrentMember Member member,
             @RequestPart("request") @Valid ExpenseRequestDTO.CreateExpenseRequestDTO request,
             @RequestPart(value = "file", required = false) MultipartFile file) {
 
-        Long memberId = 1L;
-        Expense expense = expenseCommandService.addExpense(memberId, request, file);
+        Expense expense = expenseCommandService.addExpense(member.getId(), request, file);
         return ApiResponse.onSuccess(ExpenseConverter.toExpenseResultDTO(expense));
     }
 
@@ -71,26 +74,25 @@ public class ExpenseController {
     @PatchMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "지출 수정 API")
     public ApiResponse<ExpenseResponseDTO.UpdateExpenseResultDTO> updateExpense(
+            @CurrentMember Member member,
             @RequestPart("request") @Valid ExpenseRequestDTO.UpdateExpenseRequestDTO request,
             @RequestPart(value = "file", required = false) MultipartFile file) {
 
-        Long memberId = 1L;
-        Expense expense = expenseCommandService.updateExpense(memberId, request, file);
+        Expense expense = expenseQueryService.updateExpense(member.getId(), request, file);
         return ApiResponse.onSuccess(ExpenseConverter.toUpdateExpenseResultDTO(expense));
     }
 
     // 지출 삭제
-    @DeleteMapping("/{expenseId}/{memberId}")
+    @DeleteMapping("/{expenseId}")
     @Operation(summary = "지출 삭제 API")
     @Parameters({
-            @Parameter(name = "expenseId", description = "지출 ID, path variable 입니다!"),
-            @Parameter(name = "memberId", description = "사용자 ID, path variable 입니다!")
+            @Parameter(name = "expenseId", description = "지출 ID, path variable 입니다!")
     })
     public ApiResponse<String> deleteExpense(
-            @PathVariable("memberId") Long memberId,
+            @CurrentMember Member member,
             @PathVariable("expenseId") Long expenseId) {
 
-        expenseQueryService.deleteExpense(memberId, expenseId);
+        expenseQueryService.deleteExpense(member.getId(), expenseId);
         return ApiResponse.onSuccess("삭제가 완료되었습니다.");
     }
 
@@ -103,12 +105,13 @@ public class ExpenseController {
             @Parameter(name = "month", description = "조회할 월 (1~12)", required = true)
     })
     public ApiResponse<ExpenseResponseDTO.GetDailyExpenseResultDTOList> getDailyExpense(
+            @CurrentMember Member viewer,
             @RequestParam(name = "memberId") Long memberId,
             @RequestParam int year,
             @RequestParam int month) {
 
         List<Expense> expenseList =
-                expenseQueryService.getDailyExpense(memberId, year, month);
+                expenseQueryService.getDailyExpense(viewer, memberId, year, month);
 
         System.out.println("DEBUG: toGetDailyExpenseResultDTO 시작");
         System.out.println("expenseList size: " + expenseList.size());
