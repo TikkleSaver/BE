@@ -8,6 +8,7 @@ import com.tikklesaver.domain.wish.entity.WishComment;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Component
 public class WishCommentConverter {
@@ -35,6 +36,25 @@ public class WishCommentConverter {
         return WishCommentResponseDTO.UpdateWishCommentResultDTO.builder()
                 .wishCommentId(wishComment.getId())
                 .updatedAt(wishComment.getUpdatedAt())
+                .build();
+    }
+
+    // 위시 댓글 목록 조회 (세부 상자)
+    public static WishCommentResponseDTO.WishCommentPreviewDTO toGetWishCommentResultDTO(WishComment wishComment){
+        return WishCommentResponseDTO.WishCommentPreviewDTO.builder()
+                .wishCommentId(wishComment.getId())
+                .memberId(wishComment.getMember().getId())
+                .nickname(wishComment.getMember().getNickname())
+                .contents(wishComment.getContents())
+                .createdAt(wishComment.getCreatedAt())
+                .updatedAt(wishComment.getUpdatedAt())
+                .build();
+    }
+
+    // 위시 댓글 목록 조회 (목록용)
+    public static WishCommentResponseDTO.WishCommentPreviewListDTO toGetWishCommentListResultDTO(List<WishCommentResponseDTO.WishCommentPreviewDTO> wishCommentList) {
+        return WishCommentResponseDTO.WishCommentPreviewListDTO.builder()
+                .wishCommentList(wishCommentList)
                 .build();
     }
 }

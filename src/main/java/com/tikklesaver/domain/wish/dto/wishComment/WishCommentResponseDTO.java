@@ -33,4 +33,28 @@ public class WishCommentResponseDTO {
         Long wishCommentId;
         LocalDateTime updatedAt;
     }
+
+    // 위시 댓글 목록 조회 (목록용)
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class WishCommentPreviewListDTO {
+        List<WishCommentPreviewDTO> wishCommentList;
+    }
+
+    // 위시 댓글 목록 조회 (세부 상자)
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class WishCommentPreviewDTO {
+        Long wishCommentId;
+        Long memberId;
+        String nickname;
+//        String profileImg;
+        String contents;
+        LocalDateTime createdAt;
+        LocalDateTime updatedAt;
+    }
 }

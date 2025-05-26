@@ -5,6 +5,7 @@ import com.tikklesaver.domain.wish.dto.wishComment.WishCommentRequestDTO;
 import com.tikklesaver.domain.wish.dto.wishComment.WishCommentResponseDTO;
 import com.tikklesaver.domain.wish.entity.WishComment;
 import com.tikklesaver.domain.wish.service.wishComment.WishCommentCommandService;
+import com.tikklesaver.domain.wish.service.wishComment.WishCommentQueryService;
 import com.tikklesaver.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -13,12 +14,15 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/wish")
 public class WishCommentContoller {
 
     private final WishCommentCommandService wishCommentCommandService;
+    private final WishCommentQueryService wishCommentQueryService;
 
     // 위시 댓글 생성
     @PostMapping("/{wishId}/comment")
@@ -71,5 +75,22 @@ public class WishCommentContoller {
          wishCommentCommandService.deleteWishComment(memberId, commentId);
 
         return ApiResponse.onSuccess("삭제가 완료되었습니다.");
+    }
+
+    // 위시 댓글 목록 조회
+    @GetMapping("/{wishId}/comment")
+    @Operation(summary = "위시 댓글 목록 조회 API")
+    @Parameters({
+            @Parameter(name = "wishId", description = "위시의 ID, path variable 입니다!")
+    })
+    public ApiResponse<WishCommentResponseDTO.WishCommentPreviewListDTO> getWishCommentList(
+            @PathVariable(name = "wishId") Long wishId) {
+
+        //임시 memberId
+        Long memberId = 5L;
+
+        List<WishCommentResponseDTO.WishCommentPreviewDTO> wishCommentList = wishCommentQueryService.getWishCommentList(memberId, wishId);
+
+        return ApiResponse.onSuccess(WishCommentConverter.toGetWishCommentListResultDTO(wishCommentList));
     }
 }
