@@ -31,4 +31,7 @@ public interface ExpenseQueryService {
 
     // 특정 사용자의 특정 달의 카테고리별 지출 금액 리스트 조회
     List<ExpenseResponseDTO.TotalExpenseByCategoryResultDTO> getTotalExpenseByCategory(Long memberId, int year, int month);
+
+    // 특정 사용자의 특정 달 지출 총 금액 조회
+    Long getTotalExpenseByMonth(Long memberId, int year, int month);
 }

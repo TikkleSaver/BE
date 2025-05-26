@@ -138,6 +138,7 @@ public class ExpenseConverter {
                 .build();
     }
 
+    // 특정 사용자의 특정 달의 카테고리별 지출 금액 리스트 조회
     public static ExpenseResponseDTO.GetTotalExpenseByCategoryResultDTOList toGetgetTotalExpenseByCategoryResultDTO(
             Long memberId, int year, int month,
             List<ExpenseResponseDTO.TotalExpenseByCategoryResultDTO> resultList) {
@@ -147,6 +148,18 @@ public class ExpenseConverter {
                 .year(year)
                 .month(month)
                 .categoryExpenseList(resultList)
+                .build();
+    }
+
+    // 특정 사용자의 특정 달 지출 총 금액 조회
+    public static ExpenseResponseDTO.GetTotalExpenseByMonthResultDTO toGetgetTotalExpenseByMonthResultDTO(
+            Long memberId, int year, int month, Long totalAmount) {
+
+        return ExpenseResponseDTO.GetTotalExpenseByMonthResultDTO.builder()
+                .memberId(memberId)
+                .year(year)
+                .month(month)
+                .totalAmount(totalAmount)
                 .build();
     }
 }

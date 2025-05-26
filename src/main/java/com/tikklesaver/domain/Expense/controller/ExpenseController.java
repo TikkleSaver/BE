@@ -134,7 +134,7 @@ public class ExpenseController {
 
     // 특정 사용자의 특정 달의 카테고리별 지출 금액 리스트 조회
     @GetMapping("/month/category/totalExpense")
-    @Operation(summary = "특정 사용자의 특정 달의 카테고리별 지출 금액 리스트를 조회 API")
+    @Operation(summary = "특정 사용자의 특정 달의 카테고리별 지출 금액 리스트 조회 API")
     @Parameters({
             @Parameter(name = "year", description = "조회할 연도 (ex. 2025)", required = true),
             @Parameter(name = "month", description = "조회할 월 (1~12)", required = true)
@@ -148,6 +148,23 @@ public class ExpenseController {
                 expenseQueryService.getTotalExpenseByCategory(member.getId(), year, month);
 
         return ApiResponse.onSuccess(ExpenseConverter.toGetgetTotalExpenseByCategoryResultDTO(member.getId(), year, month, expenseList));
+    }
+
+    // 특정 사용자의 특정 달 지출 총 금액 조회
+    @GetMapping("/month/totalExpense")
+    @Operation(summary = "특정 사용자의 특정 달 지출 총 금액 조회 API")
+    @Parameters({
+            @Parameter(name = "year", description = "조회할 연도 (ex. 2025)", required = true),
+            @Parameter(name = "month", description = "조회할 월 (1~12)", required = true)
+    })
+    public ApiResponse<ExpenseResponseDTO.GetTotalExpenseByMonthResultDTO> getTotalExpenseByMonth(
+            @CurrentMember Member member,
+            @RequestParam int year,
+            @RequestParam int month) {
+
+        Long totalAmount = expenseQueryService.getTotalExpenseByMonth(member.getId(), year, month);
+
+        return ApiResponse.onSuccess(ExpenseConverter.toGetgetTotalExpenseByMonthResultDTO(member.getId(), year, month, totalAmount));
     }
 
 }

@@ -170,4 +170,26 @@ public class ExpenseRepositoryImpl implements ExpenseRepositoryCustom {
                 .orderBy(qCategory.id.asc())  // 필요 시 정렬
                 .fetch();
     }
+
+    // 특정 사용자의 특정 달 지출 총 금액 조회
+    @Override
+    public Long findExpenseTotalByMemberIdAndYearMonth(Long memberId, int year, int month){
+        LocalDate startLocalDate = LocalDate.of(year, month, 1);
+        LocalDate nextMonthStartLocalDate = startLocalDate.plusMonths(1);
+
+        Date startDate = java.sql.Date.valueOf(startLocalDate);
+        Date nextMonthStartDate = java.sql.Date.valueOf(nextMonthStartLocalDate);
+
+        Long total = jpaQueryFactory
+                .select(qExpense.cost.sum())
+                .from(qExpense)
+                .where(
+                        qExpense.member.id.eq(memberId),
+                        qExpense.expenseDate.goe(startDate),
+                        qExpense.expenseDate.lt(nextMonthStartDate)
+                )
+                .fetchOne();
+
+        return total != null ? total : 0L;
+    }
 }

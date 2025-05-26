@@ -153,4 +153,16 @@ public class ExpenseResponseDTO {
         int month;
         List<TotalExpenseByCategoryResultDTO> categoryExpenseList;
     }
+
+    // 특정 사용자의 특정 달 지출 총 금액 조회
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetTotalExpenseByMonthResultDTO {
+        Long memberId;
+        int year;
+        int month;
+        Long totalAmount;
+    }
 }
