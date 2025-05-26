@@ -5,6 +5,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.tikklesaver.domain.Category.entity.QCategory;
 import com.tikklesaver.domain.Expense.dto.ExpenseResponseDTO;
 import com.tikklesaver.domain.Expense.entity.Expense;
 import com.tikklesaver.domain.Expense.entity.QExpense;
@@ -29,8 +30,10 @@ public class ExpenseRepositoryImpl implements ExpenseRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
     private final QExpense qExpense = QExpense.expense;
     private final QMember qMember = QMember.member;
+    private final QCategory qCategory = QCategory.category;
 
     // 특정 사용자가 지출한 특정 지출 조회
+    @Override
     public Optional<Expense> findByMemberIdAndExpenseId(Long memberId, Long expenseId){
         Expense result = jpaQueryFactory
                 .selectFrom(qExpense)
@@ -45,6 +48,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepositoryCustom {
     }
 
     // 지출 리스트 조회
+    @Override
     public Page<Expense> findAll(Pageable pageable,
                                                       Long memberId,
                                                       Date expenseDate) {
@@ -137,6 +141,33 @@ public class ExpenseRepositoryImpl implements ExpenseRepositoryCustom {
                 )
                 .groupBy(Expressions.numberTemplate(Integer.class, "MONTH({0})", expense.expenseDate))
                 .orderBy(Expressions.numberTemplate(Integer.class, "MONTH({0})", expense.expenseDate).asc())
+                .fetch();
+    }
+
+    // 특정 사용자의 특정 달의 카테고리별 지출 금액 리스트 조회
+    @Override
+    public List<ExpenseResponseDTO.TotalExpenseByCategoryResultDTO> findExpenseTotalByMemberIdAndYearMonthCategory(Long memberId, int year, int month){
+        LocalDate startLocalDate = LocalDate.of(year, month, 1);
+        LocalDate nextMonthStartLocalDate = startLocalDate.plusMonths(1);
+
+        Date startDate = java.sql.Date.valueOf(startLocalDate);
+        Date nextMonthStartDate = java.sql.Date.valueOf(nextMonthStartLocalDate);
+
+        return jpaQueryFactory
+                .select(Projections.constructor(
+                        ExpenseResponseDTO.TotalExpenseByCategoryResultDTO.class,
+                        qCategory.id,
+                        qExpense.cost.sum().coalesce(0L)  // 지출이 없을 경우 0으로 처리
+                ))
+                .from(qCategory)
+                .leftJoin(qExpense)
+                .on(qExpense.category.id.eq(qCategory.id)
+                        .and(qExpense.member.id.eq(memberId))
+                        .and(qExpense.expenseDate.goe(startDate))
+                        .and(qExpense.expenseDate.lt(nextMonthStartDate))
+                )
+                .groupBy(qCategory.id)
+                .orderBy(qCategory.id.asc())  // 필요 시 정렬
                 .fetch();
     }
 }

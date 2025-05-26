@@ -112,7 +112,7 @@ public class ExpenseResponseDTO {
         List<GetDailyExpenseResultDTO> dailyExpenseDTOList;
     }
 
-    // 월별 지출 총액 조회 - 하루
+    // 월별 지출 총액 조회 - 한달
     @Builder
     @Getter
     @NoArgsConstructor
@@ -122,7 +122,7 @@ public class ExpenseResponseDTO {
         Long totalAmount;
     }
 
-    // 월별 지출 총액 조회 - 한달(하루 리스트)
+    // 월별 지출 총액 조회 - 1년(한달 리스트)
     @Builder
     @Getter
     @NoArgsConstructor
@@ -130,5 +130,27 @@ public class ExpenseResponseDTO {
     public static class GetMonthlyExpenseResultDTOList {
         Long memberId;
         List<MonthlyExpenseTotalDTO> monthlyExpenseDTOList;
+    }
+
+    // 카테고리별 지출 총액 조회 - 카테고리 하나
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class TotalExpenseByCategoryResultDTO {
+        Long categoryId;
+        Long totalAmount;
+    }
+
+    // 카테고리별 지출 총액 조회 - (전체 리스트)
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetTotalExpenseByCategoryResultDTOList {
+        Long memberId;
+        int year;
+        int month;
+        List<TotalExpenseByCategoryResultDTO> categoryExpenseList;
     }
 }

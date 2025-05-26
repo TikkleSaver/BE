@@ -137,4 +137,16 @@ public class ExpenseConverter {
                 .monthlyExpenseDTOList(fullList)
                 .build();
     }
+
+    public static ExpenseResponseDTO.GetTotalExpenseByCategoryResultDTOList toGetgetTotalExpenseByCategoryResultDTO(
+            Long memberId, int year, int month,
+            List<ExpenseResponseDTO.TotalExpenseByCategoryResultDTO> resultList) {
+
+        return ExpenseResponseDTO.GetTotalExpenseByCategoryResultDTOList.builder()
+                .memberId(memberId)
+                .year(year)
+                .month(month)
+                .categoryExpenseList(resultList)
+                .build();
+    }
 }
