@@ -8,6 +8,7 @@ import com.tikklesaver.domain.product.converter.ProductConverter;
 import com.tikklesaver.domain.product.entity.Product;
 import com.tikklesaver.domain.product.repository.ProductRepository;
 import com.tikklesaver.domain.wish.dto.wish.WishRequestDTO;
+import com.tikklesaver.domain.wish.entity.enums.ProductType;
 import com.tikklesaver.global.aws.s3.AmazonS3Manager;
 import com.tikklesaver.global.common.Uuid;
 import com.tikklesaver.global.repository.UuidRepository;
@@ -121,24 +122,16 @@ public class ProductCommandServiceImpl implements ProductCommandService {
         return productRepository.save(product);
     }
 
-    // 존재하는 상품 삭제
+    // 상품 삭제
     @Override
-    public void deleteExistingProduct(Long memberId, Product product){
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
-
-        productRepository.delete(product);
-    }
-
-
-    // 존재하지 않는 상품 삭제 (직접 추가한 상품)
-    @Override
-    public void deleteMyProduct(Long memberId, Product product){
+    public void deleteProduct(Long memberId, Product product){
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
 
         // s3 이미지 삭제
-        amazonS3Manager.deleteFile(product.getImage());
+        if (product.getProductType() == ProductType.MYPRODUCT){
+            amazonS3Manager.deleteFile(product.getImage());
+        }
 
         productRepository.delete(product);
     }
