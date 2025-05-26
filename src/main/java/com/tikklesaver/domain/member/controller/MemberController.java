@@ -1,5 +1,7 @@
 package com.tikklesaver.domain.member.controller;
 
+import com.tikklesaver.domain.Challenge.entity.Challenge;
+import com.tikklesaver.domain.Challenge.entity.ChallengeScraped;
 import com.tikklesaver.domain.member.converter.MemberConverter;
 import com.tikklesaver.domain.member.dto.*;
 import com.tikklesaver.domain.member.entity.Member;
@@ -24,6 +26,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -101,4 +105,17 @@ public class MemberController {
         return ApiResponse.onSuccess("목표 지출액 저장 완료");
     }
 
+    //유저 정보 조회
+    @GetMapping("/users")
+    public ApiResponse<MemberResponseDto.MemberProfileDTO> getProfile(@CurrentMember Member member) throws Exception {
+        int wishListNum = memberCommandService.getWishListCount(member);
+        int challengeNum = memberCommandService.getChallengeCount(member);
+        int friendNum = memberCommandService.getFriendCount(member);
+        List<Challenge> challengeScrapedList = memberCommandService.getScrappedChallenges(member);
+//        List<Challenge> challengeScrapedList =  new ArrayList<>();
+
+        return ApiResponse.onSuccess(
+                MemberConverter.toMemberProfileDTO(member, wishListNum,
+                challengeNum, friendNum, challengeScrapedList));
+    }
 }

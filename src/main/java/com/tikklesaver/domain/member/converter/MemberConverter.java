@@ -1,5 +1,9 @@
 package com.tikklesaver.domain.member.converter;
 
+import com.tikklesaver.domain.Challenge.converter.ChallengeConverter;
+import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeResponseDTO;
+import com.tikklesaver.domain.Challenge.entity.Challenge;
+import com.tikklesaver.domain.Challenge.entity.ChallengeScraped;
 import com.tikklesaver.domain.member.dto.MemberResponseDto;
 import com.tikklesaver.domain.member.entity.Member;
 
@@ -22,5 +26,24 @@ public class MemberConverter {
                 .build();
     }
 
+    public static MemberResponseDto.MemberProfileDTO toMemberProfileDTO(Member member, int wishListNum,
+                                                                        int challengeNum,
+                                                                        int friendNum, List<Challenge> challengeScrapedList) {
+
+        // Challenge 리스트를 ChallengePreViewDTO 리스트로 변환 (ChallengeConverter 의 메서드 재활용)
+        List<ChallengeResponseDTO.ChallengePreViewDTO> challengePreViewDTOs = challengeScrapedList.stream()
+                .map(ChallengeConverter::challengePreViewDTO)
+                .collect(Collectors.toList());
+
+        return MemberResponseDto.MemberProfileDTO.builder()
+                .id(member.getId())
+                .nickname(member.getNickname())
+                .profileUrl(member.getProfileUrl())
+                .wishListNum(wishListNum)
+                .challengeNum(challengeNum)
+                .friendNum(friendNum)
+                .challengeScrapedList(challengePreViewDTOs)
+                .build();
+    }
 
 }

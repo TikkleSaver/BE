@@ -1,4 +1,6 @@
 package com.tikklesaver.domain.member.service;
+import com.tikklesaver.domain.Challenge.entity.Challenge;
+import com.tikklesaver.domain.Challenge.entity.ChallengeScraped;
 import com.tikklesaver.domain.member.dto.LoginRequestDto;
 import com.tikklesaver.domain.member.dto.SignUpRequestDto;
 import com.tikklesaver.domain.member.entity.Member;
@@ -28,4 +30,12 @@ public interface MemberCommandService {
     void saveCategories(@NotNull(message = "아이디는 필수") Long memberId, @NotNull List<Long> categoryList);
 
     void saveGoalCost(@NotNull(message = "아이디는 필수") Long memberId, @NotNull Long goalCost);
+
+    int getWishListCount(Member member);
+
+    int getChallengeCount(Member member);
+
+    int getFriendCount(Member member);
+
+    List<Challenge> getScrappedChallenges(Member member);
 }
