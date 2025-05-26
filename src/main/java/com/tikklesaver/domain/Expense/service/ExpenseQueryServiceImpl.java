@@ -2,6 +2,7 @@ package com.tikklesaver.domain.Expense.service;
 
 import com.tikklesaver.domain.Category.repository.CategoryRepository;
 import com.tikklesaver.domain.Expense.dto.ExpenseRequestDTO;
+import com.tikklesaver.domain.Expense.dto.ExpenseResponseDTO;
 import com.tikklesaver.domain.Expense.entity.Expense;
 import com.tikklesaver.domain.Expense.repository.ExpenseRepository;
 import com.tikklesaver.domain.Expense.repository.ExpenseRepositoryCustom;
@@ -133,5 +134,37 @@ public class ExpenseQueryServiceImpl implements ExpenseQueryService {
         this.findById(memberId);
 
         return expenseRepositoryCustom.findDailyExpenseTotalByMemberIdAndYearMonth(memberId, year, month);
+    }
+
+    // 특정 년도의 월별 지출 총 금액 리스트 조회
+    @Override
+    @Transactional
+    public List<ExpenseResponseDTO.MonthlyExpenseTotalDTO> getMonthlyExpense(Long memberId, int year) {
+        this.findById(memberId);
+        return expenseRepositoryCustom.findMonthlyExpenseTotalByMemberIdAndYear(memberId, year);
+    }
+
+    // 특정 사용자의 특정 달의 카테고리별 지출 금액 리스트 조회
+    @Override
+    @Transactional
+    public List<ExpenseResponseDTO.TotalExpenseByCategoryResultDTO> getTotalExpenseByCategory(Long memberId, int year, int month){
+        this.findById(memberId);
+        return expenseRepositoryCustom.findExpenseTotalByMemberIdAndYearMonthCategory(memberId, year, month);
+    }
+
+    // 특정 사용자의 특정 달 지출 총 금액 조회
+    @Override
+    @Transactional
+    public Long getTotalExpenseByMonth(Long memberId, int year, int month){
+        this.findById(memberId);
+        return expenseRepositoryCustom.findExpenseTotalByMemberIdAndYearMonth(memberId, year, month);
+    }
+
+    // 특정 사용자의 특정 달 지출 TOP3 카테고리 조회
+    @Override
+    @Transactional
+    public ExpenseResponseDTO.GetExpenseTop3CategoryResultDTO getTotalExpenseTop3Category(Long memberId, int year, int month){
+        this.findById(memberId);
+        return expenseRepositoryCustom.findExpenseTop3Categories(memberId, year, month);
     }
 }

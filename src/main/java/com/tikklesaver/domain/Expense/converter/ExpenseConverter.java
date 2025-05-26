@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class ExpenseConverter {
 
@@ -110,6 +111,69 @@ public class ExpenseConverter {
         return ExpenseResponseDTO.GetDailyExpenseResultDTOList.builder()
                 .memberId(memberId)
                 .dailyExpenseDTOList(dailyExpenseDTOList)
+                .build();
+    }
+
+
+    // 특정 년도의 월별 지출 총 금액 리스트 조회
+    public static ExpenseResponseDTO.GetMonthlyExpenseResultDTOList toGetMonthlyExpenseResultDTO(
+            List<ExpenseResponseDTO.MonthlyExpenseTotalDTO> dtoList, Long memberId) {
+
+        Map<Integer, Long> amountMap = dtoList.stream()
+                .collect(Collectors.toMap(
+                        ExpenseResponseDTO.MonthlyExpenseTotalDTO::getMonth,
+                        ExpenseResponseDTO.MonthlyExpenseTotalDTO::getTotalAmount
+                ));
+
+        List<ExpenseResponseDTO.MonthlyExpenseTotalDTO> fullList = IntStream.rangeClosed(1, 12)
+                .mapToObj(month -> ExpenseResponseDTO.MonthlyExpenseTotalDTO.builder()
+                        .month(month)
+                        .totalAmount(amountMap.getOrDefault(month, 0L))
+                        .build())
+                .collect(Collectors.toList());
+
+        return ExpenseResponseDTO.GetMonthlyExpenseResultDTOList.builder()
+                .memberId(memberId)
+                .monthlyExpenseDTOList(fullList)
+                .build();
+    }
+
+    // 특정 사용자의 특정 달의 카테고리별 지출 금액 리스트 조회
+    public static ExpenseResponseDTO.GetTotalExpenseByCategoryResultDTOList toGetgetTotalExpenseByCategoryResultDTO(
+            Long memberId, int year, int month,
+            List<ExpenseResponseDTO.TotalExpenseByCategoryResultDTO> resultList) {
+
+        return ExpenseResponseDTO.GetTotalExpenseByCategoryResultDTOList.builder()
+                .memberId(memberId)
+                .year(year)
+                .month(month)
+                .categoryExpenseList(resultList)
+                .build();
+    }
+
+    // 특정 사용자의 특정 달 지출 총 금액 조회
+    public static ExpenseResponseDTO.GetTotalExpenseByMonthResultDTO toGetTotalExpenseByMonthResultDTO(
+            Long memberId, int year, int month, Long totalAmount) {
+
+        return ExpenseResponseDTO.GetTotalExpenseByMonthResultDTO.builder()
+                .memberId(memberId)
+                .year(year)
+                .month(month)
+                .totalAmount(totalAmount)
+                .build();
+    }
+
+
+    // 특정 사용자의 특정 달 지출 TOP3 카테고리 조회
+    public static ExpenseResponseDTO.GetExpenseTop3CategoryResultDTO toGetTotalExpenseTop3Category(ExpenseResponseDTO.GetExpenseTop3CategoryResultDTO result) {
+
+        return ExpenseResponseDTO.GetExpenseTop3CategoryResultDTO.builder()
+                .memberId(result.getMemberId())
+                .category1(result.getCategory1())
+                .category2(result.getCategory2())
+                .category3(result.getCategory3())
+                .year(result.getYear())
+                .month(result.getMonth())
                 .build();
     }
 }
