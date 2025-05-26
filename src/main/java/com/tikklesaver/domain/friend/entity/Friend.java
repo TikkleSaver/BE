@@ -17,8 +17,8 @@ public class Friend extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 내 ID (FK)
+    // 멤버1 ID (FK)
 
-    // 친구 ID (FK)
+    // 멤버2 ID (FK)
 
 }
