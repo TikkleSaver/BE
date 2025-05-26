@@ -38,4 +38,7 @@ public interface MemberCommandService {
     int getFriendCount(Member member);
 
     List<Challenge> getScrappedChallenges(Member member);
+
+    // 지출 목표 금액 수정(지출 달력 페이지)
+    Member saveExpenseGoalCost(Long memberId, Long goalCost);
 }

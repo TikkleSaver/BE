@@ -12,6 +12,7 @@ import com.tikklesaver.global.jwt.dto.JwtDto;
 import com.tikklesaver.global.jwt.util.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
@@ -117,5 +118,20 @@ public class MemberController {
         return ApiResponse.onSuccess(
                 MemberConverter.toMemberProfileDTO(member, wishListNum,
                 challengeNum, friendNum, challengeScrapedList));
+    }
+
+
+    // 지출 목표 금액 수정(지출 달력 페이지)
+    @PatchMapping("/users/goalCost")
+    @Operation(summary = "특정 사용자의 지출 목표 금액 수정 API")
+    @Parameters({
+            @Parameter(name = "goalCost", description = "지출 목표 금액", required = true)
+    })
+    public ApiResponse<MemberResponseDto.MemberGoalCostDTO> saveExpenseGoalCost(
+            @CurrentMember Member member,
+            @RequestParam Long goalCost) {
+
+        Member goalCostMember =  memberCommandService.saveExpenseGoalCost(member.getId(), goalCost);
+        return ApiResponse.onSuccess(MemberConverter.toMemberGoalCostDTO(goalCostMember));
     }
 }
