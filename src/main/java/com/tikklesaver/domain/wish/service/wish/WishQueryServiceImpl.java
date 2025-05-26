@@ -1,5 +1,6 @@
 package com.tikklesaver.domain.wish.service.wish;
 
+import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.domain.wish.dto.wish.WishResponseDTO;
 import com.tikklesaver.domain.wish.repository.wish.WishRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,16 +22,16 @@ public class WishQueryServiceImpl implements WishQueryService {
 
     // 나의 위시리스트 목록 구매 예정 조회
     @Override
-    public List<WishResponseDTO.MyWishPlannedPreviewDTO> getMyWishPlannedList(Long memberId){
+    public List<WishResponseDTO.MyWishPlannedPreviewDTO> getMyWishPlannedList(Member member){
 
-        return wishRepository.getMyWishPlannedList(memberId);
+        return wishRepository.getMyWishPlannedList(member);
     }
 
     // 나의 위시리스트 목록 구매 완료 조회
     @Override
-    public List<WishResponseDTO.MyWishPurchasedPreviewDTO> getMyWishPurchasedList(Long memberId){
+    public List<WishResponseDTO.MyWishPurchasedPreviewDTO> getMyWishPurchasedList(Member member){
 
-        return wishRepository.getMyWishPurchasedList(memberId);
+        return wishRepository.getMyWishPurchasedList(member);
     }
 
 }

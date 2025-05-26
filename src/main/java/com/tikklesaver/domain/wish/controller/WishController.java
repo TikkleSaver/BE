@@ -1,5 +1,6 @@
 package com.tikklesaver.domain.wish.controller;
 
+import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.domain.product.entity.Product;
 import com.tikklesaver.domain.product.service.ProductCommandService;
 import com.tikklesaver.domain.wish.converter.WishConverter;
@@ -9,6 +10,7 @@ import com.tikklesaver.domain.wish.entity.Wish;
 import com.tikklesaver.domain.wish.entity.enums.SatisfactionStatus;
 import com.tikklesaver.domain.wish.service.wish.WishQueryService;
 import com.tikklesaver.domain.wish.service.wish.WishCommandService;
+import com.tikklesaver.global.annotation.CurrentMember;
 import com.tikklesaver.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -34,13 +36,11 @@ public class WishController {
     @PostMapping("/existing-product")
     @Operation(summary = "이미 존재하는 상품을 위시로 생성 API")
     public ApiResponse<WishResponseDTO.WishResultDTO> createWishFromExistingProduct(
+            @CurrentMember Member member,
             @RequestBody @Valid WishRequestDTO.CreateWishFromExistingProductDTO request) {
 
-        //임시 memberId
-        Long memberId = 5L;
-
-        Product newProduct = productCommandService.createExistingProduct(memberId, request);
-        Wish newWish = wishCommandService.createWishFromExistingProduct(memberId, newProduct, request);
+        Product newProduct = productCommandService.createExistingProduct(member, request);
+        Wish newWish = wishCommandService.createWishFromExistingProduct(member, newProduct, request);
 
         return ApiResponse.onSuccess(WishConverter.toWishResultDTO(newWish));
     }
@@ -49,14 +49,12 @@ public class WishController {
     @PostMapping(value =  "/my-product", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "원하는 상품 직접 추가해서 위시로 생성 API")
     public ApiResponse<WishResponseDTO.WishResultDTO> createWishFromMyProduct(
+            @CurrentMember Member member,
             @RequestPart("request") @Valid WishRequestDTO.CreateWishFromMyProductDTO request,
             @RequestPart("file") MultipartFile file) {
 
-        //임시 memberId
-        Long memberId = 5L;
-
-        Product newProduct = productCommandService.createMyProduct(memberId, request, file);
-        Wish newWish = wishCommandService.createWishFromMyProduct(memberId, newProduct, request);
+        Product newProduct = productCommandService.createMyProduct(member, request, file);
+        Wish newWish = wishCommandService.createWishFromMyProduct(member, newProduct, request);
 
         return ApiResponse.onSuccess(WishConverter.toWishResultDTO(newWish));
     }
@@ -68,14 +66,12 @@ public class WishController {
             @Parameter(name = "wishId", description = "위시의 ID, path variable 입니다!")
     })
     public ApiResponse<WishResponseDTO.UpdateWishResultDTO> updateWishFromExistingProduct(
+            @CurrentMember Member member,
             @PathVariable(name = "wishId") Long wishId,
             @RequestBody @Valid WishRequestDTO.UpdateWishFromExistingProductDTO request) {
 
-        //임시 memberId
-        Long memberId = 5L;
-
-        Wish wish = wishCommandService.updateWishFromExistingProduct(memberId, wishId, request);
-        productCommandService.updateExistingProduct(memberId, wish.getProduct(), request);
+        Wish wish = wishCommandService.updateWishFromExistingProduct(member, wishId, request);
+        productCommandService.updateExistingProduct(member, wish.getProduct(), request);
 
         return ApiResponse.onSuccess(WishConverter.toWishUpdateResultDTO(wish));
     }
@@ -87,15 +83,13 @@ public class WishController {
             @Parameter(name = "wishId", description = "위시의 ID, path variable 입니다!")
     })
     public ApiResponse<WishResponseDTO.UpdateWishResultDTO> updateWishFromMyProduct(
+            @CurrentMember Member member,
             @PathVariable(name = "wishId") Long wishId,
             @RequestPart("request") @Valid WishRequestDTO.UpdateWishFromMyProductDTO request,
             @RequestPart(value = "file", required = false) MultipartFile file) {
 
-        //임시 memberId
-        Long memberId = 5L;
-
-        Wish wish = wishCommandService.updateWishFromMyProduct(memberId, wishId, request);
-        productCommandService.updateMyProduct(memberId, wish.getProduct(), request, file);
+        Wish wish = wishCommandService.updateWishFromMyProduct(member, wishId, request);
+        productCommandService.updateMyProduct(member, wish.getProduct(), request, file);
 
         return ApiResponse.onSuccess(WishConverter.toWishUpdateResultDTO(wish));
     }
@@ -107,13 +101,11 @@ public class WishController {
             @Parameter(name = "wishId", description = "위시의 ID, path variable 입니다!")
     })
     public ApiResponse<String> deleteWish(
+            @CurrentMember Member member,
             @PathVariable(name = "wishId") Long wishId) {
 
-        //임시 memberId
-        Long memberId = 5L;
-
-        Wish wish = wishCommandService.deleteWish(memberId, wishId);
-        productCommandService.deleteProduct(memberId, wish.getProduct());
+        Wish wish = wishCommandService.deleteWish(member, wishId);
+        productCommandService.deleteProduct(member, wish.getProduct());
 
         return ApiResponse.onSuccess("삭제가 완료되었습니다.");
     }
@@ -121,10 +113,8 @@ public class WishController {
     // 위시리스트 상세 조회
     @GetMapping("/{wishId}")
     @Operation(summary = "위시 상세 조회 API")
-    public ApiResponse<WishResponseDTO.WishDetailDTO> getWishDetail(@PathVariable(name = "wishId") Long wishId) {
-
-        //임시 memberId
-        Long memberId = 5L;
+    public ApiResponse<WishResponseDTO.WishDetailDTO> getWishDetail(
+            @PathVariable(name = "wishId") Long wishId) {
 
         return ApiResponse.onSuccess(wishQueryService.getWishDetail(wishId));
     }
@@ -132,24 +122,18 @@ public class WishController {
     // 나의 위시리스트 구매예정 목록 조회
     @GetMapping("/mine/planned")
     @Operation(summary = "나의 위시리스트 구매예정 목록 조회 API")
-    public ApiResponse<WishResponseDTO.MyWishPlannedPreviewListDTO> getMyWishPlanned() {
+    public ApiResponse<WishResponseDTO.MyWishPlannedPreviewListDTO> getMyWishPlanned(@CurrentMember Member member) {
 
-        //임시 memberId
-        Long memberId = 5L;
-
-        List<WishResponseDTO.MyWishPlannedPreviewDTO> myWishPlannedList = wishQueryService.getMyWishPlannedList(memberId);
+        List<WishResponseDTO.MyWishPlannedPreviewDTO> myWishPlannedList = wishQueryService.getMyWishPlannedList(member);
         return ApiResponse.onSuccess(WishConverter.myWishPlannedPreviewListDTO(myWishPlannedList));
     }
 
     // 나의 위시리스트 구매완료 목록 조회
     @GetMapping("/mine/purchased")
     @Operation(summary = "나의 위시리스트 구매완료 목록 조회 API")
-    public ApiResponse<WishResponseDTO.MyWishPurchasedPreviewListDTO> getMyWishPurchased() {
+    public ApiResponse<WishResponseDTO.MyWishPurchasedPreviewListDTO> getMyWishPurchased(@CurrentMember Member member) {
 
-        //임시 memberId
-        Long memberId = 5L;
-
-        List<WishResponseDTO.MyWishPurchasedPreviewDTO> myWishPurchasedList = wishQueryService.getMyWishPurchasedList(memberId);
+        List<WishResponseDTO.MyWishPurchasedPreviewDTO> myWishPurchasedList = wishQueryService.getMyWishPurchasedList(member);
         return ApiResponse.onSuccess(WishConverter.myWishPurchasedPreviewListDTO(myWishPurchasedList));
     }
 
@@ -160,12 +144,10 @@ public class WishController {
             @Parameter(name = "wishId", description = "위시의 ID, path variable 입니다!")
     })
     public ApiResponse<WishResponseDTO.UpdateWishResultDTO> updateWishPublicStatus(
+            @CurrentMember Member member,
             @PathVariable(name = "wishId") Long wishId) {
 
-        //임시 memberId
-        Long memberId = 5L;
-
-        Wish wish = wishCommandService.updateWishPublicStatus(memberId, wishId);
+        Wish wish = wishCommandService.updateWishPublicStatus(member, wishId);
 
         return ApiResponse.onSuccess(WishConverter.toWishUpdateResultDTO(wish));
     }
@@ -177,12 +159,10 @@ public class WishController {
             @Parameter(name = "wishId", description = "위시의 ID, path variable 입니다!")
     })
     public ApiResponse<WishResponseDTO.UpdateWishResultDTO> updateWishPurchaseStatus(
+            @CurrentMember Member member,
             @PathVariable(name = "wishId") Long wishId) {
 
-        //임시 memberId
-        Long memberId = 5L;
-
-        Wish wish = wishCommandService.updateWishPurchaseStatus(memberId, wishId);
+        Wish wish = wishCommandService.updateWishPurchaseStatus(member, wishId);
 
         return ApiResponse.onSuccess(WishConverter.toWishUpdateResultDTO(wish));
     }
@@ -195,13 +175,11 @@ public class WishController {
             @Parameter(name = "status", description = "만족 상태 (SATISFIED = 만족, DISSATISFIED = 불만족)")
     })
     public ApiResponse<WishResponseDTO.UpdateWishResultDTO> updateWishSatisfactionStatus(
+            @CurrentMember Member member,
             @PathVariable(name = "wishId") Long wishId,
             @RequestParam(name = "status") SatisfactionStatus status) {
 
-        //임시 memberId
-        Long memberId = 5L;
-
-        Wish wish = wishCommandService.updateWishSatisfactionStatus(memberId, wishId, status);
+        Wish wish = wishCommandService.updateWishSatisfactionStatus(member, wishId, status);
 
         return ApiResponse.onSuccess(WishConverter.toWishUpdateResultDTO(wish));
     }
