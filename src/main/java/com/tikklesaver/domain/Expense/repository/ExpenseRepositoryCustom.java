@@ -14,4 +14,6 @@ public interface ExpenseRepositoryCustom {
     Page<Expense> findAll(Pageable pageable, Long memberId, Date expenseDate);
     List<Expense> findDailyExpenseTotalByMemberIdAndYearMonth(
             Long memberId, int year, int month);
+    List<ExpenseResponseDTO.MonthlyExpenseTotalDTO> findMonthlyExpenseTotalByMemberIdAndYear(
+            Long memberId, int year);
 }

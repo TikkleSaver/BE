@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class ExpenseConverter {
 
@@ -110,6 +111,30 @@ public class ExpenseConverter {
         return ExpenseResponseDTO.GetDailyExpenseResultDTOList.builder()
                 .memberId(memberId)
                 .dailyExpenseDTOList(dailyExpenseDTOList)
+                .build();
+    }
+
+
+    // 특정 년도의 월별 지출 총 금액 리스트 조회
+    public static ExpenseResponseDTO.GetMonthlyExpenseResultDTOList toGetMonthlyExpenseResultDTO(
+            List<ExpenseResponseDTO.MonthlyExpenseTotalDTO> dtoList, Long memberId) {
+
+        Map<Integer, Long> amountMap = dtoList.stream()
+                .collect(Collectors.toMap(
+                        ExpenseResponseDTO.MonthlyExpenseTotalDTO::getMonth,
+                        ExpenseResponseDTO.MonthlyExpenseTotalDTO::getTotalAmount
+                ));
+
+        List<ExpenseResponseDTO.MonthlyExpenseTotalDTO> fullList = IntStream.rangeClosed(1, 12)
+                .mapToObj(month -> ExpenseResponseDTO.MonthlyExpenseTotalDTO.builder()
+                        .month(month)
+                        .totalAmount(amountMap.getOrDefault(month, 0L))
+                        .build())
+                .collect(Collectors.toList());
+
+        return ExpenseResponseDTO.GetMonthlyExpenseResultDTOList.builder()
+                .memberId(memberId)
+                .monthlyExpenseDTOList(fullList)
                 .build();
     }
 }

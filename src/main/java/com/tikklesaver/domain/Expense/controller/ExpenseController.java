@@ -113,10 +113,23 @@ public class ExpenseController {
         List<Expense> expenseList =
                 expenseQueryService.getDailyExpense(viewer, memberId, year, month);
 
-        System.out.println("DEBUG: toGetDailyExpenseResultDTO 시작");
-        System.out.println("expenseList size: " + expenseList.size());
-        System.out.println("DEBUG: toGetDailyExpenseResultDTO 끝");
-
         return ApiResponse.onSuccess(ExpenseConverter.toGetDailyExpenseResultDTO(expenseList, memberId));
     }
+
+    // 특정 년도의 월별 지출 총 금액 리스트 조회 API
+    @GetMapping("/monthlyTotalExpense")
+    @Operation(summary = "특정 년도의 월별 지출 총 금액 리스트 조회 API")
+    @Parameters({
+            @Parameter(name = "year", description = "조회할 연도 (ex. 2025)", required = true)
+    })
+    public ApiResponse<ExpenseResponseDTO.GetMonthlyExpenseResultDTOList> getMonthlyExpense(
+            @CurrentMember Member member,
+            @RequestParam int year) {
+
+        List<ExpenseResponseDTO.MonthlyExpenseTotalDTO> expenseList =
+                expenseQueryService.getMonthlyExpense(member.getId(), year);
+
+        return ApiResponse.onSuccess(ExpenseConverter.toGetMonthlyExpenseResultDTO(expenseList, member.getId()));
+    }
+
 }

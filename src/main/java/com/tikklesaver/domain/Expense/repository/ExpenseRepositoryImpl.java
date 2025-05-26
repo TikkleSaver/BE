@@ -2,6 +2,7 @@ package com.tikklesaver.domain.Expense.repository;
 
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tikklesaver.domain.Expense.dto.ExpenseResponseDTO;
@@ -112,6 +113,30 @@ public class ExpenseRepositoryImpl implements ExpenseRepositoryCustom {
                         qExpense.expenseDate.lt(nextMonthStartDate) // < 다음 달 1일
                 )
                 .orderBy(qExpense.expenseDate.asc())
+                .fetch();
+    }
+
+    // 특정 년도의 월별 지출 총 금액 리스트 조회
+    @Override
+    public List<ExpenseResponseDTO.MonthlyExpenseTotalDTO> findMonthlyExpenseTotalByMemberIdAndYear(Long memberId, int year) {
+        QExpense expense = QExpense.expense;
+
+        return jpaQueryFactory
+                .select(Projections.constructor(
+                        ExpenseResponseDTO.MonthlyExpenseTotalDTO.class,
+                        Expressions.numberTemplate(Integer.class, "MONTH({0})", expense.expenseDate).as("month"),
+                        expense.cost.sum().as("totalAmount")
+                ))
+                .from(expense)
+                .where(
+                        expense.member.id.eq(memberId),
+                        expense.expenseDate.between(
+                                java.sql.Date.valueOf(LocalDate.of(year, 1, 1)),
+                                java.sql.Date.valueOf(LocalDate.of(year, 12, 31))
+                        )
+                )
+                .groupBy(Expressions.numberTemplate(Integer.class, "MONTH({0})", expense.expenseDate))
+                .orderBy(Expressions.numberTemplate(Integer.class, "MONTH({0})", expense.expenseDate).asc())
                 .fetch();
     }
 }

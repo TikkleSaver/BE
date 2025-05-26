@@ -2,6 +2,7 @@ package com.tikklesaver.domain.Expense.service;
 
 import com.tikklesaver.domain.Category.repository.CategoryRepository;
 import com.tikklesaver.domain.Expense.dto.ExpenseRequestDTO;
+import com.tikklesaver.domain.Expense.dto.ExpenseResponseDTO;
 import com.tikklesaver.domain.Expense.entity.Expense;
 import com.tikklesaver.domain.Expense.repository.ExpenseRepository;
 import com.tikklesaver.domain.Expense.repository.ExpenseRepositoryCustom;
@@ -133,5 +134,13 @@ public class ExpenseQueryServiceImpl implements ExpenseQueryService {
         this.findById(memberId);
 
         return expenseRepositoryCustom.findDailyExpenseTotalByMemberIdAndYearMonth(memberId, year, month);
+    }
+
+    // 특정 년도의 월별 지출 총 금액 리스트 조회
+    @Override
+    @Transactional
+    public List<ExpenseResponseDTO.MonthlyExpenseTotalDTO> getMonthlyExpense(Long memberId, int year) {
+        this.findById(memberId);
+        return expenseRepositoryCustom.findMonthlyExpenseTotalByMemberIdAndYear(memberId, year);
     }
 }

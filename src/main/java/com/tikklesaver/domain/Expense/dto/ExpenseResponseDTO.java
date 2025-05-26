@@ -111,4 +111,24 @@ public class ExpenseResponseDTO {
         Long memberId;
         List<GetDailyExpenseResultDTO> dailyExpenseDTOList;
     }
+
+    // 월별 지출 총액 조회 - 하루
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MonthlyExpenseTotalDTO {
+        int month;
+        Long totalAmount;
+    }
+
+    // 월별 지출 총액 조회 - 한달(하루 리스트)
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetMonthlyExpenseResultDTOList {
+        Long memberId;
+        List<MonthlyExpenseTotalDTO> monthlyExpenseDTOList;
+    }
 }
