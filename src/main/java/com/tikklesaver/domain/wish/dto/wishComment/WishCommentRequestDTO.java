@@ -12,4 +12,12 @@ public class WishCommentRequestDTO {
         @NotEmpty
         String contents;
     }
+
+    // 위시 댓글 수정
+    @Getter
+    public static class UpdateWishCommentDTO {
+
+        @NotEmpty
+        String contents;
+    }
 }

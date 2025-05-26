@@ -7,4 +7,7 @@ public interface WishCommentCommandService {
 
     // 위시 댓글 생성
     WishComment createWishComment(Long memberId, Long wishId, WishCommentRequestDTO.CreateWishCommentDTO request);
+
+    // 위시 댓글 수정
+    WishComment updateWishComment(Long memberId, Long commentId, WishCommentRequestDTO.UpdateWishCommentDTO request);
 }
