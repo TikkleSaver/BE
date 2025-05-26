@@ -53,4 +53,18 @@ public class WIshCommentCommandServiceImpl implements WishCommentCommandService 
         return wishCommentRepository.save(wishComment);
     }
 
+
+    // 위시 댓글 삭제
+    @Override
+    public void deleteWishComment(Long memberId, Long commentId){
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+
+        WishComment wishComment = wishCommentRepository.findById(commentId)
+                .orElseThrow(() -> new WishCommentHandler(ErrorStatus.WISH_COMMENT_NOT_FOUND));
+
+        wishCommentRepository.delete(wishComment);
+    }
+
 }
