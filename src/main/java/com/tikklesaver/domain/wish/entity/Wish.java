@@ -52,4 +52,8 @@ public class Wish extends BaseEntity {
     // 투표 (양방향 매핑)
     @OneToMany(mappedBy = "wish", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Vote> votes = new HashSet<>();
+
+    // 위시 댓글 (양방향 매핑)
+    @OneToMany(mappedBy = "wish", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<WishComment> wishComments = new HashSet<>();
 }
