@@ -152,7 +152,7 @@ public class ExpenseConverter {
     }
 
     // 특정 사용자의 특정 달 지출 총 금액 조회
-    public static ExpenseResponseDTO.GetTotalExpenseByMonthResultDTO toGetgetTotalExpenseByMonthResultDTO(
+    public static ExpenseResponseDTO.GetTotalExpenseByMonthResultDTO toGetTotalExpenseByMonthResultDTO(
             Long memberId, int year, int month, Long totalAmount) {
 
         return ExpenseResponseDTO.GetTotalExpenseByMonthResultDTO.builder()
@@ -160,6 +160,20 @@ public class ExpenseConverter {
                 .year(year)
                 .month(month)
                 .totalAmount(totalAmount)
+                .build();
+    }
+
+
+    // 특정 사용자의 특정 달 지출 TOP3 카테고리 조회
+    public static ExpenseResponseDTO.GetExpenseTop3CategoryResultDTO toGetTotalExpenseTop3Category(ExpenseResponseDTO.GetExpenseTop3CategoryResultDTO result) {
+
+        return ExpenseResponseDTO.GetExpenseTop3CategoryResultDTO.builder()
+                .memberId(result.getMemberId())
+                .category1(result.getCategory1())
+                .category2(result.getCategory2())
+                .category3(result.getCategory3())
+                .year(result.getYear())
+                .month(result.getMonth())
                 .build();
     }
 }

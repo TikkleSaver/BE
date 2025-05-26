@@ -192,4 +192,44 @@ public class ExpenseRepositoryImpl implements ExpenseRepositoryCustom {
 
         return total != null ? total : 0L;
     }
+
+    // 특정 사용자의 특정 달 지출 TOP3 카테고리 조회
+    @Override
+    public ExpenseResponseDTO.GetExpenseTop3CategoryResultDTO findExpenseTop3Categories(Long memberId, int year, int month){
+        LocalDate startLocalDate = LocalDate.of(year, month, 1);
+        LocalDate nextMonthStartLocalDate = startLocalDate.plusMonths(1);
+
+        Date startDate = java.sql.Date.valueOf(startLocalDate);
+        Date nextMonthStartDate = java.sql.Date.valueOf(nextMonthStartLocalDate);
+
+        List<Long> topCategories = jpaQueryFactory
+                .select(qCategory.id)
+                .from(qExpense)
+                .join(qExpense.category, qCategory)
+                .where(
+                        qExpense.member.id.eq(memberId),
+                        qExpense.expenseDate.goe(startDate),
+                        qExpense.expenseDate.lt(nextMonthStartDate)
+                )
+                .groupBy(qCategory.id, qCategory.category_name)
+                .orderBy(
+                        qExpense.cost.sum().coalesce(0L).desc().nullsLast(),  // 금액 내림차순
+                        qCategory.category_name.asc()                        // 이름 오름차순 (동점 처리용)
+                )
+                .limit(3)
+                .fetch();
+
+        Long category1 = (!topCategories.isEmpty()) ? topCategories.get(0) : 0;
+        Long category2 = (topCategories.size() > 1) ? topCategories.get(1) : 0;
+        Long category3 = (topCategories.size() > 2) ? topCategories.get(2) : 0;
+
+        return ExpenseResponseDTO.GetExpenseTop3CategoryResultDTO.builder()
+                .memberId(memberId)
+                .category1(category1)
+                .category2(category2)
+                .category3(category3)
+                .year(year)
+                .month(month)
+                .build();
+    }
 }

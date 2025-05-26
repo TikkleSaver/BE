@@ -16,4 +16,5 @@ public interface ExpenseRepositoryCustom {
     List<ExpenseResponseDTO.MonthlyExpenseTotalDTO> findMonthlyExpenseTotalByMemberIdAndYear(Long memberId, int year);
     List<ExpenseResponseDTO.TotalExpenseByCategoryResultDTO> findExpenseTotalByMemberIdAndYearMonthCategory(Long memberId, int year, int month);
     Long findExpenseTotalByMemberIdAndYearMonth(Long memberId, int year, int month);
+    ExpenseResponseDTO.GetExpenseTop3CategoryResultDTO findExpenseTop3Categories(Long memberId, int year, int month);
 }

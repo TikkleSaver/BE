@@ -165,4 +165,18 @@ public class ExpenseResponseDTO {
         int month;
         Long totalAmount;
     }
+
+    // 특정 사용자의 특정 달 지출 TOP3 카테고리 조회
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetExpenseTop3CategoryResultDTO {
+        Long memberId;
+        Long category1;
+        Long category2;
+        Long category3;
+        int year;
+        int month;
+    }
 }

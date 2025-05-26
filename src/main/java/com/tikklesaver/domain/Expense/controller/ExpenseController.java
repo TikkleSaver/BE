@@ -164,7 +164,24 @@ public class ExpenseController {
 
         Long totalAmount = expenseQueryService.getTotalExpenseByMonth(member.getId(), year, month);
 
-        return ApiResponse.onSuccess(ExpenseConverter.toGetgetTotalExpenseByMonthResultDTO(member.getId(), year, month, totalAmount));
+        return ApiResponse.onSuccess(ExpenseConverter.toGetTotalExpenseByMonthResultDTO(member.getId(), year, month, totalAmount));
+    }
+
+    // 특정 사용자의 특정 달 지출 TOP3 카테고리 조회
+    @GetMapping("/month/category/top3")
+    @Operation(summary = "특정 사용자의 특정 달 지출 TOP3 카테고리 조회 API")
+    @Parameters({
+            @Parameter(name = "year", description = "조회할 연도 (ex. 2025)", required = true),
+            @Parameter(name = "month", description = "조회할 월 (1~12)", required = true)
+    })
+    public ApiResponse<ExpenseResponseDTO.GetExpenseTop3CategoryResultDTO> getTotalExpenseTop3Category(
+            @CurrentMember Member member,
+            @RequestParam int year,
+            @RequestParam int month) {
+
+        ExpenseResponseDTO.GetExpenseTop3CategoryResultDTO result = expenseQueryService.getTotalExpenseTop3Category(member.getId(), year, month);
+
+        return ApiResponse.onSuccess(ExpenseConverter.toGetTotalExpenseTop3Category(result));
     }
 
 }
