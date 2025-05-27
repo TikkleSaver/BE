@@ -143,4 +143,11 @@ public class MemberController {
         Long goalCost =  memberCommandService.getExpenseGoalCost(member.getId());
         return ApiResponse.onSuccess(MemberConverter.toGetMemberGoalCostDTO(member.getId(), goalCost));
     }
+
+    @GetMapping("/users/search")
+    public ApiResponse<List<MemberResponseDto.MemberInfoDTO>> searchMembers(
+            @RequestParam String keyword) {
+        List<Member> members = memberCommandService.searchByNicknameKeyword(keyword);
+        return ApiResponse.onSuccess(MemberConverter.toMemberInfoListDTO(members));
+    }
 }

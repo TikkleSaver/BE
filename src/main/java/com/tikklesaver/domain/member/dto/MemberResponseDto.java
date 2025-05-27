@@ -13,16 +13,23 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class MemberResponseDto {
+//    @Builder
+//    @Getter
+//    @NoArgsConstructor
+//    @AllArgsConstructor
+//    public static class MemberListDTO {
+//        List<MemberInfoDTO> memberList;
+//    }
 
-        @Builder
-        @Getter
-        @NoArgsConstructor
-        @AllArgsConstructor
-        public static class MemberInfoDTO {
-            Long id;
-            String nickname;
-            String profileUrl;
-        }
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MemberInfoDTO {
+        Long id;
+        String nickname;
+        String profileUrl;
+    }
 
     @Builder
     @Getter
