@@ -22,7 +22,7 @@ public class WishCommentQueryServiceImpl implements WishCommentQueryService {
 
     // 위시 댓글 목록 조회
     @Override
-    public List<WishCommentResponseDTO.WishCommentPreviewDTO> getWishCommentList(Long memberId, Long wishId){
+    public List<WishCommentResponseDTO.WishCommentPreviewDTO> getWishCommentList(Long wishId){
 
         Wish wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new WishCommentHandler(ErrorStatus.WISH_NOT_FOUND));

@@ -31,6 +31,7 @@ public enum ErrorStatus implements BaseErrorCode {
     
     // 위시 댓글
     WISH_COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "WISHCOMMENT4001", "존재하지 않는 위시 댓글입니다."),
+    WISH_COMMENT_NOT_AUTHOR(HttpStatus.FORBIDDEN, "WISHCOMMENT4002", "해당 위시 댓글의 작성자가 아닙니다."),
     
 
     // 지출 피드백

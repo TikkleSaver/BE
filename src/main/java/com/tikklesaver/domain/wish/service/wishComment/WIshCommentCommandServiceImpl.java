@@ -24,14 +24,10 @@ public class WIshCommentCommandServiceImpl implements WishCommentCommandService 
 
     // 위시 댓글 생성
     @Override
-    public WishComment createWishComment(Long memberId, Long wishId, WishCommentRequestDTO.CreateWishCommentDTO request){
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+    public WishComment createWishComment(Member member, Long wishId, WishCommentRequestDTO.CreateWishCommentDTO request){
 
         Wish wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new WishCommentHandler(ErrorStatus.WISH_NOT_FOUND));
-
 
         WishComment newWishComment = WishCommentConverter.toWishComment(member, wish, request);
         return wishCommentRepository.save(newWishComment);
@@ -40,13 +36,14 @@ public class WIshCommentCommandServiceImpl implements WishCommentCommandService 
 
     // 위시 댓글 수정
     @Override
-    public WishComment updateWishComment(Long memberId, Long commentId, WishCommentRequestDTO.UpdateWishCommentDTO request){
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+    public WishComment updateWishComment(Member member, Long commentId, WishCommentRequestDTO.UpdateWishCommentDTO request){
 
         WishComment wishComment = wishCommentRepository.findById(commentId)
                 .orElseThrow(() -> new WishCommentHandler(ErrorStatus.WISH_COMMENT_NOT_FOUND));
+
+        // 작성자 일치 유무
+        if (wishComment.getMember() != member)
+            throw new WishCommentHandler(ErrorStatus.WISH_COMMENT_NOT_AUTHOR);
 
         wishComment.setContents(request.getContents());
 
@@ -56,13 +53,14 @@ public class WIshCommentCommandServiceImpl implements WishCommentCommandService 
 
     // 위시 댓글 삭제
     @Override
-    public void deleteWishComment(Long memberId, Long commentId){
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+    public void deleteWishComment(Member member, Long commentId){
 
         WishComment wishComment = wishCommentRepository.findById(commentId)
                 .orElseThrow(() -> new WishCommentHandler(ErrorStatus.WISH_COMMENT_NOT_FOUND));
+
+        // 작성자 일치 유무
+        if (wishComment.getMember() != member)
+            throw new WishCommentHandler(ErrorStatus.WISH_COMMENT_NOT_AUTHOR);
 
         wishCommentRepository.delete(wishComment);
     }
