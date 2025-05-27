@@ -9,6 +9,7 @@ import lombok.*;
 
 @Builder
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
@@ -39,7 +40,6 @@ public class Product extends BaseEntity {
     private String image;
     
     // 대분류
-    @Column(nullable = false)
     private String category1;
     
     // 중분류

@@ -1,10 +1,8 @@
 package com.tikklesaver.domain.member.entity;
 
+import com.tikklesaver.domain.Category.entity.Category;
 import com.tikklesaver.global.common.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Builder
@@ -18,7 +16,12 @@ public class MemberCategory extends BaseEntity {
     private Long id;
 
     // 회원 ID (FK)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     // 카테고리 ID (FK)
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

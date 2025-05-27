@@ -13,8 +13,6 @@ public class ExpenseRequestDTO {
     @Setter
     @Getter
     public static class CreateExpenseRequestDTO {
-        @NotNull
-        Long memberId;
         @NotEmpty
         String expenseName;
         @NotEmpty
@@ -32,8 +30,6 @@ public class ExpenseRequestDTO {
     @Setter
     @Getter
     public static class UpdateExpenseRequestDTO {
-        @NotNull
-        Long memberId;
         @NotNull
         Long expenseId;
         String expenseName;
