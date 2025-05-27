@@ -6,7 +6,7 @@ import com.tikklesaver.domain.Challenge.converter.ChallengeConverter;
 import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeResponseDTO;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
 import com.tikklesaver.domain.Challenge.entity.enums.Status;
-import com.tikklesaver.domain.Challenge.repository.ChallengeRepository.ChallengeRepository;
+import com.tikklesaver.domain.Challenge.repository.challenge.ChallengeRepository;
 import com.tikklesaver.domain.Challenge.repository.ChallengeScrapRepository;
 import com.tikklesaver.domain.Challenge.repository.JoinChallengeRepository;
 import jakarta.persistence.EntityNotFoundException;

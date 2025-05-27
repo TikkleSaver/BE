@@ -1,12 +1,10 @@
 package com.tikklesaver.domain.member.service;
 import com.tikklesaver.domain.Category.entity.Category;
 import com.tikklesaver.domain.Category.repository.CategoryRepository;
-import com.tikklesaver.domain.Challenge.converter.ChallengeConverter;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
 import com.tikklesaver.domain.Challenge.entity.ChallengeScraped;
-import com.tikklesaver.domain.Challenge.repository.ChallengeRepository.ChallengeRepository;
+import com.tikklesaver.domain.Challenge.repository.challenge.ChallengeRepository;
 import com.tikklesaver.domain.Challenge.repository.ChallengeScrapRepository;
-import com.tikklesaver.domain.Expense.entity.Expense;
 import com.tikklesaver.domain.member.dto.CustomUserInfoDto;
 import com.tikklesaver.domain.member.dto.LoginRequestDto;
 import com.tikklesaver.domain.member.dto.SignUpRequestDto;
@@ -26,14 +24,12 @@ import com.tikklesaver.global.jwt.util.JwtUtil;
 import com.tikklesaver.global.repository.UuidRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;

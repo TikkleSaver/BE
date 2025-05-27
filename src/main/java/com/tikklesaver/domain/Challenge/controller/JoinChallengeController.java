@@ -7,6 +7,8 @@ import com.tikklesaver.domain.Challenge.entity.JoinChallenge;
 import com.tikklesaver.domain.Challenge.service.Challenge.ChallengeQueryService;
 import com.tikklesaver.domain.Challenge.service.JoinChallenge.JoinChallengeCommandService;
 import com.tikklesaver.domain.Challenge.service.JoinChallenge.JoinChallengeQueryService;
+import com.tikklesaver.domain.member.entity.Member;
+import com.tikklesaver.global.annotation.CurrentMember;
 import com.tikklesaver.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -26,11 +28,11 @@ public class JoinChallengeController {
 
     @PostMapping("/{challengeId}")
     @Operation(summary = "챌린지 참여 요청 API")
-    public ApiResponse<JoinChallengeResponseDTO> challengeScrap(@PathVariable(name = "challengeId") Long challengeId){
+    public ApiResponse<JoinChallengeResponseDTO> challengeScrap(
+            @CurrentMember Member member,
+            @PathVariable(name = "challengeId") Long challengeId){
 
-        //임시 memberId
-        Long memberId = 2L;
-        JoinChallenge joinChallenge = joinChallengeCommandService.joinChallenge(memberId,challengeId);
+        JoinChallenge joinChallenge = joinChallengeCommandService.joinChallenge(member.getId(),challengeId);
         return ApiResponse.onSuccess(ChallengeConverter.toJoinChallengeResultDTO(joinChallenge));
     }
 
