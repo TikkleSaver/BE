@@ -1,4 +1,4 @@
-package com.tikklesaver.domain.Challenge.repository.ChallengeRepository;
+package com.tikklesaver.domain.Challenge.repository.challenge;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;

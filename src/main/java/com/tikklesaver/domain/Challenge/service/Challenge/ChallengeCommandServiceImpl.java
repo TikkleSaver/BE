@@ -5,11 +5,12 @@ import com.tikklesaver.domain.Category.repository.CategoryRepository;
 import com.tikklesaver.domain.Challenge.converter.ChallengeConverter;
 import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeRequestDTO;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
-import com.tikklesaver.domain.Challenge.repository.ChallengeRepository.ChallengeRepository;
+import com.tikklesaver.domain.Challenge.entity.JoinChallenge;
+import com.tikklesaver.domain.Challenge.entity.enums.Status;
+import com.tikklesaver.domain.Challenge.repository.JoinChallengeRepository;
+import com.tikklesaver.domain.Challenge.repository.challenge.ChallengeRepository;
 import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.domain.member.repository.MemberRepository;
-import com.tikklesaver.global.apiPayload.code.status.ErrorStatus;
-import com.tikklesaver.global.apiPayload.exception.handler.ChallengeHandler;
 import com.tikklesaver.global.aws.s3.AmazonS3Manager;
 import com.tikklesaver.global.common.Uuid;
 import com.tikklesaver.global.repository.UuidRepository;
@@ -29,6 +30,7 @@ public class ChallengeCommandServiceImpl implements ChallengeCommandService {
     private final CategoryRepository categoryRepository;
     private final AmazonS3Manager amazonS3Manager;
     private final UuidRepository uuidRepository;
+    private final JoinChallengeRepository joinChallengeRepository;
 
     @Override
     public Challenge createChallenge(Long memberId, ChallengeRequestDTO.CreateChallengeDTO request, MultipartFile file) {
@@ -49,14 +51,20 @@ public class ChallengeCommandServiceImpl implements ChallengeCommandService {
             imageUrl = amazonS3Manager.uploadFile(amazonS3Manager.generateChallengesKeyName(savedUuid),file);
         }
 
-        if (request.getTitle() == null || request.getTitle().isEmpty()) {
-            throw new ChallengeHandler(ErrorStatus.TITLE_NOT_PROVIDED);
-        }
-        if (request.getDescription() == null || request.getDescription().isEmpty()) {
-            throw new ChallengeHandler(ErrorStatus.DESCRIPTION_NOT_PROVIDED);
-        }
-
         Challenge newChallenge = ChallengeConverter.toChallenge(member, request,category,imageUrl);
-        return challengeRepository.save(newChallenge);
+        Challenge savedChallenge = challengeRepository.save(newChallenge);
+
+
+        JoinChallenge leaderJoin = JoinChallenge.builder()
+                .challenge(savedChallenge)
+                .member(member)
+                .status(Status.JOINED)
+                .isLeader(true)  
+                .build();
+
+        joinChallengeRepository.save(leaderJoin);
+
+        return savedChallenge;
+
     }
 }

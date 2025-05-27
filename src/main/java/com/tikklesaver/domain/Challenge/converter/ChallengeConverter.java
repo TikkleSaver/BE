@@ -5,8 +5,11 @@ import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeRequestDTO;
 import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeResponseDTO;
 import com.tikklesaver.domain.Challenge.dto.challengeScrap.ChallengeScrapResponseDTO;
 import com.tikklesaver.domain.Challenge.dto.joinChallenge.JoinChallengeResponseDTO;
+import com.tikklesaver.domain.Challenge.dto.missionProof.MissionProofRequestDTO;
+import com.tikklesaver.domain.Challenge.dto.missionProof.MissionProofResponseDTO;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
 import com.tikklesaver.domain.Challenge.entity.JoinChallenge;
+import com.tikklesaver.domain.Challenge.entity.MissionProof;
 import com.tikklesaver.domain.Challenge.entity.enums.PublicStatus;
 import com.tikklesaver.domain.Challenge.entity.enums.Status;
 import com.tikklesaver.domain.member.entity.Member;
@@ -95,6 +98,7 @@ public class ChallengeConverter {
         return JoinChallenge.builder()
                 .challenge(challenge)
                 .member(member)
+                .isLeader(false)
                 .status(Status.JOINED)
                 .build();
     }
@@ -103,6 +107,7 @@ public class ChallengeConverter {
         return JoinChallenge.builder()
                 .challenge(challenge)
                 .member(member)
+                .isLeader(false)
                 .status(Status.PENDING)
                 .build();
     }
@@ -115,6 +120,47 @@ public class ChallengeConverter {
                 .status(joinChallenge.getStatus())
                 .createdAt(LocalDateTime.now())
                 .build();
+    }
+
+    public static MissionProof toMissionProof(Member member, Challenge challenge, MissionProofRequestDTO.CreateMissionDTO request, String imageUrl) {
+        return MissionProof.builder()
+                .member(member)
+                .challenge(challenge)
+                .content(request.getContent())
+                .imageUrl(imageUrl)
+                .build();
+    }
+
+    public static MissionProofResponseDTO.missionProofResultDTO toMissionProofResultDTO(MissionProof missionProof) {
+        return MissionProofResponseDTO.missionProofResultDTO.builder()
+                .missionProofId(missionProof.getId())
+                .content(missionProof.getContent())
+                .imageUrl(missionProof.getImageUrl())
+                .createdAt(LocalDateTime.now())
+                .build();
+    }
+
+    public static ChallengeResponseDTO.DetailChallengerTabListResponseDTO detailChallengerTabListDTO(Page<JoinChallenge> memberList) {
+        List<ChallengeResponseDTO.DetailChallengerTabResponseDTO> memberDTOList = memberList.stream().map(ChallengeConverter::detailChallengerTabDTO).collect(Collectors.toList());
+
+        return ChallengeResponseDTO.DetailChallengerTabListResponseDTO.builder()
+                .isFirst(memberList.isFirst())
+                .isLast(memberList.isLast())
+                .totalPage(memberList.getTotalPages())
+                .totalElements(memberList.getTotalElements())
+                .listSize(memberDTOList.size())
+                .memberList(memberDTOList)
+                .build();
+    }
+
+
+    public static ChallengeResponseDTO.DetailChallengerTabResponseDTO detailChallengerTabDTO(JoinChallenge joinChallenge) {
+        return ChallengeResponseDTO.DetailChallengerTabResponseDTO.builder()
+                .memberId(joinChallenge.getMember().getId())
+                .memberName(joinChallenge.getMember().getNickname())
+                .memberImgUrl(joinChallenge.getMember().getProfileUrl())
+                .build();
+
     }
 
 

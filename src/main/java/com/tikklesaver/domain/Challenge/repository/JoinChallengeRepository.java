@@ -2,6 +2,9 @@ package com.tikklesaver.domain.Challenge.repository;
 
 import com.tikklesaver.domain.Challenge.entity.JoinChallenge;
 import com.tikklesaver.domain.Challenge.entity.enums.Status;
+import com.tikklesaver.domain.member.entity.Member;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -29,5 +32,12 @@ public interface JoinChallengeRepository extends JpaRepository<JoinChallenge, Lo
 
     Integer countJoinChallengeByChallengeIdAndStatus(Long challengeId, Status status);
 
+
     int countByMemberId(Long memberId);
+
+
+    Page<JoinChallenge> findByChallengeIdAndStatus(Long challengeId, Status status, Pageable pageable);
+
+    boolean existsByChallengeIdAndMemberId(Long challengeId, Long memberId);
+
 }

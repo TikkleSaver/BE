@@ -1,4 +1,4 @@
-package com.tikklesaver.domain.Challenge.controller;
+package com.tikklesaver.domain.challenge.controller;
 
 import com.tikklesaver.domain.Challenge.converter.ChallengeConverter;
 import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeResponseDTO;
@@ -6,11 +6,17 @@ import com.tikklesaver.domain.Challenge.dto.joinChallenge.JoinChallengeResponseD
 import com.tikklesaver.domain.Challenge.entity.JoinChallenge;
 import com.tikklesaver.domain.Challenge.service.Challenge.ChallengeQueryService;
 import com.tikklesaver.domain.Challenge.service.JoinChallenge.JoinChallengeCommandService;
+import com.tikklesaver.domain.Challenge.service.JoinChallenge.JoinChallengeQueryService;
+import com.tikklesaver.domain.member.entity.Member;
+import com.tikklesaver.global.annotation.CurrentMember;
 import com.tikklesaver.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/join-challenges")
@@ -18,14 +24,15 @@ public class JoinChallengeController {
 
     private final JoinChallengeCommandService joinChallengeCommandService;
     private final ChallengeQueryService challengeQueryService;
+    private final JoinChallengeQueryService joinChallengeQueryService;
 
     @PostMapping("/{challengeId}")
     @Operation(summary = "챌린지 참여 요청 API")
-    public ApiResponse<JoinChallengeResponseDTO> challengeScrap(@PathVariable(name = "challengeId") Long challengeId){
+    public ApiResponse<JoinChallengeResponseDTO> challengeScrap(
+            @CurrentMember Member member,
+            @PathVariable(name = "challengeId") Long challengeId){
 
-        //임시 memberId
-        Long memberId = 2L;
-        JoinChallenge joinChallenge = joinChallengeCommandService.joinChallenge(memberId,challengeId);
+        JoinChallenge joinChallenge = joinChallengeCommandService.joinChallenge(member.getId(),challengeId);
         return ApiResponse.onSuccess(ChallengeConverter.toJoinChallengeResultDTO(joinChallenge));
     }
 
@@ -40,4 +47,15 @@ public class JoinChallengeController {
         return ApiResponse.onSuccess(challengePreview);
 
     }
+
+    @GetMapping("/{challengeId}/challenger-list")
+    @Operation(summary = "챌린지 소속 챌린저 조회 API ")
+    public ApiResponse<ChallengeResponseDTO.DetailChallengerTabListResponseDTO> getChallengerList(@PathVariable(name = "challengeId") Long challengeId, @RequestParam(name="page")Integer page){
+        
+        Page<JoinChallenge> challengerList = joinChallengeQueryService.getChallengeMembers(challengeId, page);
+
+        return ApiResponse.onSuccess(ChallengeConverter.detailChallengerTabListDTO(challengerList));
+
+    }
+
 }

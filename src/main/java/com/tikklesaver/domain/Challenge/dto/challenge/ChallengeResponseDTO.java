@@ -1,6 +1,7 @@
 package com.tikklesaver.domain.Challenge.dto.challenge;
 
 import com.tikklesaver.domain.Challenge.entity.enums.Status;
+import com.tikklesaver.domain.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -69,5 +70,34 @@ public class ChallengeResponseDTO {
 
 
     }
+
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DetailChallengerTabListResponseDTO {
+
+        List<DetailChallengerTabResponseDTO> memberList;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
+
+    }
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DetailChallengerTabResponseDTO {
+
+        private Long memberId;
+        private String memberImgUrl;
+        private String memberName;
+
+    }
+
+
 
 }
