@@ -34,6 +34,21 @@ public class FriendServiceImpl implements FriendService {
     public List<FriendResponseDto.FriendDTO> getFriends(Member member) {
         return friendRepository.findAllByMemberId(member.getId());
     }
+
+    @Override
+    public void deleteFriend(Member member, Long id) {
+        Friend friend = friendRepository.findById(id)
+                .orElseThrow(() -> new FriendRequestHandler(ErrorStatus.FRIEND_NOT_FOUND));
+
+        // 현재 사용자가 friend 관계의 당사자인지 확인
+        if (!friend.getMember1().getId().equals(member.getId()) &&
+                !friend.getMember2().getId().equals(member.getId())) {
+            throw new FriendRequestHandler(ErrorStatus.FRIEND_PERMISSION_DENIED);
+        }
+
+        friendRepository.delete(friend);
+    }
+
 }
 
 
