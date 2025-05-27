@@ -16,12 +16,13 @@ public class FriendResponseDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class FriendProfileDTO {
-        Long id; //친구 테이블 id
-        Long myId;
-        Long userId; //친구 id 가 있으면 친구인거고.
+        Long memberId;
         String nickname;
         String profileUrl;
-        FriendReqDTO friendReqInfo;
+
+        Long friendId; //친구 테이블 id 가 있으면 친구인거임.
+        FriendReqDTO friendReqInfo;//이게 있으면 둘 중 하나가 요청한 상태인 것임.
+
         int wishListNum;
         int challengeNum;
         int friendNum;

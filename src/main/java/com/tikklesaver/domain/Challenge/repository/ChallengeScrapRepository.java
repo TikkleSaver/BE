@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface ChallengeScrapRepository extends JpaRepository<ChallengeScraped, Long> {
     boolean existsByChallengeIdAndMemberId(Long challengeId, Long memberId);
     Optional<ChallengeScraped> findByChallengeIdAndMemberId(Long challengeId, Long memberId);
-    List<ChallengeScraped> findAllByMember(Member member);
+    List<ChallengeScraped> findAllByMemberId(Long memberId);
 }

@@ -43,4 +43,22 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
                 .fetch();
     }
 
+    @Override
+    public Long findFriendIdByMembers(Long memberId, Long userId) {
+        Long smaller = Math.min(memberId, userId);
+        Long bigger = Math.max(memberId, userId);
+
+        Long result = jpaQueryFactory
+                .select(friend.id)
+                .from(friend)
+                .where(
+                        friend.member1.id.eq(smaller)
+                                .and(friend.member2.id.eq(bigger))
+                )
+                .fetchOne();
+
+        return result != null ? result : 0L;
+    }
+
+
 }

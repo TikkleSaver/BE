@@ -10,4 +10,5 @@ public interface FriendRepositoryCustom {
     // 나의 위시리스트 목록 구매 예정 조회
     List<FriendResponseDto.FriendDTO> findAllByMemberId(Long memberId);
 
+    Long findFriendIdByMembers(Long memberId, Long userId);
 }

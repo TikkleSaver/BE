@@ -109,11 +109,10 @@ public class MemberController {
     //내 정보 조회
     @GetMapping("/users")
     public ApiResponse<MemberResponseDto.MemberProfileDTO> getProfile(@CurrentMember Member member) throws Exception {
-        int wishListNum = memberCommandService.getWishListCount(member);
-        int challengeNum = memberCommandService.getChallengeCount(member);
-        int friendNum = memberCommandService.getFriendCount(member);
-        List<Challenge> challengeScrapedList = memberCommandService.getScrappedChallenges(member);
-//        List<Challenge> challengeScrapedList =  new ArrayList<>();
+        int wishListNum = memberCommandService.getWishListCount(member.getId());
+        int challengeNum = memberCommandService.getChallengeCount(member.getId());
+        int friendNum = memberCommandService.getFriendCount(member.getId());
+        List<Challenge> challengeScrapedList = memberCommandService.getScrappedChallenges(member.getId());
 
         return ApiResponse.onSuccess(
                 MemberConverter.toMemberProfileDTO(member, wishListNum,

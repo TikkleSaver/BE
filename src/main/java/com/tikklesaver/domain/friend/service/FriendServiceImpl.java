@@ -49,6 +49,11 @@ public class FriendServiceImpl implements FriendService {
         friendRepository.delete(friend);
     }
 
+    @Override
+    public Long getFriendId(Member member, Long userId) {
+        return friendRepository.findFriendIdByMembers(member.getId(), userId);
+    }
+
 }
 
 

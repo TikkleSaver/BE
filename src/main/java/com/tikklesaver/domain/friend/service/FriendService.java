@@ -12,4 +12,6 @@ public interface FriendService {
     List<FriendResponseDto.FriendDTO> getFriends(Member member);
 
     void deleteFriend(Member member, Long id);
+
+    Long getFriendId(Member member, Long userId);
 }

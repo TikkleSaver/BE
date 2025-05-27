@@ -1,5 +1,6 @@
 package com.tikklesaver.domain.friendRequest.service;
 
+import com.tikklesaver.domain.friend.dto.FriendResponseDto;
 import com.tikklesaver.domain.friend.entity.Friend;
 import com.tikklesaver.domain.friend.repository.FriendRepository;
 import com.tikklesaver.domain.friendRequest.entity.FriendRequest;
@@ -27,6 +28,7 @@ public class FriendRequestServiceImpl implements FriendRequestService {
     private final MemberRepository memberRepository;
     private final FriendReqRepository friendRequestRepository;
     private final FriendRepository friendRepository;
+    public static final FriendResponseDto.FriendReqDTO EMPTY = new FriendResponseDto.FriendReqDTO(null, null, null);
 
     @Override
     public void addFriendRequest(Member sender, Long receiverId) {
@@ -116,6 +118,14 @@ public class FriendRequestServiceImpl implements FriendRequestService {
     @Override
     public List<FriendRequest> getFriendRequests(Member member) {
         return friendRequestRepository.findByReceiver(member);
+    }
+
+    @Override
+    public FriendResponseDto.FriendReqDTO getFriendRequest(Member member, Long userId) {
+        return friendRequestRepository.findByMembers(member.getId(), userId)
+//                .orElse(EMPTY);
+                        .orElse(null);
+
     }
 
 }
