@@ -28,4 +28,6 @@ public interface JoinChallengeRepository extends JpaRepository<JoinChallenge, Lo
 
 
     Integer countJoinChallengeByChallengeIdAndStatus(Long challengeId, Status status);
+
+    boolean existsByChallengeIdAndMemberId(Long challengeId, Long memberId);
 }

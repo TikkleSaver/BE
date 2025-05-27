@@ -49,13 +49,6 @@ public class ChallengeCommandServiceImpl implements ChallengeCommandService {
             imageUrl = amazonS3Manager.uploadFile(amazonS3Manager.generateChallengesKeyName(savedUuid),file);
         }
 
-        if (request.getTitle() == null || request.getTitle().isEmpty()) {
-            throw new ChallengeHandler(ErrorStatus.TITLE_NOT_PROVIDED);
-        }
-        if (request.getDescription() == null || request.getDescription().isEmpty()) {
-            throw new ChallengeHandler(ErrorStatus.DESCRIPTION_NOT_PROVIDED);
-        }
-
         Challenge newChallenge = ChallengeConverter.toChallenge(member, request,category,imageUrl);
         return challengeRepository.save(newChallenge);
     }

@@ -4,7 +4,7 @@ import com.tikklesaver.domain.Category.repository.CategoryRepository;
 import com.tikklesaver.domain.Challenge.converter.ChallengeConverter;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
 import com.tikklesaver.domain.Challenge.entity.ChallengeScraped;
-import com.tikklesaver.domain.Challenge.repository.ChallengeRepository;
+import com.tikklesaver.domain.Challenge.repository.ChallengeRepository.ChallengeRepository;
 import com.tikklesaver.domain.Challenge.repository.ChallengeScrapRepository;
 import com.tikklesaver.domain.Expense.entity.Expense;
 import com.tikklesaver.domain.member.dto.CustomUserInfoDto;

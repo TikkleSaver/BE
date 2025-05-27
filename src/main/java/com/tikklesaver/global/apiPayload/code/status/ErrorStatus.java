@@ -42,9 +42,8 @@ public enum ErrorStatus implements BaseErrorCode {
     EXPENSE_NOT_FOUND(HttpStatus.NOT_FOUND, "EXPENSE4001", "ID에 해당하는 지출이 없습니다."),
     EXPENSE_AND_MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "EXPENSE4002", "멤버ID와 지출ID를 모두 만족하는 지출이 없습니다."),
 
-    //챌린지
-    TITLE_NOT_PROVIDED(HttpStatus.BAD_REQUEST, "POST4001", "제목은 필수 입력 사항입니다."),
-    DESCRIPTION_NOT_PROVIDED(HttpStatus.BAD_REQUEST, "POST4002", "소개는 필수 입력 사항입니다."),
+    //챌린지가입
+    JOIN_CHALLENGE_NOT_FOUND(HttpStatus.NOT_FOUND,"JOINCHALLENGE4001", "해당하는 챌린지에 가입하지 않았습니다."),
 
     //jwt
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "TOKEN401", "유효하지 않은 token입니다."),
