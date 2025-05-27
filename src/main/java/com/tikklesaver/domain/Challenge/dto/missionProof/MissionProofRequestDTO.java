@@ -16,8 +16,6 @@ public class MissionProofRequestDTO {
         @Column(nullable = false, length = 30)
         String content;
 
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-        Date expenseDate;
 
 
     }

@@ -1,4 +1,4 @@
-package com.tikklesaver.domain.Challenge.repository.ChallengeRepository;
+package com.tikklesaver.domain.Challenge.repository.challenge;
 
 import com.tikklesaver.domain.Category.entity.Category;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
