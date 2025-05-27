@@ -1,6 +1,6 @@
 package com.tikklesaver.domain.Challenge.service.MissionProof;
 
-import com.tikklesaver.domain.Category.entity.Category;
+
 import com.tikklesaver.domain.Challenge.converter.ChallengeConverter;
 import com.tikklesaver.domain.Challenge.dto.missionProof.MissionProofRequestDTO;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
@@ -9,7 +9,6 @@ import com.tikklesaver.domain.Challenge.repository.ChallengeRepository.Challenge
 import com.tikklesaver.domain.Challenge.repository.JoinChallengeRepository;
 import com.tikklesaver.domain.Challenge.repository.MissionProofRepository;
 import com.tikklesaver.domain.member.entity.Member;
-import com.tikklesaver.domain.member.repository.MemberRepository;
 import com.tikklesaver.global.apiPayload.code.status.ErrorStatus;
 import com.tikklesaver.global.apiPayload.exception.handler.JoinChallengeHandler;
 import com.tikklesaver.global.aws.s3.AmazonS3Manager;
@@ -25,7 +24,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class MissionProofCommandServiceImpl implements MissionProofCommandService {
-    
+
     private final ChallengeRepository challengeRepository;
     private final AmazonS3Manager amazonS3Manager;
     private final UuidRepository uuidRepository;
@@ -58,5 +57,25 @@ public class MissionProofCommandServiceImpl implements MissionProofCommandServic
         MissionProof newMissionProof = ChallengeConverter.toMissionProof(member, challenge, request, imageUrl);
         return missionProofRepository.save(newMissionProof);
 
+    }
+
+    @Override
+    public MissionProof updateMissionProof(Member member, Long missionProofId, MissionProofRequestDTO.CreateMissionDTO request, MultipartFile file) {
+
+
+        MissionProof missionProof = missionProofRepository.findById(missionProofId)
+                .orElseThrow(() -> new EntityNotFoundException("미션 인증 정보를 찾을 수 없습니다. ID: " + missionProofId));
+
+
+        String imageUrl = missionProof.getImageUrl();
+        if (file != null && !file.isEmpty()) {
+            String uuid = UUID.randomUUID().toString();
+            Uuid savedUuid = uuidRepository.save(Uuid.builder().uuid(uuid).build());
+            imageUrl = amazonS3Manager.uploadFile(amazonS3Manager.generateChallengeMissionsKeyName(savedUuid), file);
+        }
+
+        missionProof.update(request.getContent(), imageUrl);
+
+        return missionProofRepository.save(missionProof);
     }
 }

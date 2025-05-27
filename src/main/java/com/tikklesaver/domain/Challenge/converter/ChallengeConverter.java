@@ -98,6 +98,7 @@ public class ChallengeConverter {
         return JoinChallenge.builder()
                 .challenge(challenge)
                 .member(member)
+                .isLeader(false)
                 .status(Status.JOINED)
                 .build();
     }
@@ -106,6 +107,7 @@ public class ChallengeConverter {
         return JoinChallenge.builder()
                 .challenge(challenge)
                 .member(member)
+                .isLeader(false)
                 .status(Status.PENDING)
                 .build();
     }

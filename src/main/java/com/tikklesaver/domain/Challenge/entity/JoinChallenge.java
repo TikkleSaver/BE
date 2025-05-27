@@ -34,5 +34,8 @@ public class JoinChallenge extends BaseEntity {
     @JoinColumn(name = "challenge_id")
     private Challenge challenge;
 
+    @Column(nullable = false)
+    private Boolean isLeader;
+
 
 }

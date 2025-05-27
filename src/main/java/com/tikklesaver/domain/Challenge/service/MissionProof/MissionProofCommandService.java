@@ -9,4 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface MissionProofCommandService {
 
     MissionProof createMissionProof(Member member, Long challengeId, MissionProofRequestDTO.CreateMissionDTO request, MultipartFile file);
+    MissionProof updateMissionProof(Member member, Long missionProofId, MissionProofRequestDTO.CreateMissionDTO request, MultipartFile file);
+
+
 }
