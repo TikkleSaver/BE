@@ -66,14 +66,23 @@ public class MissionProofController {
         return ApiResponse.onSuccess("미션 인증이 삭제되었습니다.");
     }
 
-    @GetMapping("/month")
+    @GetMapping("/{challengeId}/month")
     public ApiResponse<List<MissionProofResponseDTO.missionProofResultDTO>> getMonthlyProofs(
             @CurrentMember Member member,
             @RequestParam int year,
             @RequestParam int month,
-            @RequestParam(required = false) Long challengeId
+            @PathVariable("challengeId") Long challengeId
     ) {
         List<MissionProofResponseDTO.missionProofResultDTO> result = missionProofQueryService.getMissionProofsByMonth(member.getId(), challengeId, year, month);
+        return ApiResponse.onSuccess(result);
+    }
+
+    @GetMapping("/{challengeId}/main")
+    public ApiResponse<MissionProofResponseDTO.missionProofMainDTO> getMonthlyProofs(
+            @CurrentMember Member member,
+            @PathVariable("challengeId") Long challengeId
+    ) {
+        MissionProofResponseDTO.missionProofMainDTO result = missionProofQueryService.getMissionProofMain(member,challengeId);
         return ApiResponse.onSuccess(result);
     }
 }
