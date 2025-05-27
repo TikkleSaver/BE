@@ -89,18 +89,25 @@ public class FriendRequestServiceImpl implements FriendRequestService {
     }
 
     @Override
-    public void deleteFriendRequest(Member member, Long id) {
+    public String deleteFriendRequest(Member member, Long id) {
         // 요청 ID로 FriendRequest 조회
         FriendRequest request = friendRequestRepository.findById(id)
                 .orElseThrow(() -> new FriendRequestHandler(ErrorStatus.FRIEND_REQ_NOT_FOUND));
 
-        // 사용자가 친구 요청의 수신자가 맞는지 확인
-        if (!request.getReceiver().getId().equals(member.getId())) {
+        // 사용자가 친구 요청의 수신자나 발신자가 맞는지 확인
+        String message;
+        if (request.getReceiver().getId().equals(member.getId())) {//수신자면 거절
+            message = "요청이 거절되었습니다.";
+        }else if(request.getSender().getId().equals(member.getId())) {//발신자면 삭제
+            message = "요청이 취소되었습니다.";
+        }else{
             throw new FriendRequestHandler(ErrorStatus.FRIEND_REQ_PERMISSION_DENIED);
         }
 
         //요청 기록 삭제
         friendRequestRepository.delete(request);
+
+        return message;
     }
 
 }

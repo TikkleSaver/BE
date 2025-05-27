@@ -9,5 +9,5 @@ public interface FriendRequestService {
 
     void addFriend(Member member, Long id);
 
-    void deleteFriendRequest(Member member, Long id);
+    String deleteFriendRequest(Member member, Long id);
 }

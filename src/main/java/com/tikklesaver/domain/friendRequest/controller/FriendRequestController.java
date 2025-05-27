@@ -36,16 +36,16 @@ public class FriendRequestController {
     }
 
     //친구 요청 수락
-    @PatchMapping("/{id}/accept")
+    @PatchMapping("/{id}")
     public ApiResponse<String> acceptRequest(@CurrentMember Member member, @PathVariable(name = "id") Long id) throws Exception {
         friendRequestService.addFriend(member, id);
         return ApiResponse.onSuccess("요청을 수락했습니다.");
     }
 
-    //친구 요청 거절
-    @DeleteMapping("/{id}/reject")
-    public ApiResponse<String> rejectRequest(@CurrentMember Member member, @PathVariable(name = "id") Long id) throws Exception {
-        friendRequestService.deleteFriendRequest(member, id);
-        return ApiResponse.onSuccess("요청을 거절했습니다.");
+    //친구 요청 취소 & 거절
+    @DeleteMapping("/{id}")
+    public ApiResponse<String> deleteRequest(@CurrentMember Member member, @PathVariable(name = "id") Long id) throws Exception {
+        return ApiResponse.onSuccess(friendRequestService.deleteFriendRequest(member, id));
     }
+
 }
