@@ -42,9 +42,8 @@ public class FriendRequestController {
         return ApiResponse.onSuccess("요청을 수락했습니다.");
     }
 
-    //PATCH /friend-requests/{id}/reject
     //친구 요청 거절
-    @PatchMapping("/{id}/accept")
+    @DeleteMapping("/{id}/reject")
     public ApiResponse<String> rejectRequest(@CurrentMember Member member, @PathVariable(name = "id") Long id) throws Exception {
         friendRequestService.deleteFriendRequest(member, id);
         return ApiResponse.onSuccess("요청을 거절했습니다.");

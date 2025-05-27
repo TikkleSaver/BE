@@ -8,4 +8,6 @@ public interface FriendRequestService {
     void addFriendRequest(Member member, @NotNull Long receiverId);
 
     void addFriend(Member member, Long id);
+
+    void deleteFriendRequest(Member member, Long id);
 }

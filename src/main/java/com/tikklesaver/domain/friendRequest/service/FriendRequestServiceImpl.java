@@ -41,7 +41,7 @@ public class FriendRequestServiceImpl implements FriendRequestService {
         );
 
         if (alreadyFriends) {
-            throw new FriendRequestHandler(ErrorStatus.FRIEND_REQ_ALREADY_EXISTS);
+            throw new FriendRequestHandler(ErrorStatus.FRIEND_ALREADY_EXISTS);
         }
 
         // 기존 요청 있는지 확인
@@ -88,6 +88,20 @@ public class FriendRequestServiceImpl implements FriendRequestService {
         friendRepository.save(friend);
     }
 
+    @Override
+    public void deleteFriendRequest(Member member, Long id) {
+        // 요청 ID로 FriendRequest 조회
+        FriendRequest request = friendRequestRepository.findById(id)
+                .orElseThrow(() -> new FriendRequestHandler(ErrorStatus.FRIEND_REQ_NOT_FOUND));
+
+        // 사용자가 친구 요청의 수신자가 맞는지 확인
+        if (!request.getReceiver().getId().equals(member.getId())) {
+            throw new FriendRequestHandler(ErrorStatus.FRIEND_REQ_PERMISSION_DENIED);
+        }
+
+        //요청 기록 삭제
+        friendRequestRepository.delete(request);
+    }
 
 }
 
