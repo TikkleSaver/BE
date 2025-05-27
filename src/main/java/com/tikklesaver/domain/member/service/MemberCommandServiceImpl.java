@@ -3,8 +3,9 @@ import com.tikklesaver.domain.Category.entity.Category;
 import com.tikklesaver.domain.Category.repository.CategoryRepository;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
 import com.tikklesaver.domain.Challenge.entity.ChallengeScraped;
-import com.tikklesaver.domain.Challenge.repository.challenge.ChallengeRepository;
+import com.tikklesaver.domain.Challenge.repository.ChallengeRepository.ChallengeRepository;
 import com.tikklesaver.domain.Challenge.repository.ChallengeScrapRepository;
+import com.tikklesaver.domain.Challenge.repository.JoinChallengeRepository;
 import com.tikklesaver.domain.member.dto.CustomUserInfoDto;
 import com.tikklesaver.domain.member.dto.LoginRequestDto;
 import com.tikklesaver.domain.member.dto.SignUpRequestDto;
@@ -45,7 +46,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     private final MemberCategoryRepository memberCategoryRepository;
     private final CategoryRepository categoryRepository;
     private final WishRepository wishRepository;
-    private final ChallengeRepository challengeRepository;
+    private final JoinChallengeRepository joinChallengeRepository;
 
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
@@ -230,22 +231,22 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     }
 
     @Override
-    public int getWishListCount(Member member) {
-        return wishRepository.countByMember(member);
+    public int getWishListCount(Long memberId) {
+        return wishRepository.countByMemberId(memberId);
     }
 
     @Override
-    public int getChallengeCount(Member member) {
-        return challengeRepository.countByMember(member);
+    public int getChallengeCount(Long memberId) {
+        return joinChallengeRepository.countByMemberId(memberId);
     }
 
     @Override
-    public int getFriendCount(Member member) {
+    public int getFriendCount(Long memberId) {
         return 0;
     }
 
-    public List<Challenge> getScrappedChallenges(Member member) {
-        List<ChallengeScraped> scrapedList = challengeScrapRepository.findAllByMember(member);
+    public List<Challenge> getScrappedChallenges(Long memberId) {
+        List<ChallengeScraped> scrapedList = challengeScrapRepository.findAllByMemberId(memberId);
 
         return Optional.ofNullable(scrapedList)
                 .orElseGet(Collections::emptyList)

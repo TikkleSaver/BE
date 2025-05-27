@@ -11,5 +11,4 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long>, Cha
 
     Page<Challenge> findAllByCategory(Category category, Pageable pageable);
 
-    int countByMember(Member member);
 }

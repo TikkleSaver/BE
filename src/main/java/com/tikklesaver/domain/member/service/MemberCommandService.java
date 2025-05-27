@@ -31,13 +31,13 @@ public interface MemberCommandService {
 
     void saveGoalCost(@NotNull(message = "아이디는 필수") Long memberId, @NotNull Long goalCost);
 
-    int getWishListCount(Member member);
+    int getWishListCount(Long memberId);
 
-    int getChallengeCount(Member member);
+    int getChallengeCount(Long memberId);
 
-    int getFriendCount(Member member);
+    int getFriendCount(Long memberId);
 
-    List<Challenge> getScrappedChallenges(Member member);
+    List<Challenge> getScrappedChallenges(Long memberId);
 
     // 지출 목표 금액 수정(지출 달력 페이지)
     Member saveExpenseGoalCost(Long memberId, Long goalCost);
