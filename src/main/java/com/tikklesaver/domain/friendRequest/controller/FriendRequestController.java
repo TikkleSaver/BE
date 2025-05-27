@@ -28,10 +28,25 @@ import java.util.List;
 public class FriendRequestController {
     private final FriendRequestService friendRequestService;
 
+    //친구 요청
     @PostMapping("")
     public ApiResponse<String> requestFriend(@CurrentMember Member member, @RequestBody @Valid FriendReqRequestDto.RequestFriendDTO requestDTO) throws Exception {
         friendRequestService.addFriendRequest(member, requestDTO.getReceiverId());
         return ApiResponse.onSuccess("친구 요청 성공");
     }
 
+    //친구 요청 수락
+    @PatchMapping("/{id}/accept")
+    public ApiResponse<String> acceptRequest(@CurrentMember Member member, @PathVariable(name = "id") Long id) throws Exception {
+        friendRequestService.addFriend(member, id);
+        return ApiResponse.onSuccess("요청을 수락했습니다.");
+    }
+
+    //PATCH /friend-requests/{id}/reject
+    //친구 요청 거절
+    @PatchMapping("/{id}/accept")
+    public ApiResponse<String> rejectRequest(@CurrentMember Member member, @PathVariable(name = "id") Long id) throws Exception {
+        friendRequestService.deleteFriendRequest(member, id);
+        return ApiResponse.onSuccess("요청을 거절했습니다.");
+    }
 }

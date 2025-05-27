@@ -6,4 +6,6 @@ import jakarta.validation.constraints.NotNull;
 public interface FriendRequestService {
 
     void addFriendRequest(Member member, @NotNull Long receiverId);
+
+    void addFriend(Member member, Long id);
 }

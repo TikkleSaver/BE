@@ -57,8 +57,13 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //친구 요청
     FRIEND_REQ_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "FRIEND400", "이미 친구 요청을 보냈습니다."),
-    FRIEND_REQ_PERMISSION_DENIED(HttpStatus.FORBIDDEN, "FRIEND403", "자신에게 요청할 수 없습니다."),
+    FRIEND_REQ_PERMISSION_DENIED(HttpStatus.FORBIDDEN, "FRIEND403", "요청 권한이 없습니다."),
+    FRIEND_REQ_NOT_FOUND(HttpStatus.NOT_FOUND, "FRIEND404", "요청이 존재하지 않습니다."),
 
+    //친구
+    FRIEND_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "FRIEND400", "이미 친구 관계입니다."),
+//    FRIEND_REQ_PERMISSION_DENIED(HttpStatus.FORBIDDEN, "FRIEND403", "요청 권한이 없습니다."),
+//    FRIEND_REQ_NOT_FOUND(HttpStatus.NOT_FOUND, "FRIEND404", "요청이 존재하지 않습니다."),
 
     //카테고리
     CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "CATEGORY404", "카테고리가 존재하지 않습니다.");

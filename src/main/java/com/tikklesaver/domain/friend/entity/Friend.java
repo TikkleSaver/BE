@@ -1,10 +1,8 @@
 package com.tikklesaver.domain.friend.entity;
 
+import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.global.common.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Builder
@@ -17,8 +15,13 @@ public class Friend extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 멤버1 ID (FK)
+    // 멤버1 ID (작은 ID)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member1_id", nullable = false)
+    private Member member1;
 
-    // 멤버2 ID (FK)
-
+    // 멤버2 ID (큰 ID)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member2_id", nullable = false)
+    private Member member2;
 }
