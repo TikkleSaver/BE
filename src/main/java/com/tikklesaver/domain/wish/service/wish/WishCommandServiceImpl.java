@@ -25,9 +25,7 @@ public class WishCommandServiceImpl implements WishCommandService {
 
     // 존재하는 상품 위시에 추가 
     @Override
-    public Wish createWishFromExistingProduct(Long memberId, Product product, WishRequestDTO.CreateWishFromExistingProductDTO request){
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+    public Wish createWishFromExistingProduct(Member member, Product product, WishRequestDTO.CreateWishFromExistingProductDTO request){
 
         Wish newWish = WishConverter.toWish(member, product, request);
         return wishRepository.save(newWish);
@@ -35,9 +33,7 @@ public class WishCommandServiceImpl implements WishCommandService {
 
     // 존재하지 않는 상품 위시에 추가 (직접 추가한 상품)
     @Override
-    public Wish createWishFromMyProduct(Long memberId, Product product, WishRequestDTO.CreateWishFromMyProductDTO request){
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+    public Wish createWishFromMyProduct(Member member, Product product, WishRequestDTO.CreateWishFromMyProductDTO request){
 
         Wish newWish = WishConverter.toWishMyProduct(member, product, request);
         return wishRepository.save(newWish);
@@ -45,12 +41,13 @@ public class WishCommandServiceImpl implements WishCommandService {
 
     // 존재하는 상품 위시 수정
     @Override
-    public Wish updateWishFromExistingProduct(Long memberId, Long wishId, WishRequestDTO.UpdateWishFromExistingProductDTO request){
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+    public Wish updateWishFromExistingProduct(Member member, Long wishId, WishRequestDTO.UpdateWishFromExistingProductDTO request){
 
         Wish wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new WishHandler(ErrorStatus.WISH_NOT_FOUND));
+
+        if (wish.getMember() != member)
+            throw new WishHandler(ErrorStatus.WISH_NOT_AUTHOR);
 
         wish.setPublicStatus(request.getPublicStatus());
         if (request.getSatisfactionStatus() != null)
@@ -62,12 +59,13 @@ public class WishCommandServiceImpl implements WishCommandService {
 
     // 존재하지 않는 상품 위시 수정 (직접 추가한 상품)
     @Override
-    public Wish updateWishFromMyProduct(Long memberId, Long wishId, WishRequestDTO.UpdateWishFromMyProductDTO request){
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+    public Wish updateWishFromMyProduct(Member member, Long wishId, WishRequestDTO.UpdateWishFromMyProductDTO request){
 
         Wish wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new WishHandler(ErrorStatus.WISH_NOT_FOUND));
+
+        if (wish.getMember() != member)
+            throw new WishHandler(ErrorStatus.WISH_NOT_AUTHOR);
 
         wish.setPublicStatus(request.getPublicStatus());
         if (request.getSatisfactionStatus() != null)
@@ -79,12 +77,13 @@ public class WishCommandServiceImpl implements WishCommandService {
 
     // 상품 위시 삭제
     @Override
-    public Wish deleteWish(Long memberId, Long wishId){
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+    public Wish deleteWish(Member member, Long wishId){
 
         Wish wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new WishHandler(ErrorStatus.WISH_NOT_FOUND));
+
+        if (wish.getMember() != member)
+            throw new WishHandler(ErrorStatus.WISH_NOT_AUTHOR);
 
         wishRepository.delete(wish);
 
@@ -93,12 +92,13 @@ public class WishCommandServiceImpl implements WishCommandService {
 
     // 나의 위시 공개/비공개 설정
     @Override
-    public Wish updateWishPublicStatus(Long memberId, Long wishId){
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+    public Wish updateWishPublicStatus(Member member, Long wishId){
 
         Wish wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new WishHandler(ErrorStatus.WISH_NOT_FOUND));
+
+        if (wish.getMember() != member)
+            throw new WishHandler(ErrorStatus.WISH_NOT_AUTHOR);
 
         if (wish.getPublicStatus() == PublicStatus.PUBLIC){
             wish.setPublicStatus(PublicStatus.PRIVATE);
@@ -111,12 +111,13 @@ public class WishCommandServiceImpl implements WishCommandService {
 
     // 나의 위시 구매 설정
     @Override
-    public Wish updateWishPurchaseStatus(Long memberId, Long wishId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+    public Wish updateWishPurchaseStatus(Member member, Long wishId) {
 
         Wish wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new WishHandler(ErrorStatus.WISH_NOT_FOUND));
+
+        if (wish.getMember() != member)
+            throw new WishHandler(ErrorStatus.WISH_NOT_AUTHOR);
 
         // 이미 구매 상태인 위시 예외처리
         if (wish.getPurchaseStatus() == PurchaseStatus.PURCHASE)
@@ -130,12 +131,13 @@ public class WishCommandServiceImpl implements WishCommandService {
 
     // 나의 위시 만족/불만족 설정
     @Override
-    public Wish updateWishSatisfactionStatus(Long memberId, Long wishId, SatisfactionStatus status){
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+    public Wish updateWishSatisfactionStatus(Member member, Long wishId, SatisfactionStatus status){
 
         Wish wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new WishHandler(ErrorStatus.WISH_NOT_FOUND));
+
+        if (wish.getMember() != member)
+            throw new WishHandler(ErrorStatus.WISH_NOT_AUTHOR);
 
         // 아직 구매 상태가 아닌 위시 예외처리
         if (wish.getPurchaseStatus() == PurchaseStatus.PLANNED)

@@ -2,6 +2,7 @@ package com.tikklesaver.domain.wish.repository.wish;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
+import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.domain.wish.dto.wish.WishResponseDTO;
 import com.tikklesaver.domain.wish.entity.QVote;
 import com.tikklesaver.domain.wish.entity.QWish;
@@ -61,7 +62,7 @@ public class WishRepositoryImpl implements WishRepositoryCustom {
 
     // 나의 위시리스트 목록 구매 예정 조회
     @Override
-    public List<WishResponseDTO.MyWishPlannedPreviewDTO> getMyWishPlannedList(Long memberId) {
+    public List<WishResponseDTO.MyWishPlannedPreviewDTO> getMyWishPlannedList(Member member) {
 
         return jpaQueryFactory
                 .select(Projections.constructor(
@@ -89,7 +90,7 @@ public class WishRepositoryImpl implements WishRepositoryCustom {
                 ))
                 .from(wish)
                 .where(
-                        wish.member.id.eq(memberId),
+                        wish.member.id.eq(member.getId()),
                         wish.purchaseStatus.eq(PurchaseStatus.PLANNED)
                 )
                 .orderBy(wish.createdAt.desc())
@@ -98,7 +99,7 @@ public class WishRepositoryImpl implements WishRepositoryCustom {
 
     // 나의 위시리스트 목록 구매 완료 조회
     @Override
-    public List<WishResponseDTO.MyWishPurchasedPreviewDTO> getMyWishPurchasedList(Long memberId) {
+    public List<WishResponseDTO.MyWishPurchasedPreviewDTO> getMyWishPurchasedList(Member member) {
 
         return jpaQueryFactory
                 .select(Projections.constructor(
@@ -127,7 +128,7 @@ public class WishRepositoryImpl implements WishRepositoryCustom {
                 ))
                 .from(wish)
                 .where(
-                        wish.member.id.eq(memberId),
+                        wish.member.id.eq(member.getId()),
                         wish.purchaseStatus.eq(PurchaseStatus.PURCHASE)
                 )
                 .orderBy(wish.createdAt.desc())

@@ -1,11 +1,13 @@
 package com.tikklesaver.domain.wish.controller;
 
+import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.domain.wish.converter.WishCommentConverter;
 import com.tikklesaver.domain.wish.dto.wishComment.WishCommentRequestDTO;
 import com.tikklesaver.domain.wish.dto.wishComment.WishCommentResponseDTO;
 import com.tikklesaver.domain.wish.entity.WishComment;
 import com.tikklesaver.domain.wish.service.wishComment.WishCommentCommandService;
 import com.tikklesaver.domain.wish.service.wishComment.WishCommentQueryService;
+import com.tikklesaver.global.annotation.CurrentMember;
 import com.tikklesaver.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -31,13 +33,11 @@ public class WishCommentContoller {
             @Parameter(name = "wishId", description = "위시의 ID, path variable 입니다!")
     })
     public ApiResponse<WishCommentResponseDTO.WishCommentResultDTO> createWishComment(
+            @CurrentMember Member member,
             @PathVariable(name = "wishId") Long wishId,
             @RequestBody @Valid WishCommentRequestDTO.CreateWishCommentDTO request) {
 
-        //임시 memberId
-        Long memberId = 5L;
-
-        WishComment newWishComment = wishCommentCommandService.createWishComment(memberId, wishId, request);
+        WishComment newWishComment = wishCommentCommandService.createWishComment(member, wishId, request);
 
         return ApiResponse.onSuccess(WishCommentConverter.toWishCommentResultDTO(newWishComment));
     }
@@ -49,13 +49,11 @@ public class WishCommentContoller {
             @Parameter(name = "commentId", description = "위시 댓글의 ID, path variable 입니다!")
     })
     public ApiResponse<WishCommentResponseDTO.UpdateWishCommentResultDTO> updateWishComment(
+            @CurrentMember Member member,
             @PathVariable(name = "commentId") Long commentId,
             @RequestBody @Valid WishCommentRequestDTO.UpdateWishCommentDTO request) {
 
-        //임시 memberId
-        Long memberId = 5L;
-
-        WishComment wishComment = wishCommentCommandService.updateWishComment(memberId, commentId, request);
+        WishComment wishComment = wishCommentCommandService.updateWishComment(member, commentId, request);
 
         return ApiResponse.onSuccess(WishCommentConverter.toUpdateWishCommentResultDTO(wishComment));
     }
@@ -67,12 +65,10 @@ public class WishCommentContoller {
             @Parameter(name = "commentId", description = "위시 댓글의 ID, path variable 입니다!")
     })
     public ApiResponse<String> deleteWishComment(
+            @CurrentMember Member member,
             @PathVariable(name = "commentId") Long commentId) {
 
-        //임시 memberId
-        Long memberId = 5L;
-
-         wishCommentCommandService.deleteWishComment(memberId, commentId);
+         wishCommentCommandService.deleteWishComment(member, commentId);
 
         return ApiResponse.onSuccess("삭제가 완료되었습니다.");
     }
@@ -86,10 +82,7 @@ public class WishCommentContoller {
     public ApiResponse<WishCommentResponseDTO.WishCommentPreviewListDTO> getWishCommentList(
             @PathVariable(name = "wishId") Long wishId) {
 
-        //임시 memberId
-        Long memberId = 5L;
-
-        List<WishCommentResponseDTO.WishCommentPreviewDTO> wishCommentList = wishCommentQueryService.getWishCommentList(memberId, wishId);
+        List<WishCommentResponseDTO.WishCommentPreviewDTO> wishCommentList = wishCommentQueryService.getWishCommentList(wishId);
 
         return ApiResponse.onSuccess(WishCommentConverter.toGetWishCommentListResultDTO(wishCommentList));
     }
