@@ -25,10 +25,7 @@ public class VoteCommandServiceImpl implements VoteCommandService {
 
     // 위시 찬성/반대 투표
     @Override
-    public Vote voteOnWish(Long memberId, Long wishId, LikeStatus status){
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+    public Vote voteOnWish(Member member, Long wishId, LikeStatus status){
 
         Wish wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new VoteHandler(ErrorStatus.WISH_NOT_FOUND));
@@ -46,10 +43,7 @@ public class VoteCommandServiceImpl implements VoteCommandService {
 
     // 위시 찬성/반대 투표 취소
     @Override
-    public void cancelVote(Long memberId, Long wishId){
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+    public void cancelVote(Member member, Long wishId){
 
         Wish wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new VoteHandler(ErrorStatus.WISH_NOT_FOUND));
