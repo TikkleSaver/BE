@@ -2,12 +2,14 @@ package com.tikklesaver.domain.product.entity;
 
 import com.tikklesaver.domain.Category.entity.Category;
 import com.tikklesaver.domain.member.entity.Member;
+import com.tikklesaver.domain.wish.entity.enums.ProductType;
 import com.tikklesaver.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Builder
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
@@ -15,6 +17,11 @@ public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    // 상품 타입 구분
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(30)")
+    private ProductType productType;
 
     // 상품명
     @Column(nullable = false)
@@ -33,7 +40,6 @@ public class Product extends BaseEntity {
     private String image;
     
     // 대분류
-    @Column(nullable = false)
     private String category1;
     
     // 중분류

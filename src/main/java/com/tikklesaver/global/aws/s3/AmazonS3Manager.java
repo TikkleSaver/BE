@@ -37,6 +37,7 @@ public class AmazonS3Manager{
     public String generateChallengesKeyName(Uuid uuid) {
         return amazonConfig.getChallengesPath()+ '/' + uuid.getUuid();
     }
+
     public String generateChallengeMissionsKeyName(Uuid uuid) {
         return amazonConfig.getChallengeMissionPath()+ '/' + uuid.getUuid();
     }
@@ -48,6 +49,7 @@ public class AmazonS3Manager{
 
     public String uploadFile(String keyName, MultipartFile file){
         ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentType(file.getContentType());
         metadata.setContentLength(file.getSize());
         try {
             amazonS3.putObject(new PutObjectRequest(amazonConfig.getBucket(), keyName, file.getInputStream(), metadata));

@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 public class ExpenseResponseDTO {
 
@@ -57,5 +58,125 @@ public class ExpenseResponseDTO {
         Long categoryId;
         LocalDateTime createdAt;
         LocalDateTime updatedAt;
+    }
+
+
+    // 지출 모아보기 (한 칸씩)
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ExpensePreviewResultDTO {
+        Long memberId;
+        Long expenseId;
+        String expenseName;
+        String expensePlace;
+        Long cost;
+        Date expenseDate;
+        String image;
+        Long categoryId;
+    }
+
+    // 지출 모아보기 (전체 리스트)
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ExpensePreviewListResultDTO {
+        private List<ExpensePreviewResultDTO> expensePreviewDTOList;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
+    }
+
+
+    // 일별 지출 총액 조회 - 하루
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetDailyExpenseResultDTO {
+        Long totalCost;
+        Date expenseDate;
+    }
+
+    // 일별 지출 총액 조회 - 한달(하루 리스트)
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetDailyExpenseResultDTOList {
+        Long memberId;
+        List<GetDailyExpenseResultDTO> dailyExpenseDTOList;
+    }
+
+    // 월별 지출 총액 조회 - 한달
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MonthlyExpenseTotalDTO {
+        int month;
+        Long totalAmount;
+    }
+
+    // 월별 지출 총액 조회 - 1년(한달 리스트)
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetMonthlyExpenseResultDTOList {
+        Long memberId;
+        List<MonthlyExpenseTotalDTO> monthlyExpenseDTOList;
+    }
+
+    // 카테고리별 지출 총액 조회 - 카테고리 하나
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class TotalExpenseByCategoryResultDTO {
+        Long categoryId;
+        Long totalAmount;
+    }
+
+    // 카테고리별 지출 총액 조회 - (전체 리스트)
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetTotalExpenseByCategoryResultDTOList {
+        Long memberId;
+        int year;
+        int month;
+        List<TotalExpenseByCategoryResultDTO> categoryExpenseList;
+    }
+
+    // 특정 사용자의 특정 달 지출 총 금액 조회
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetTotalExpenseByMonthResultDTO {
+        Long memberId;
+        int year;
+        int month;
+        Long totalAmount;
+    }
+
+    // 특정 사용자의 특정 달 지출 TOP3 카테고리 조회
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetExpenseTop3CategoryResultDTO {
+        Long memberId;
+        Long category1;
+        Long category2;
+        Long category3;
+        int year;
+        int month;
     }
 }

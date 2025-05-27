@@ -1,4 +1,4 @@
-package com.tikklesaver.domain.Challenge.controller;
+package com.tikklesaver.domain.challenge.controller;
 
 import com.tikklesaver.domain.Challenge.converter.ChallengeConverter;
 import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeResponseDTO;
@@ -11,8 +11,10 @@ import com.tikklesaver.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/join-challenges")

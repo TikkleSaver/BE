@@ -9,6 +9,7 @@ import com.tikklesaver.domain.Challenge.entity.JoinChallenge;
 import com.tikklesaver.domain.Challenge.entity.enums.Status;
 import com.tikklesaver.domain.Challenge.repository.ChallengeRepository;
 import com.tikklesaver.domain.Challenge.repository.JoinChallengeRepository;
+import com.tikklesaver.domain.Challenge.repository.ChallengeRepository.ChallengeRepository;
 import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.domain.member.repository.MemberRepository;
 import com.tikklesaver.global.apiPayload.code.status.ErrorStatus;
@@ -53,7 +54,6 @@ public class ChallengeCommandServiceImpl implements ChallengeCommandService {
             imageUrl = amazonS3Manager.uploadFile(amazonS3Manager.generateChallengesKeyName(savedUuid),file);
         }
 
-
         Challenge newChallenge = ChallengeConverter.toChallenge(member, request,category,imageUrl);
         Challenge savedChallenge = challengeRepository.save(newChallenge);
 
@@ -62,7 +62,7 @@ public class ChallengeCommandServiceImpl implements ChallengeCommandService {
                 .challenge(savedChallenge)
                 .member(member)
                 .status(Status.JOINED)
-                .isLeader(true)  // 리더임을 명시
+                .isLeader(true)  
                 .build();
 
         joinChallengeRepository.save(leaderJoin);
