@@ -33,4 +33,9 @@ public class MissionProof extends BaseEntity {
     @JoinColumn(name = "challenge_id")
     private Challenge challenge;
 
+    public void update(String content, String imageUrl) {
+        this.content = content;
+        this.imageUrl = imageUrl;
+    }
+
 }
