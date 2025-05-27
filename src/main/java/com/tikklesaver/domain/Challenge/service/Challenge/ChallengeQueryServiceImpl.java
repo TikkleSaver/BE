@@ -6,7 +6,7 @@ import com.tikklesaver.domain.Challenge.converter.ChallengeConverter;
 import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeResponseDTO;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
 import com.tikklesaver.domain.Challenge.entity.enums.Status;
-import com.tikklesaver.domain.Challenge.repository.ChallengeRepository;
+import com.tikklesaver.domain.Challenge.repository.ChallengeRepository.ChallengeRepository;
 import com.tikklesaver.domain.Challenge.repository.ChallengeScrapRepository;
 import com.tikklesaver.domain.Challenge.repository.JoinChallengeRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -54,6 +54,19 @@ public class ChallengeQueryServiceImpl implements ChallengeQueryService {
 
         List<String> challengerImages = joinChallengeRepository.findTop3ChallengerImages(challengeId);
         return ChallengeConverter.challengePreviewWithStatusResponseDTO(challenge, status, isScrapped, challengerCount, challengerImages);
+
+    }
+
+    @Override
+    public Page<Challenge> searchChallenges(String keyword, Long categoryId, Integer page) {
+
+        Category category = null;
+
+        if (categoryId != null) {
+            category = categoryRepository.findById(categoryId).orElse(null);
+        }
+
+        return challengeRepository.dynamicQueryBuilder(keyword, category, page);
 
     }
 

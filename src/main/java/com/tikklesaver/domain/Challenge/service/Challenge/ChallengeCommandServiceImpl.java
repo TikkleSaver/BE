@@ -5,7 +5,7 @@ import com.tikklesaver.domain.Category.repository.CategoryRepository;
 import com.tikklesaver.domain.Challenge.converter.ChallengeConverter;
 import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeRequestDTO;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
-import com.tikklesaver.domain.Challenge.repository.ChallengeRepository;
+import com.tikklesaver.domain.Challenge.repository.ChallengeRepository.ChallengeRepository;
 import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.domain.member.repository.MemberRepository;
 import com.tikklesaver.global.apiPayload.code.status.ErrorStatus;
