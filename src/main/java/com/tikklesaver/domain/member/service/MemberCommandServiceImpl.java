@@ -3,7 +3,6 @@ import com.tikklesaver.domain.Category.entity.Category;
 import com.tikklesaver.domain.Category.repository.CategoryRepository;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
 import com.tikklesaver.domain.Challenge.entity.ChallengeScraped;
-import com.tikklesaver.domain.Challenge.repository.ChallengeRepository.ChallengeRepository;
 import com.tikklesaver.domain.Challenge.repository.ChallengeScrapRepository;
 import com.tikklesaver.domain.Challenge.repository.JoinChallengeRepository;
 import com.tikklesaver.domain.member.dto.CustomUserInfoDto;
@@ -274,6 +273,11 @@ public class MemberCommandServiceImpl implements MemberCommandService {
                 .orElseThrow(() -> new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
         return member.getGoalCost();
+    }
+
+    @Override
+    public List<Member> searchByNicknameKeyword(String keyword) {
+        return memberRepository.searchByNicknameKeyword(keyword);
     }
 }
 
