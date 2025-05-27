@@ -53,4 +53,14 @@ public class MissionProofController {
         return ApiResponse.onSuccess(ChallengeConverter.toMissionProofResultDTO(missionProof));
     }
 
+    @DeleteMapping("/{missionProofId}")
+    @Operation(summary = "미션 인증 삭제 API")
+    public ApiResponse<?> deleteMissionProof(
+            @CurrentMember Member member,
+            @PathVariable Long missionProofId) {
+
+        missionProofCommandService.deleteMissionProof(member, missionProofId);
+        return ApiResponse.onSuccess("미션 인증이 삭제되었습니다.");
+    }
+
 }

@@ -11,6 +11,7 @@ import com.tikklesaver.domain.Challenge.repository.MissionProofRepository;
 import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.global.apiPayload.code.status.ErrorStatus;
 import com.tikklesaver.global.apiPayload.exception.handler.JoinChallengeHandler;
+import com.tikklesaver.global.apiPayload.exception.handler.MissionProofHandler;
 import com.tikklesaver.global.aws.s3.AmazonS3Manager;
 import com.tikklesaver.global.common.Uuid;
 import com.tikklesaver.global.repository.UuidRepository;
@@ -77,5 +78,21 @@ public class MissionProofCommandServiceImpl implements MissionProofCommandServic
         missionProof.update(request.getContent(), imageUrl);
 
         return missionProofRepository.save(missionProof);
+    }
+
+    @Override
+    public void deleteMissionProof(Member member, Long missionProofId) {
+        MissionProof missionProof = missionProofRepository.findById(missionProofId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 미션 인증을 찾을 수 없습니다. ID: " + missionProofId));
+
+        if (!missionProof.getMember().getId().equals(member.getId())) {
+            throw new MissionProofHandler(ErrorStatus.MISSION_PROOF_NOT_OWNER); // 사용자 정의 예외
+        }
+
+        if (missionProof.getImageUrl() != null) {
+            amazonS3Manager.deleteFile(missionProof.getImageUrl());
+        }
+
+        missionProofRepository.delete(missionProof);
     }
 }
