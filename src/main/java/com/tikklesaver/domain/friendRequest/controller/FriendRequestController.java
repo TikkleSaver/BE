@@ -1,7 +1,10 @@
 package com.tikklesaver.domain.friendRequest.controller;
 
 import com.tikklesaver.domain.Challenge.entity.Challenge;
+import com.tikklesaver.domain.friendRequest.converter.FriendReqConverter;
 import com.tikklesaver.domain.friendRequest.dto.FriendReqRequestDto;
+import com.tikklesaver.domain.friendRequest.dto.FriendReqResponseDto;
+import com.tikklesaver.domain.friendRequest.entity.FriendRequest;
 import com.tikklesaver.domain.friendRequest.service.FriendRequestService;
 import com.tikklesaver.domain.member.converter.MemberConverter;
 import com.tikklesaver.domain.member.dto.*;
@@ -48,4 +51,9 @@ public class FriendRequestController {
         return ApiResponse.onSuccess(friendRequestService.deleteFriendRequest(member, id));
     }
 
+    @GetMapping("")
+    public ApiResponse<FriendReqResponseDto.FriendReqDTOList> getFriendRequests(@CurrentMember Member member) throws Exception {
+        List<FriendRequest> friendRequests = friendRequestService.getFriendRequests(member);
+        return ApiResponse.onSuccess(FriendReqConverter.toReqDTOList(member, friendRequests));
+    }
 }
