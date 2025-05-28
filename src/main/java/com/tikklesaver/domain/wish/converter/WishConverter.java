@@ -77,4 +77,12 @@ public class WishConverter {
                 .friendWishPurchasedList(friendWishPurchasedList)
                 .build();
     }
+
+
+    // 나와 친구의 위시리스트 목록 조회
+    public static WishResponseDTO.WishPreviewListDTO wishPreviewListDTO(List<WishResponseDTO.WishPreviewDTO> wishList){
+        return WishResponseDTO.WishPreviewListDTO.builder()
+                .wishList(wishList)
+                .build();
+    }
 }

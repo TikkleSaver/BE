@@ -209,4 +209,40 @@ public class WishRepositoryImpl implements WishRepositoryCustom {
                 .orderBy(wish.createdAt.desc())
                 .fetch();
     }
+
+    @Override
+    public List<WishResponseDTO.WishPreviewDTO> getWishList(List<Long> memberIdList){
+        return jpaQueryFactory
+                .select(Projections.constructor(
+                        WishResponseDTO.WishPreviewDTO.class,
+                        wish.id,
+                        wish.member.id,
+                        wish.member.nickname,
+                        wish.product.title,
+                        wish.product.price,
+                        wish.product.image,
+                        wish.publicStatus,
+                        wish.satisfactionStatus,
+                        wish.product.productType,
+                        JPAExpressions.select(vote.count())
+                                .from(vote)
+                                .where(vote.wish.id.eq(wish.id),
+                                        vote.likeStatus.eq(LikeStatus.LIKE)),
+                        JPAExpressions.select(vote.count())
+                                .from(vote)
+                                .where(vote.wish.id.eq(wish.id),
+                                        vote.likeStatus.eq(LikeStatus.UNLIKE)),
+                        JPAExpressions.select(wishComment.count())
+                                .from(wishComment)
+                                .where(wishComment.wish.id.eq(wish.id)),
+                        wish.createdAt
+                ))
+                .from(wish)
+                .where(
+                        wish.member.id.in(memberIdList),
+                        wish.publicStatus.eq(PublicStatus.PUBLIC)
+                )
+                .orderBy(wish.createdAt.desc())
+                .fetch();
+    }
 }

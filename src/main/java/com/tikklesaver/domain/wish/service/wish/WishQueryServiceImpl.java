@@ -1,5 +1,6 @@
 package com.tikklesaver.domain.wish.service.wish;
 
+import com.tikklesaver.domain.friend.entity.Friend;
 import com.tikklesaver.domain.friend.repository.FriendRepository;
 import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.domain.member.repository.MemberRepository;
@@ -17,6 +18,7 @@ import java.util.List;
 public class WishQueryServiceImpl implements WishQueryService {
 
     private final MemberRepository memberRepository;
+    private final FriendRepository friendRepository;
     private final WishRepository wishRepository;
 
     // 위시리스트 상세 조회
@@ -59,5 +61,25 @@ public class WishQueryServiceImpl implements WishQueryService {
                 .orElseThrow(() -> new WishHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
         return wishRepository.getFriendWishPurchasedList(friend);
+    }
+
+    // 나와 친구의 위시리스트 목록 조회
+    @Override
+    public List<WishResponseDTO.WishPreviewDTO> getWishList(Member member){
+
+        List<Friend> friend1List = friendRepository.findAllByMember1(member);
+        List<Friend> friend2List = friendRepository.findAllByMember2(member);
+
+        List<Long> memberIdList = friend1List.stream()
+                .map(friend -> friend.getMember2().getId())
+                .collect(java.util.stream.Collectors.toList());
+
+        memberIdList.addAll(friend2List.stream()
+                .map(friend -> friend.getMember1().getId())
+                .toList());
+
+        memberIdList.add(member.getId());
+
+        return wishRepository.getWishList(memberIdList);
     }
 }

@@ -21,4 +21,7 @@ public interface WishQueryService {
 
     // 나의 위시리스트 목록 구매 완료 조회
     List<WishResponseDTO.FriendWishPurchasedPreviewDTO> getFriendWishPurchasedList(Member member, Long friendId);
+
+    // 나와 친구의 위시리스트 목록 조회
+    List<WishResponseDTO.WishPreviewDTO> getWishList(Member member);
 }
