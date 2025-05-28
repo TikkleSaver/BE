@@ -34,6 +34,7 @@ public class WishRepositoryImpl implements WishRepositoryCustom {
                         wish.id,
                         wish.member.id,
                         wish.member.nickname,
+                        wish.member.profileUrl,
                         wish.product.category.id,
                         wish.product.title,
                         wish.product.brand,
@@ -71,6 +72,7 @@ public class WishRepositoryImpl implements WishRepositoryCustom {
                         wish.id,
                         wish.member.id,
                         wish.member.nickname,
+                        wish.member.profileUrl,
                         wish.product.title,
                         wish.product.price,
                         wish.product.image,
@@ -108,6 +110,7 @@ public class WishRepositoryImpl implements WishRepositoryCustom {
                         wish.id,
                         wish.member.id,
                         wish.member.nickname,
+                        wish.member.profileUrl,
                         wish.product.title,
                         wish.product.price,
                         wish.product.image,
@@ -147,6 +150,7 @@ public class WishRepositoryImpl implements WishRepositoryCustom {
                         wish.id,
                         wish.member.id,
                         wish.member.nickname,
+                        wish.member.profileUrl,
                         wish.product.title,
                         wish.product.price,
                         wish.product.image,
@@ -183,6 +187,7 @@ public class WishRepositoryImpl implements WishRepositoryCustom {
                         wish.id,
                         wish.member.id,
                         wish.member.nickname,
+                        wish.member.profileUrl,
                         wish.product.title,
                         wish.product.price,
                         wish.product.image,
@@ -210,6 +215,7 @@ public class WishRepositoryImpl implements WishRepositoryCustom {
                 .fetch();
     }
 
+    // 나와 친구의 위시리스트 목록 조회
     @Override
     public List<WishResponseDTO.WishPreviewDTO> getWishList(List<Long> memberIdList){
         return jpaQueryFactory
@@ -218,6 +224,7 @@ public class WishRepositoryImpl implements WishRepositoryCustom {
                         wish.id,
                         wish.member.id,
                         wish.member.nickname,
+                        wish.member.profileUrl,
                         wish.product.title,
                         wish.product.price,
                         wish.product.image,

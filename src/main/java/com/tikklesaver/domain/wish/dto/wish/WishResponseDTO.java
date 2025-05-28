@@ -53,7 +53,7 @@ public class WishResponseDTO {
         Long wishId;
         Long memberId;
         String nickname;
-//        String profileImg;
+        String profileUrl;
         String title;
         Integer price;
         String image;
@@ -85,7 +85,7 @@ public class WishResponseDTO {
         Long wishId;
         Long memberId;
         String nickname;
-        //        String profileImg;
+        String profileUrl;
         String title;
         Integer price;
         String image;
@@ -104,7 +104,7 @@ public class WishResponseDTO {
         Long wishId;
         Long memberId;
         String nickname;
-        //        String profileImg;
+        String profileUrl;
         Long categoryId;
         String title;
         String brand;
@@ -139,7 +139,7 @@ public class WishResponseDTO {
         Long wishId;
         Long memberId;
         String nickname;
-        //        String profileImg;
+        String profileUrl;
         String title;
         Integer price;
         String image;
@@ -172,7 +172,7 @@ public class WishResponseDTO {
         Long wishId;
         Long memberId;
         String nickname;
-        //        String profileImg;
+        String profileUrl;
         String title;
         Integer price;
         String image;
@@ -203,7 +203,7 @@ public class WishResponseDTO {
         Long wishId;
         Long memberId;
         String nickname;
-        //        String profileImg;
+        String profileUrl;
         String title;
         Integer price;
         String image;

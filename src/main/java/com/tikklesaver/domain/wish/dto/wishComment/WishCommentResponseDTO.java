@@ -52,7 +52,7 @@ public class WishCommentResponseDTO {
         Long wishCommentId;
         Long memberId;
         String nickname;
-//        String profileImg;
+        String profileUrl;
         String contents;
         LocalDateTime createdAt;
         LocalDateTime updatedAt;
