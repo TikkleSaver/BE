@@ -38,6 +38,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, MemberRepository memberRepository) throws Exception {
         http
+                // CORS 설정
+                .cors(cors -> cors
+                        .configurationSource(CorsConfig.corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
                         // Swagger UI 관련 경로에 접근 허용
@@ -46,6 +49,7 @@ public class SecurityConfig {
 //                        .requestMatchers("/").permitAll()
 //                        .requestMatchers("/**").permitAll()
 //                        .requestMatchers("/api/**").permitAll()
+
                         .requestMatchers("/api/check-id/**").permitAll()
                         .requestMatchers("api/users/onboarding/**").permitAll()
                                 .requestMatchers(AUTH_WHITELIST).permitAll()
