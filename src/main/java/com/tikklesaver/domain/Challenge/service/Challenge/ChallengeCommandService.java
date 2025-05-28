@@ -8,4 +8,7 @@ public interface ChallengeCommandService {
 
     Challenge createChallenge(Long memberId, ChallengeRequestDTO.CreateChallengeDTO request, MultipartFile file);
 
+    Challenge updateChallenge(Long memberId,Long challengeId, ChallengeRequestDTO.CreateChallengeDTO request, MultipartFile file);
+
+    void deleteChallenge(Long memberId, Long challengeId);
 }

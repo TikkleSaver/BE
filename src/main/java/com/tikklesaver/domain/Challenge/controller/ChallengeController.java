@@ -6,6 +6,8 @@ import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeResponseDTO;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
 import com.tikklesaver.domain.Challenge.service.Challenge.ChallengeCommandService;
 import com.tikklesaver.domain.Challenge.service.Challenge.ChallengeQueryService;
+import com.tikklesaver.domain.member.entity.Member;
+import com.tikklesaver.global.annotation.CurrentMember;
 import com.tikklesaver.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -28,13 +30,36 @@ public class ChallengeController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "챌린지 생성 API")
     public ApiResponse<ChallengeResponseDTO.challengeResultDTO> createChallenge(
+            @CurrentMember Member member,
             @RequestPart("request") @Valid ChallengeRequestDTO.CreateChallengeDTO request,
             @RequestPart(value = "file", required = false) MultipartFile file) {
 
-        //임시 memberId
-        Long memberId = 1L;
-        Challenge challenge = challengeCommandService.createChallenge(memberId, request, file);
+
+        Challenge challenge = challengeCommandService.createChallenge(member.getId(), request, file);
         return ApiResponse.onSuccess(ChallengeConverter.toChallengeResultDTO(challenge));
+    }
+
+    @PatchMapping(value = "/{challengeId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "챌린지 수정 API")
+    public ApiResponse<ChallengeResponseDTO.challengeResultDTO> createChallenge(
+            @CurrentMember Member member,
+            @PathVariable("challengeId") Long challengeId,
+            @RequestPart("request") @Valid ChallengeRequestDTO.CreateChallengeDTO request,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
+
+
+        Challenge challenge = challengeCommandService.updateChallenge(member.getId(),challengeId, request, file);
+        return ApiResponse.onSuccess(ChallengeConverter.toChallengeResultDTO(challenge));
+    }
+
+    @DeleteMapping(value = "/{challengeId}")
+    @Operation(summary = "챌린지 삭제 API")
+    public ApiResponse<String> deleteChallenge(
+            @CurrentMember Member member,
+            @PathVariable("challengeId") Long challengeId) {
+
+         challengeCommandService.deleteChallenge(member.getId(),challengeId);
+        return ApiResponse.onSuccess("챌린지가 삭제되었습니다.");
     }
 
 

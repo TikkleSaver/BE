@@ -8,7 +8,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Builder
 @Getter
@@ -53,5 +55,15 @@ public class Challenge extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL)
+    private Set<ChallengeScraped> scraps = new HashSet<>();
+
+    @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL)
+    private Set<JoinChallenge> joinChallenges =  new HashSet<>();
+
+    @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL)
+    private Set<MissionProof> missionProofs = new HashSet<>();
+
 
 }

@@ -11,6 +11,8 @@ import com.tikklesaver.domain.Challenge.repository.JoinChallengeRepository;
 import com.tikklesaver.domain.Challenge.repository.challenge.ChallengeRepository;
 import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.domain.member.repository.MemberRepository;
+import com.tikklesaver.global.apiPayload.code.status.ErrorStatus;
+import com.tikklesaver.global.apiPayload.exception.handler.ChallengeHandler;
 import com.tikklesaver.global.aws.s3.AmazonS3Manager;
 import com.tikklesaver.global.common.Uuid;
 import com.tikklesaver.global.repository.UuidRepository;
@@ -19,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.AccessDeniedException;
 import java.util.UUID;
 
 @Service
@@ -66,5 +69,63 @@ public class ChallengeCommandServiceImpl implements ChallengeCommandService {
 
         return savedChallenge;
 
+    }
+
+    @Override
+    public Challenge updateChallenge(Long memberId, Long challengeId, ChallengeRequestDTO.CreateChallengeDTO request, MultipartFile file) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+
+        Challenge challenge = challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new EntityNotFoundException("Challenge not found ID: " + challengeId));
+
+        if (!challenge.getMember().equals(member)) {
+            throw new ChallengeHandler(ErrorStatus.CHALLENGE_NOT_AUTHOR);
+        }
+
+        if (file != null && !file.isEmpty()) {
+            String uuid = UUID.randomUUID().toString();
+            Uuid savedUuid = uuidRepository.save(Uuid.builder()
+                    .uuid(uuid)
+                    .build());
+
+            String imageUrl = amazonS3Manager.uploadFile(
+                    amazonS3Manager.generateChallengesKeyName(savedUuid),
+                    file
+            );
+            challenge.setChallengeUrl(imageUrl);
+        }
+
+        if (request.getTitle() != null) challenge.setTitle(request.getTitle());
+        if (request.getDescription() != null) challenge.setDescription(request.getDescription());
+        if (request.getCategoryId() != null) {
+            Category category = categoryRepository.findById(request.getCategoryId())
+                    .orElseThrow(() -> new EntityNotFoundException("Category not found ID: " + request.getCategoryId()));
+            challenge.setCategory(category);
+        }
+        if(request.getPublicStatus() != null) challenge.setPublicStatus(request.getPublicStatus());
+        if(request.getMissionMethods() != null) challenge.setMissionMethods(request.getMissionMethods());
+
+        return challengeRepository.save(challenge);
+
+    }
+
+    @Override
+    public void deleteChallenge(Long memberId, Long challengeId) {
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+
+        Challenge challenge = challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new EntityNotFoundException("Challenge not found ID: " + challengeId));
+
+        if (!challenge.getMember().equals(member)) {
+            throw new ChallengeHandler(ErrorStatus.CHALLENGE_NOT_AUTHOR);
+        }
+        if (challenge.getChallengeUrl() != null) {
+            amazonS3Manager.deleteFile(challenge.getChallengeUrl());
+        }
+
+        challengeRepository.delete(challenge);
     }
 }

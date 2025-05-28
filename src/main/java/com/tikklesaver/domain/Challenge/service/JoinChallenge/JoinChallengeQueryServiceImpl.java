@@ -1,9 +1,8 @@
 package com.tikklesaver.domain.Challenge.service.JoinChallenge;
 
-import com.tikklesaver.domain.Challenge.entity.Challenge;
+
 import com.tikklesaver.domain.Challenge.entity.JoinChallenge;
 import com.tikklesaver.domain.Challenge.entity.enums.Status;
-
 import com.tikklesaver.domain.Challenge.repository.JoinChallengeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
