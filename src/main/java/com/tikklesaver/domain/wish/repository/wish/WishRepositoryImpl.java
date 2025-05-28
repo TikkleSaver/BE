@@ -8,6 +8,7 @@ import com.tikklesaver.domain.wish.entity.QVote;
 import com.tikklesaver.domain.wish.entity.QWish;
 import com.tikklesaver.domain.wish.entity.QWishComment;
 import com.tikklesaver.domain.wish.entity.enums.LikeStatus;
+import com.tikklesaver.domain.wish.entity.enums.PublicStatus;
 import com.tikklesaver.domain.wish.entity.enums.PurchaseStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -130,6 +131,43 @@ public class WishRepositoryImpl implements WishRepositoryCustom {
                 .where(
                         wish.member.id.eq(member.getId()),
                         wish.purchaseStatus.eq(PurchaseStatus.PURCHASE)
+                )
+                .orderBy(wish.createdAt.desc())
+                .fetch();
+    }
+
+
+    // 친구의 위시리스트 목록 구매 예정 조회
+    @Override
+    public List<WishResponseDTO.FriendWishPlannedPreviewDTO> getFriendWishPlannedList(Member friend) {
+
+        return jpaQueryFactory
+                .select(Projections.constructor(
+                        WishResponseDTO.FriendWishPlannedPreviewDTO.class,
+                        wish.id,
+                        wish.member.id,
+                        wish.member.nickname,
+                        wish.product.title,
+                        wish.product.price,
+                        wish.product.image,
+                        JPAExpressions.select(vote.count())
+                                .from(vote)
+                                .where(vote.wish.id.eq(wish.id),
+                                        vote.likeStatus.eq(LikeStatus.LIKE)),
+                        JPAExpressions.select(vote.count())
+                                .from(vote)
+                                .where(vote.wish.id.eq(wish.id),
+                                        vote.likeStatus.eq(LikeStatus.UNLIKE)),
+                        JPAExpressions.select(wishComment.count())
+                                .from(wishComment)
+                                .where(wishComment.wish.id.eq(wish.id)),
+                        wish.createdAt
+                ))
+                .from(wish)
+                .where(
+                        wish.member.id.eq(friend.getId()),
+                        wish.purchaseStatus.eq(PurchaseStatus.PLANNED),
+                        wish.publicStatus.eq(PublicStatus.PUBLIC)
                 )
                 .orderBy(wish.createdAt.desc())
                 .fetch();

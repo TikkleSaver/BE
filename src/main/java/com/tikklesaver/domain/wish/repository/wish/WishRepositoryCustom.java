@@ -15,4 +15,7 @@ public interface WishRepositoryCustom {
 
     // 나의 위시리스트 목록 구매 완료 조회
     List<WishResponseDTO.MyWishPurchasedPreviewDTO> getMyWishPurchasedList(Member member);
+
+    // 친구의 위시리스트 목록 구매 예정 조회
+    List<WishResponseDTO.FriendWishPlannedPreviewDTO> getFriendWishPlannedList(Member friend);
 }
