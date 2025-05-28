@@ -45,6 +45,7 @@ public class WishCommentConverter {
                 .wishCommentId(wishComment.getId())
                 .memberId(wishComment.getMember().getId())
                 .nickname(wishComment.getMember().getNickname())
+                .profileUrl(wishComment.getMember().getProfileUrl())
                 .contents(wishComment.getContents())
                 .createdAt(wishComment.getCreatedAt())
                 .updatedAt(wishComment.getUpdatedAt())
