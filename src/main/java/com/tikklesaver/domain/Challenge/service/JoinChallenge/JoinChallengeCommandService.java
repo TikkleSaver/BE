@@ -7,4 +7,5 @@ public interface JoinChallengeCommandService {
 
     JoinChallenge joinChallenge(Long memberId, Long challengerId);
 
+    JoinChallenge acceptChallenge(Long memberId, Long joinChallengeId);
 }

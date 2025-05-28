@@ -28,7 +28,7 @@ public class JoinChallengeController {
 
     @PostMapping("/{challengeId}")
     @Operation(summary = "챌린지 참여 요청 API")
-    public ApiResponse<JoinChallengeResponseDTO> challengeScrap(
+    public ApiResponse<JoinChallengeResponseDTO> joinChallenge(
             @CurrentMember Member member,
             @PathVariable(name = "challengeId") Long challengeId){
 
@@ -56,6 +56,16 @@ public class JoinChallengeController {
 
         return ApiResponse.onSuccess(ChallengeConverter.detailChallengerTabListDTO(challengerList));
 
+    }
+
+    @PostMapping("/{joinChallengeId}/accept")
+    @Operation(summary = "챌린지 참여 요청 수락 API")
+    public ApiResponse<JoinChallengeResponseDTO> acceptChallenge(
+            @CurrentMember Member member,
+            @PathVariable(name = "joinChallengeId") Long joinChallengeId){
+
+        JoinChallenge joinChallenge = joinChallengeCommandService.acceptChallenge(member.getId(),joinChallengeId);
+        return ApiResponse.onSuccess(ChallengeConverter.toJoinChallengeResultDTO(joinChallenge));
     }
 
 }
