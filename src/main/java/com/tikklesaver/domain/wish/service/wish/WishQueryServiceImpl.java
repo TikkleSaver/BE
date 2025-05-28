@@ -1,8 +1,12 @@
 package com.tikklesaver.domain.wish.service.wish;
 
+import com.tikklesaver.domain.friend.repository.FriendRepository;
 import com.tikklesaver.domain.member.entity.Member;
+import com.tikklesaver.domain.member.repository.MemberRepository;
 import com.tikklesaver.domain.wish.dto.wish.WishResponseDTO;
 import com.tikklesaver.domain.wish.repository.wish.WishRepository;
+import com.tikklesaver.global.apiPayload.code.status.ErrorStatus;
+import com.tikklesaver.global.apiPayload.exception.handler.WishHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WishQueryServiceImpl implements WishQueryService {
 
+    private final MemberRepository memberRepository;
     private final WishRepository wishRepository;
 
     // 위시리스트 상세 조회
@@ -34,4 +39,14 @@ public class WishQueryServiceImpl implements WishQueryService {
         return wishRepository.getMyWishPurchasedList(member);
     }
 
+
+    // 친구의 위시리스트 목록 구매 예정 조회
+    @Override
+    public List<WishResponseDTO.FriendWishPlannedPreviewDTO> getFriendWishPlannedList(Member member, Long friendId){
+
+        Member friend = memberRepository.findById(friendId)
+                .orElseThrow(() -> new WishHandler(ErrorStatus.MEMBER_NOT_FOUND));
+
+        return wishRepository.getFriendWishPlannedList(friend);
+    }
 }

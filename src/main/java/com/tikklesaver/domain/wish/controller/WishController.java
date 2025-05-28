@@ -137,6 +137,21 @@ public class WishController {
         return ApiResponse.onSuccess(WishConverter.myWishPurchasedPreviewListDTO(myWishPurchasedList));
     }
 
+
+    // 친구의 위시리스트 구매예정 목록 조회
+    @GetMapping("/friend/{friendId}/planned")
+    @Operation(summary = "친구의 위시리스트 구매예정 목록 조회 API")
+    @Parameters({
+            @Parameter(name = "friendId", description = "친구의 MEMBER_ID, path variable 입니다!")
+    })
+    public ApiResponse<WishResponseDTO.FriendWishPlannedPreviewListDTO> getFriendWishPlanned(
+            @CurrentMember Member member,
+            @PathVariable(name = "friendId") Long friendId) {
+
+        List<WishResponseDTO.FriendWishPlannedPreviewDTO> friendWishPlannedList = wishQueryService.getFriendWishPlannedList(member, friendId);
+        return ApiResponse.onSuccess(WishConverter.friendWishPlannedPreviewListDTO(friendWishPlannedList));
+    }
+
     // 나의 위시 공개/비공개 설정
     @PatchMapping( "/{wishId}/public-status")
     @Operation(summary = "나의 위시 공개면 비공개, 비공개면 공개로 변경 API")

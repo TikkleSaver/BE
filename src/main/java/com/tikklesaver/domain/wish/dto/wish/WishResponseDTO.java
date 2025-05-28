@@ -66,6 +66,35 @@ public class WishResponseDTO {
     }
 
 
+    // 친구의 위시리스트 구매 예정 목록 조회 (목록용)
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class FriendWishPlannedPreviewListDTO {
+
+        List<FriendWishPlannedPreviewDTO> friendWishPlannedList;
+    }
+
+    // 친구의 위시리스트 구매 예정 목록 조회 (세부 상자)
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class FriendWishPlannedPreviewDTO {
+        Long wishId;
+        Long memberId;
+        String nickname;
+        //        String profileImg;
+        String title;
+        Integer price;
+        String image;
+        Long likeCnt;
+        Long unLikeCnt;
+        Long  commentCnt;
+        LocalDateTime createdAt;
+    }
+
     // 위시 상세 정보 조회
     @Builder
     @Getter
