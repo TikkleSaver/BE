@@ -28,4 +28,11 @@ public class VoteConverter {
                 .createdAt(LocalDateTime.now())
                 .build();
     }
+
+    // 찬반 투표 생성 결과
+    public static VoteResponseDTO.VoteStatusResultDTO toVoteStatusResultDTO(Vote vote){
+        return VoteResponseDTO.VoteStatusResultDTO.builder()
+                .likeStatus(vote != null ? vote.getLikeStatus() : null)
+                .build();
+    }
 }

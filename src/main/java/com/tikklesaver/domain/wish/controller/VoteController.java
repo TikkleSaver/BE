@@ -6,6 +6,7 @@ import com.tikklesaver.domain.wish.dto.vote.VoteResponseDTO;
 import com.tikklesaver.domain.wish.entity.Vote;
 import com.tikklesaver.domain.wish.entity.enums.LikeStatus;
 import com.tikklesaver.domain.wish.service.vote.VoteCommandService;
+import com.tikklesaver.domain.wish.service.vote.VoteQueryService;
 import com.tikklesaver.global.annotation.CurrentMember;
 import com.tikklesaver.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class VoteController {
 
     private final VoteCommandService voteCommandService;
+    private final VoteQueryService voteQueryService;
 
     // 위시 찬성/반대 투표
     @PostMapping( "/{wishId}/vote")
@@ -51,5 +53,20 @@ public class VoteController {
         voteCommandService.cancelVote(member, wishId);
 
         return ApiResponse.onSuccess("삭제가 완료되었습니다.");
+    }
+
+    //  찬성/반대 나의 투표 여부 조회
+    @GetMapping( "/{wishId}/vote")
+    @Operation(summary = "찬성/반대 나의 투표 여부 조회 API")
+    @Parameters({
+            @Parameter(name = "wishId", description = "위시의 ID, path variable 입니다!")
+    })
+    public ApiResponse<VoteResponseDTO.VoteStatusResultDTO> getVote(
+            @CurrentMember Member member,
+            @PathVariable(name = "wishId") Long wishId) {
+
+        Vote vote = voteQueryService.getVote(member, wishId);
+
+        return ApiResponse.onSuccess(VoteConverter.toVoteStatusResultDTO(vote));
     }
 }

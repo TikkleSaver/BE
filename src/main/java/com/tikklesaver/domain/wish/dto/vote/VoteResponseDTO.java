@@ -1,5 +1,6 @@
 package com.tikklesaver.domain.wish.dto.vote;
 
+import com.tikklesaver.domain.wish.entity.enums.LikeStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,5 +18,14 @@ public class VoteResponseDTO {
     public static class VoteResultDTO {
         Long voteId;
         LocalDateTime createdAt;
+    }
+
+    // 찬성/반대 투표 조회
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class VoteStatusResultDTO {
+        LikeStatus likeStatus;
     }
 }
