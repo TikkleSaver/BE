@@ -166,6 +166,16 @@ public class WishController {
         return ApiResponse.onSuccess(WishConverter.friendWishPurchasedPreviewListDTO(friendWishPurchasedList));
     }
 
+    // 나와 친구의 위시리스트 목록 조회
+    @GetMapping
+    @Operation(summary = "나와 친구의 위시리스트 목록 조회 API")
+    public ApiResponse<WishResponseDTO.WishPreviewListDTO> getWishList(
+            @CurrentMember Member member) {
+
+        List<WishResponseDTO.WishPreviewDTO> wishList = wishQueryService.getWishList(member);
+        return ApiResponse.onSuccess(WishConverter.wishPreviewListDTO(wishList));
+    }
+
     // 나의 위시 공개/비공개 설정
     @PatchMapping( "/{wishId}/public-status")
     @Operation(summary = "나의 위시 공개면 비공개, 비공개면 공개로 변경 API")
