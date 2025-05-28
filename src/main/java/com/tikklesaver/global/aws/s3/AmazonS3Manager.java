@@ -1,5 +1,6 @@
 package com.tikklesaver.global.aws.s3;
 
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -42,10 +43,17 @@ public class AmazonS3Manager{
         return amazonConfig.getChallengeMissionPath()+ '/' + uuid.getUuid();
     }
 
-    public void deleteFile(String keyName) {
-        amazonS3.deleteObject(new DeleteObjectRequest(amazonConfig.getBucket(), keyName));
+    public void deleteFile(String imgUrl) {
+        try {
+            int index = imgUrl.indexOf(".com/");
+            if(index != -1 &&index+5<imgUrl.length()) {
+                imgUrl = imgUrl.substring(index+5);
+            }
+            amazonS3.deleteObject(new DeleteObjectRequest(amazonConfig.getBucket(), imgUrl));
+        }catch (SdkClientException e){
+            log.error("error at AmazonS3Manager.deleteFile: {}", e.getStackTrace());
+        }
     }
-
 
     public String uploadFile(String keyName, MultipartFile file){
         ObjectMetadata metadata = new ObjectMetadata();
