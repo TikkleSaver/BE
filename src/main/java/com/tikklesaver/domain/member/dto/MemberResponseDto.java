@@ -56,4 +56,14 @@ public class MemberResponseDto {
         Long goalCost;
     }
 
+    // 특정 사용자의 지출 목표 금액 조회
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetMemberGoalCostDTO {
+        Long viewerId;
+        Long memberId;
+        Long goalCost;
+    }
 }
