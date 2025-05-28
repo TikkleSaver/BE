@@ -55,8 +55,9 @@ public class MemberConverter {
     }
     
     // 지출 목표 금액 조회(지출 달력 페이지)
-    public static MemberResponseDto.MemberGoalCostDTO toGetMemberGoalCostDTO(Long memberId, Long goalCost) {
-        return MemberResponseDto.MemberGoalCostDTO.builder()
+    public static MemberResponseDto.GetMemberGoalCostDTO toGetMemberGoalCostDTO(Long viewerId, Long memberId, Long goalCost) {
+        return MemberResponseDto.GetMemberGoalCostDTO.builder()
+                .viewerId(viewerId)
                 .memberId(memberId)
                 .goalCost(goalCost)
                 .build();
