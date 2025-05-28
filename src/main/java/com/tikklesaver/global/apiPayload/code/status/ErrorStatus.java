@@ -47,6 +47,7 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //챌린지 가입
     JOIN_CHALLENGE_NOT_FOUND(HttpStatus.NOT_FOUND,"JOINCHALLENGE4001", "해당하는 챌린지에 가입하지 않았습니다."),
+    JOIN_CHALLENGE_NOT_AUTHOR(HttpStatus.FORBIDDEN, "JOINCHALLENGE4002", "해당 챌린지 요청의 생성자가 아닙니다."),
 
 
     //미션 인증

@@ -68,4 +68,14 @@ public class JoinChallengeController {
         return ApiResponse.onSuccess(ChallengeConverter.toJoinChallengeResultDTO(joinChallenge));
     }
 
+    @DeleteMapping("/{joinChallengeId}/delete")
+    @Operation(summary = "챌린지 참여 요청 거절 API, 챌린지 나가기 api")
+    public ApiResponse<String> rejectChallenge(
+            @CurrentMember Member member,
+            @PathVariable(name = "joinChallengeId") Long joinChallengeId){
+
+         joinChallengeCommandService.rejectChallenge(member.getId(),joinChallengeId);
+        return ApiResponse.onSuccess("joinChallenge가 삭제되었습니다.");
+    }
+
 }

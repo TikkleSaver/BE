@@ -11,6 +11,7 @@ import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.domain.member.repository.MemberRepository;
 import com.tikklesaver.global.apiPayload.code.status.ErrorStatus;
 import com.tikklesaver.global.apiPayload.exception.handler.ChallengeHandler;
+import com.tikklesaver.global.apiPayload.exception.handler.JoinChallengeHandler;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -60,6 +61,19 @@ public class JoinChallengeCommandServiceImpl implements JoinChallengeCommandServ
 
         joinChallenge.setStatus(Status.JOINED);
         return joinChallengeRepository.save(joinChallenge);
+
+    }
+
+    @Override
+    public void rejectChallenge(Long memberId, Long joinChallengeId) {
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+
+        JoinChallenge joinChallenge = joinChallengeRepository.findById(joinChallengeId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 챌린지 참여를 찾을 수 없습니다. ID: " + joinChallengeId));
+
+        joinChallengeRepository.delete(joinChallenge);
 
     }
 
