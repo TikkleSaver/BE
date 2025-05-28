@@ -49,4 +49,15 @@ public class WishQueryServiceImpl implements WishQueryService {
 
         return wishRepository.getFriendWishPlannedList(friend);
     }
+
+
+    // 친구의 위시리스트 목록 구매 완료 조회
+    @Override
+    public List<WishResponseDTO.FriendWishPurchasedPreviewDTO> getFriendWishPurchasedList(Member member, Long friendId){
+
+        Member friend = memberRepository.findById(friendId)
+                .orElseThrow(() -> new WishHandler(ErrorStatus.MEMBER_NOT_FOUND));
+
+        return wishRepository.getFriendWishPurchasedList(friend);
+    }
 }

@@ -151,4 +151,35 @@ public class WishResponseDTO {
         Long  commentCnt;
         LocalDateTime createdAt;
     }
+
+
+    // 친구의 위시리스트 구매 완료 목록 조회 (목록용)
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class FriendWishPurchasedPreviewListDTO {
+
+        List<FriendWishPurchasedPreviewDTO> friendWishPurchasedList;
+    }
+
+    // 친구의 위시리스트 구매 완료 목록 조회 (세부 상자)
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class FriendWishPurchasedPreviewDTO {
+        Long wishId;
+        Long memberId;
+        String nickname;
+        //        String profileImg;
+        String title;
+        Integer price;
+        String image;
+        SatisfactionStatus satisfactionStatus;
+        Long likeCnt;
+        Long unLikeCnt;
+        Long  commentCnt;
+        LocalDateTime createdAt;
+    }
 }
