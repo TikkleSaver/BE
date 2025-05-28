@@ -172,4 +172,41 @@ public class WishRepositoryImpl implements WishRepositoryCustom {
                 .orderBy(wish.createdAt.desc())
                 .fetch();
     }
+
+    // 친구의 위시리스트 목록 구매 완료 조회
+    @Override
+    public List<WishResponseDTO.FriendWishPurchasedPreviewDTO> getFriendWishPurchasedList(Member friend) {
+
+        return jpaQueryFactory
+                .select(Projections.constructor(
+                        WishResponseDTO.FriendWishPurchasedPreviewDTO.class,
+                        wish.id,
+                        wish.member.id,
+                        wish.member.nickname,
+                        wish.product.title,
+                        wish.product.price,
+                        wish.product.image,
+                        wish.satisfactionStatus,
+                        JPAExpressions.select(vote.count())
+                                .from(vote)
+                                .where(vote.wish.id.eq(wish.id),
+                                        vote.likeStatus.eq(LikeStatus.LIKE)),
+                        JPAExpressions.select(vote.count())
+                                .from(vote)
+                                .where(vote.wish.id.eq(wish.id),
+                                        vote.likeStatus.eq(LikeStatus.UNLIKE)),
+                        JPAExpressions.select(wishComment.count())
+                                .from(wishComment)
+                                .where(wishComment.wish.id.eq(wish.id)),
+                        wish.createdAt
+                ))
+                .from(wish)
+                .where(
+                        wish.member.id.eq(friend.getId()),
+                        wish.purchaseStatus.eq(PurchaseStatus.PURCHASE),
+                        wish.publicStatus.eq(PublicStatus.PUBLIC)
+                )
+                .orderBy(wish.createdAt.desc())
+                .fetch();
+    }
 }
