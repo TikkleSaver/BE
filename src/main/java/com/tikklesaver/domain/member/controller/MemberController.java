@@ -138,14 +138,19 @@ public class MemberController {
     @GetMapping("/users/goalCost")
     @Operation(summary = "특정 사용자의 지출 목표 금액 조회 API")
     @Parameters({
-            @Parameter(name = "memberId", description = "지출 목표 금액의 주인인 사용자의 ID", required = true)
+            @Parameter(name = "memberId", description = "지출 목표 금액의 주인인 사용자의 ID", required = false)
     })
     public ApiResponse<MemberResponseDto.GetMemberGoalCostDTO> getExpenseGoalCost(
             @CurrentMember Member viewer,
-            @RequestParam Long memberId) {
+            @RequestParam(value = "memberId", required = false) Long memberId) {
 
-        Long goalCost =  memberCommandService.getExpenseGoalCost(memberId);
-        return ApiResponse.onSuccess(MemberConverter.toGetMemberGoalCostDTO(viewer.getId(), memberId, goalCost));
+        if (memberId == null) {
+            Long goalCost =  memberCommandService.getExpenseGoalCost(viewer.getId());
+            return ApiResponse.onSuccess(MemberConverter.toGetMemberGoalCostDTO(viewer.getId(), viewer.getId(), goalCost));
+        } else{
+            Long goalCost =  memberCommandService.getExpenseGoalCost(memberId);
+            return ApiResponse.onSuccess(MemberConverter.toGetMemberGoalCostDTO(viewer.getId(), memberId, goalCost));
+        }
     }
 
     @GetMapping("/users/search")
