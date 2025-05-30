@@ -60,11 +60,11 @@ public class MemberController {
     }
 
     @PostMapping("/refresh-token")
-    public ApiResponse<JwtDto> refresh(@RequestHeader("Authorization") String accessToken, @RequestHeader("Authorization-refresh") String refreshToken) throws Exception {
-        String jwtToken = accessToken.substring(7); // "Bearer " 제거
-        log.info("AccessToken: {}", jwtToken);
+    public ApiResponse<JwtDto> refresh(@RequestHeader("Authorization") String refreshToken, @CurrentMember Member member) throws Exception {
+        String jwtToken = refreshToken.substring(7); // "Bearer " 제거
+        log.info("refreshToken: {}", jwtToken);
 
-        return ApiResponse.onSuccess(memberCommandService.refreshAccessToken(accessToken, refreshToken));
+        return ApiResponse.onSuccess(memberCommandService.refreshAccessToken(member, refreshToken));
     }
 
     @PostMapping("/logout")
@@ -73,6 +73,7 @@ public class MemberController {
         return ApiResponse.onSuccess("로그아웃에 성공하였습니다.");
     }
 
+    //아이디 중복 확인
     @PostMapping("/check-id/{id}")
     public ApiResponse<String> checkId(@PathVariable(name = "id") String id) throws Exception {
         memberCommandService.checkId(id);

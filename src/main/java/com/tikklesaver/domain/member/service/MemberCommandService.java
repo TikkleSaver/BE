@@ -17,7 +17,7 @@ public interface MemberCommandService {
 
     JwtDto login(@Valid LoginRequestDto request);
 
-    JwtDto refreshAccessToken(String jwtToken, String refreshToken);
+    JwtDto refreshAccessToken(Member member, String refreshToken);
 
     void logout(Member member);
 
