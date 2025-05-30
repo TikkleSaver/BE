@@ -100,20 +100,28 @@ public class ExpenseController {
     @GetMapping("/dailyTotalExpense")
     @Operation(summary = "일별 지출 총 금액 리스트 조회 API")
     @Parameters({
-            @Parameter(name = "memberId", description = "지출의 주인인 사용자 ID, path variable 입니다!"),
+            @Parameter(name = "memberId", description = "지출의 주인인 사용자 ID, path variable 입니다!", required = false),
             @Parameter(name = "year", description = "조회할 연도 (ex. 2025)", required = true),
             @Parameter(name = "month", description = "조회할 월 (1~12)", required = true)
     })
     public ApiResponse<ExpenseResponseDTO.GetDailyExpenseResultDTOList> getDailyExpense(
             @CurrentMember Member viewer,
-            @RequestParam(name = "memberId") Long memberId,
+            @RequestParam(value = "memberId", required = false) Long memberId,
             @RequestParam int year,
             @RequestParam int month) {
 
-        List<Expense> expenseList =
-                expenseQueryService.getDailyExpense(viewer, memberId, year, month);
+        if(memberId == null) {
+            List<Expense> expenseList =
+                    expenseQueryService.getDailyExpense(viewer, viewer.getId(), year, month);
 
-        return ApiResponse.onSuccess(ExpenseConverter.toGetDailyExpenseResultDTO(expenseList, memberId));
+            return ApiResponse.onSuccess(ExpenseConverter.toGetDailyExpenseResultDTO(expenseList, viewer.getId()));
+        }
+        else {
+            List<Expense> expenseList =
+                    expenseQueryService.getDailyExpense(viewer, memberId, year, month);
+
+            return ApiResponse.onSuccess(ExpenseConverter.toGetDailyExpenseResultDTO(expenseList, memberId));
+        }
     }
 
     // 특정 년도의 월별 지출 총 금액 리스트 조회 API
