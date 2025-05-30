@@ -53,12 +53,6 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     private final UuidRepository uuidRepository;
     private final ChallengeScrapRepository challengeScrapRepository;
 
-    @Value("${jwt.access.header}")
-    private String accessHeader;
-
-    @Value("${jwt.refresh.header}")
-    private String refreshHeader;
-
 
 
     @Override
@@ -114,19 +108,13 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
 
     @Override
-    public JwtDto refreshAccessToken(String accessToken, String refreshToken) throws JwtHandler {
-        accessToken = accessToken.substring(7);
+    public JwtDto refreshAccessToken(Member member, String refreshToken) throws JwtHandler {
         refreshToken = refreshToken.substring(7);
-
-        //refreshToken 유효성 검증 / accessToken은 이미 만료가 지나도 상관 없는 상태
+        String accessToken;
+        //refreshToken 유효성 검증
         if (!jwtUtil.isValidToken(refreshToken)) {
             throw new JwtHandler(ErrorStatus.INVALID_TOKEN);
         }else{
-            //accessToken에서 loginId 추출 -> db에 refreshToken 조회
-            String loginId = jwtUtil.getUserId(accessToken);
-            Optional<Member> optionalMember = memberRepository.findByLoginId(loginId);
-            Member member = optionalMember.get();
-
             String dbToken = member.getRefreshToken();
 
             if(dbToken.equals(refreshToken)){
