@@ -40,7 +40,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             String token = authorizationHeader.substring(7);
             //JWT 유효성 검증
             if (!jwtUtil.isValidToken(token)) {
-//                throw new JwtHandler(ErrorStatus.INVALID_TOKEN);//filter에서는 예외 따로 잡아줘야 함.
+                SecurityContextHolder.clearContext(); // 인증 정보 명시적으로 제거
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 상태 코드
+                response.setContentType("application/json;charset=UTF-8"); // JSON 응답 설정
+                response.getWriter().write("{\"message\": \"유효하지 않은 토큰입니다.\"}"); // 에러 메시지 바디
+                return; // 요청 종료 (다음 필터로 넘기지 않음)
             } else{
                 String loginId = jwtUtil.getUserId(token);
 
