@@ -33,4 +33,12 @@ public class FriendReqResponseDto {
         Long receiverId;
         List<FriendReqDTO> friendReqList;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class FriendReqResDTO {
+        Long requestId;
+    }
 }

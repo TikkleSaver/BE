@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface FriendRequestService {
 
-    void addFriendRequest(Member member, @NotNull Long receiverId);
+    Long addFriendRequest(Member member, @NotNull Long receiverId);
 
     void addFriend(Member member, Long id);
 

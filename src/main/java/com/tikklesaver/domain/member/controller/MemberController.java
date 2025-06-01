@@ -86,6 +86,7 @@ public class MemberController {
         return ApiResponse.onSuccess("비밀번호 변경에 성공했습니다.");
     }
 
+    //프로필 수정
     @PatchMapping(value = "/users", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ApiResponse<MemberResponseDto.MemberInfoDTO> updateProfile
             (@Parameter(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
@@ -93,6 +94,8 @@ public class MemberController {
              @RequestPart("profileImg") MultipartFile profileImg,@CurrentMember Member member) {
         return ApiResponse.onSuccess(MemberConverter.toMemberInfoDTO(memberCommandService.updateProfile(member, requestDTO.getNickname(), profileImg)));
     }
+
+
 
     //온보딩
     @PostMapping("/users/onboarding/category")

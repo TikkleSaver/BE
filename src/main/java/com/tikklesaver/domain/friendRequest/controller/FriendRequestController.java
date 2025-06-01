@@ -33,9 +33,9 @@ public class FriendRequestController {
 
     //친구 요청
     @PostMapping("")
-    public ApiResponse<String> requestFriend(@CurrentMember Member member, @RequestBody @Valid FriendReqRequestDto.RequestFriendDTO requestDTO) throws Exception {
-        friendRequestService.addFriendRequest(member, requestDTO.getReceiverId());
-        return ApiResponse.onSuccess("친구 요청 성공");
+    public ApiResponse<FriendReqResponseDto.FriendReqResDTO> requestFriend(@CurrentMember Member member, @RequestBody @Valid FriendReqRequestDto.RequestFriendDTO requestDTO) throws Exception {
+        Long requestId = friendRequestService.addFriendRequest(member, requestDTO.getReceiverId());
+        return ApiResponse.onSuccess(FriendReqConverter.toFriendResDTO(requestId));
     }
 
     //친구 요청 수락
