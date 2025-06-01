@@ -31,7 +31,7 @@ public class FriendController {
     private final MemberCommandService memberCommandService;
     private final MemberRepository memberRepository;
 
-    //유저 정보 조회
+    //친구 리스트 조회
     @GetMapping("")
     public ApiResponse<FriendResponseDto.FriendDTOList> getFriendList(@CurrentMember Member member) throws Exception{
         List<FriendResponseDto.FriendDTO> friendRequests = friendService.getFriends(member);

@@ -34,4 +34,11 @@ public class FriendReqConverter {
                 .sender(toMemberInfoDTO(request.getSender()))
                 .build();
     }
+
+    // FriendRequest → FriendReqDTO 변환
+    public static FriendReqResponseDto.FriendReqResDTO toFriendResDTO(Long requestId) {
+        return FriendReqResponseDto.FriendReqResDTO.builder()
+                .requestId(requestId)
+                .build();
+    }
 }

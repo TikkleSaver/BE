@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -31,7 +30,7 @@ public class FriendRequestServiceImpl implements FriendRequestService {
     public static final FriendResponseDto.FriendReqDTO EMPTY = new FriendResponseDto.FriendReqDTO(null, null, null);
 
     @Override
-    public void addFriendRequest(Member sender, Long receiverId) {
+    public Long addFriendRequest(Member sender, Long receiverId) {
         if (sender.getId().equals(receiverId)) {
             throw new FriendRequestHandler(ErrorStatus.FRIEND_REQ_PERMISSION_DENIED);
         }
@@ -61,7 +60,8 @@ public class FriendRequestServiceImpl implements FriendRequestService {
                 .status(RequestStatus.PENDING)
                 .build();
 
-        friendRequestRepository.save(request);
+        FriendRequest savedRequest = friendRequestRepository.save(request);
+        return savedRequest.getId();
     }
 
     @Override

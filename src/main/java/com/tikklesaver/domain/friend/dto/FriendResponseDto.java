@@ -44,8 +44,8 @@ public class FriendResponseDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class FriendDTO {
-        Long id; //친구 테이블 id
-        Long friendId;
+        Long friendId;//친구 테이블 id
+        Long id;
         String nickname;
         String profileUrl;
     }
