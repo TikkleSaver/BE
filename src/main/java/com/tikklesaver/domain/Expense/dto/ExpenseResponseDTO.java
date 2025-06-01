@@ -179,4 +179,17 @@ public class ExpenseResponseDTO {
         int year;
         int month;
     }
+
+    // 특정 사용자의 지출 목표 달성일 조회
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetAchievedGoalCostResultDTO {
+        Long memberId;
+        int year;
+        int month;
+        Long achievedGoalCostDay;
+        Double achievementRate;
+    }
 }

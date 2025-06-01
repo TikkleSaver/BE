@@ -176,4 +176,16 @@ public class ExpenseConverter {
                 .month(result.getMonth())
                 .build();
     }
+
+    // 특정 사용자의 지출 목표 달성일 조회
+    public static ExpenseResponseDTO.GetAchievedGoalCostResultDTO toGetAchievedGoalCost(ExpenseResponseDTO.GetAchievedGoalCostResultDTO result) {
+
+        return ExpenseResponseDTO.GetAchievedGoalCostResultDTO.builder()
+                .memberId(result.getMemberId())
+                .year(result.getYear())
+                .month(result.getMonth())
+                .achievedGoalCostDay(result.getAchievedGoalCostDay())
+                .achievementRate(result.getAchievementRate())
+                .build();
+    }
 }

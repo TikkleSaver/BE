@@ -37,4 +37,7 @@ public interface ExpenseQueryService {
 
     // 특정 사용자의 특정 달 지출 TOP3 카테고리 조회
     ExpenseResponseDTO.GetExpenseTop3CategoryResultDTO getTotalExpenseTop3Category(Long memberId, int year, int month);
+
+    // 특정 사용자의 지출 목표 달성일 조회
+    ExpenseResponseDTO.GetAchievedGoalCostResultDTO getAchievedGoalCost(Long memberId, int year, int month);
 }

@@ -192,4 +192,20 @@ public class ExpenseController {
         return ApiResponse.onSuccess(ExpenseConverter.toGetTotalExpenseTop3Category(result));
     }
 
+    // 특정 사용자의 지출 목표 달성일 조회
+    @GetMapping("/achievedGoalCost")
+    @Operation(summary = "특정 사용자의 지출 목표 달성일 조회 API")
+    @Parameters({
+            @Parameter(name = "year", description = "조회할 연도 (ex. 2025)", required = true),
+            @Parameter(name = "month", description = "조회할 월 (1~12)", required = true)
+    })
+    public ApiResponse<ExpenseResponseDTO.GetAchievedGoalCostResultDTO> getAchievedGoalCost(
+            @CurrentMember Member member,
+            @RequestParam int year,
+            @RequestParam int month) {
+
+        ExpenseResponseDTO.GetAchievedGoalCostResultDTO result = expenseQueryService.getAchievedGoalCost(member.getId(), year, month);
+
+        return ApiResponse.onSuccess(ExpenseConverter.toGetAchievedGoalCost(result));
+    }
 }
