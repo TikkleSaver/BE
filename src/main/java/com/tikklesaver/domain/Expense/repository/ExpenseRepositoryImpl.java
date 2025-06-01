@@ -292,7 +292,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepositoryCustom {
 
         // 6. 달성률 계산 (소수점 2자리)
         double achievementRate = (double) achievedDayCount / totalDays * 100;
-        double roundedRate = Math.round(achievementRate * 100.0) / 10.0;
+        double roundedRate = Math.round(achievementRate * 100.0) / 100.0;
 
         return ExpenseResponseDTO.GetAchievedGoalCostResultDTO.builder()
                 .memberId(memberId)

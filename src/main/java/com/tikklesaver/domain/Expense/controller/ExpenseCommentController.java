@@ -65,11 +65,17 @@ public class ExpenseCommentController {
     public ApiResponse<ExpenseCommentResponseDTO.ExpenseCommentListResultDTO> getExpenseCommentList(
             @CurrentMember Member viewer,
             @RequestParam(name = "page") Integer page,
-            @RequestParam(name = "memberId") Long memberId,
+            @RequestParam(name = "memberId", required = false) Long memberId,
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date expenseDate
     ){
-        Page<ExpenseComment> expenseCommentList = expenseCommentQueryService.getExpenseCommentList(viewer.getId(), page - 1, memberId, expenseDate);
-        return ApiResponse.onSuccess(ExpenseCommentConverter.toGetExpenseCommentResultListDTO(expenseCommentList));
+        if ( memberId == null ){
+            Page<ExpenseComment> expenseCommentList = expenseCommentQueryService.getExpenseCommentList(viewer.getId(), page - 1, viewer.getId(), expenseDate);
+            return ApiResponse.onSuccess(ExpenseCommentConverter.toGetExpenseCommentResultListDTO(expenseCommentList));
+        }
+        else {
+            Page<ExpenseComment> expenseCommentList = expenseCommentQueryService.getExpenseCommentList(viewer.getId(), page - 1, memberId, expenseDate);
+            return ApiResponse.onSuccess(ExpenseCommentConverter.toGetExpenseCommentResultListDTO(expenseCommentList));
+        }
     }
 
 }
