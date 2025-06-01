@@ -50,12 +50,18 @@ public class ExpenseController {
     public ApiResponse<ExpenseResponseDTO.ExpensePreviewListResultDTO> getExpenseList(
             @CurrentMember Member viewer,
             @RequestParam(name = "page") Integer page,
-            @RequestParam(name = "memberId") Long memberId,
+            @RequestParam(value = "memberId", required = false) Long memberId,
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date expenseDate
     ){
 
-        Page<Expense> expenseList = expenseQueryService.getExpenseList(viewer, page - 1, memberId, expenseDate);
-        return ApiResponse.onSuccess(ExpenseConverter.toGetExpenseResultListDTO(expenseList));
+        if( memberId == null) {
+            Page<Expense> expenseList = expenseQueryService.getExpenseList(viewer, page - 1, viewer.getId(), expenseDate);
+            return ApiResponse.onSuccess(ExpenseConverter.toGetExpenseResultListDTO(expenseList));
+        }
+        else{
+            Page<Expense> expenseList = expenseQueryService.getExpenseList(viewer, page - 1, memberId, expenseDate);
+            return ApiResponse.onSuccess(ExpenseConverter.toGetExpenseResultListDTO(expenseList));
+        }
     }
 
     // 지출 생성
