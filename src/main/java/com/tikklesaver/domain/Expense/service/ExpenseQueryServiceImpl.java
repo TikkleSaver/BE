@@ -167,4 +167,12 @@ public class ExpenseQueryServiceImpl implements ExpenseQueryService {
         this.findById(memberId);
         return expenseRepositoryCustom.findExpenseTop3Categories(memberId, year, month);
     }
+
+    // 특정 사용자의 지출 목표 달성일 조회
+    @Override
+    @Transactional
+    public ExpenseResponseDTO.GetAchievedGoalCostResultDTO getAchievedGoalCost(Long memberId, int year, int month){
+        this.findById(memberId);
+        return expenseRepositoryCustom.findAchievedGoalCost(memberId, year, month);
+    }
 }
