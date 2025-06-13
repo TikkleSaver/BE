@@ -9,5 +9,5 @@ import java.util.List;
 public interface WishCommentRepository extends JpaRepository<WishComment, Long>, WishCommentRepositoryCustom {
     
     // 위시ID로 위시 댓글 찾기
-    List<WishComment> findAllByWish(Wish wish);
+    List<WishComment> findAllByWishOrderByCreatedAt(Wish wish);
 }
