@@ -105,6 +105,10 @@ public class WishResponseDTO {
         Long memberId;
         String nickname;
         String profileUrl;
+        String category1;
+        String category2;
+        String category3;
+        String category4;
         Long categoryId;
         String title;
         String brand;
