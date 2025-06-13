@@ -54,6 +54,7 @@ public class WishCommentResponseDTO {
         String nickname;
         String profileUrl;
         String contents;
+        Boolean isAuthor;
         LocalDateTime createdAt;
         LocalDateTime updatedAt;
     }

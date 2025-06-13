@@ -23,8 +23,8 @@ public class WishQueryServiceImpl implements WishQueryService {
 
     // 위시리스트 상세 조회
     @Override
-    public WishResponseDTO.WishDetailDTO getWishDetail(Long wishId){
-        return wishRepository.getWishDetail(wishId);
+    public WishResponseDTO.WishDetailDTO getWishDetail(Long wishId, Member member){
+        return wishRepository.getWishDetail(wishId, member);
     }
 
     // 나의 위시리스트 목록 구매 예정 조회
@@ -80,6 +80,6 @@ public class WishQueryServiceImpl implements WishQueryService {
 
         memberIdList.add(member.getId());
 
-        return wishRepository.getWishList(memberIdList);
+        return wishRepository.getWishList(memberIdList, member);
     }
 }
