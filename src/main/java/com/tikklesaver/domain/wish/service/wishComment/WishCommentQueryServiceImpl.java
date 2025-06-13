@@ -28,7 +28,7 @@ public class WishCommentQueryServiceImpl implements WishCommentQueryService {
         Wish wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new WishCommentHandler(ErrorStatus.WISH_NOT_FOUND));
 
-        List<WishComment> wishCommentList = wishCommentRepository.findAllByWish(wish);
+        List<WishComment> wishCommentList = wishCommentRepository.findAllByWishOrderByCreatedAt(wish);
 
 
 
