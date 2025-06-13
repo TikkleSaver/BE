@@ -111,6 +111,8 @@ public class ProductCommandServiceImpl implements ProductCommandService {
             product.setImage(imageUrl);
         }
 
+        product.setTitle(request.getTitle());
+        product.setBrand(request.getBrand());
         product.setPrice(request.getPrice());
         product.setCategory(category);
 
