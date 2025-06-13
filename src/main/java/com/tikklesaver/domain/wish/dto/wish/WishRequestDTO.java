@@ -98,6 +98,10 @@ public class WishRequestDTO {
 
         SatisfactionStatus satisfactionStatus;
 
+        String title;
+
+        String brand;
+
         @NotNull
         Integer price;
 
