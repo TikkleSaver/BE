@@ -76,13 +76,6 @@ public class ProductCommandServiceImpl implements ProductCommandService {
             throw new WishHandler(ErrorStatus.WISH_NOT_AUTHOR);
 
         product.setPrice(request.getPrice());
-        product.setCategory1(request.getCategory1());
-        if (request.getCategory2() != null)
-            product.setCategory2(request.getCategory2());
-        if (request.getCategory3() != null)
-            product.setCategory3(request.getCategory3());
-        if (request.getCategory4() != null)
-            product.setCategory4(request.getCategory4());
         product.setCategory(category);
 
         return productRepository.save(product);

@@ -76,15 +76,6 @@ public class WishRequestDTO {
         @NotNull
         Integer price;
 
-        @NotEmpty
-        String category1;
-
-        String category2;
-
-        String category3;
-
-        String category4;
-
         @NotNull
         Long categoryId;
     }
