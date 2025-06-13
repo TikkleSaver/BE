@@ -40,13 +40,14 @@ public class WishCommentConverter {
     }
 
     // 위시 댓글 목록 조회 (세부 상자)
-    public static WishCommentResponseDTO.WishCommentPreviewDTO toGetWishCommentResultDTO(WishComment wishComment){
+    public static WishCommentResponseDTO.WishCommentPreviewDTO toGetWishCommentResultDTO(WishComment wishComment, Member member){
         return WishCommentResponseDTO.WishCommentPreviewDTO.builder()
                 .wishCommentId(wishComment.getId())
                 .memberId(wishComment.getMember().getId())
                 .nickname(wishComment.getMember().getNickname())
                 .profileUrl(wishComment.getMember().getProfileUrl())
                 .contents(wishComment.getContents())
+                .isAuthor(wishComment.getMember().equals(member))
                 .createdAt(wishComment.getCreatedAt())
                 .updatedAt(wishComment.getUpdatedAt())
                 .build();

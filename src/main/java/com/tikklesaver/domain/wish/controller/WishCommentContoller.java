@@ -80,9 +80,10 @@ public class WishCommentContoller {
             @Parameter(name = "wishId", description = "위시의 ID, path variable 입니다!")
     })
     public ApiResponse<WishCommentResponseDTO.WishCommentPreviewListDTO> getWishCommentList(
+            @CurrentMember Member member,
             @PathVariable(name = "wishId") Long wishId) {
 
-        List<WishCommentResponseDTO.WishCommentPreviewDTO> wishCommentList = wishCommentQueryService.getWishCommentList(wishId);
+        List<WishCommentResponseDTO.WishCommentPreviewDTO> wishCommentList = wishCommentQueryService.getWishCommentList(wishId, member);
 
         return ApiResponse.onSuccess(WishCommentConverter.toGetWishCommentListResultDTO(wishCommentList));
     }

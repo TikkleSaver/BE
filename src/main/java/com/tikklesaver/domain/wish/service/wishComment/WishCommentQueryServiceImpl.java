@@ -1,5 +1,6 @@
 package com.tikklesaver.domain.wish.service.wishComment;
 
+import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.domain.wish.converter.WishCommentConverter;
 import com.tikklesaver.domain.wish.dto.wishComment.WishCommentResponseDTO;
 import com.tikklesaver.domain.wish.entity.Wish;
@@ -22,15 +23,17 @@ public class WishCommentQueryServiceImpl implements WishCommentQueryService {
 
     // 위시 댓글 목록 조회
     @Override
-    public List<WishCommentResponseDTO.WishCommentPreviewDTO> getWishCommentList(Long wishId){
+    public List<WishCommentResponseDTO.WishCommentPreviewDTO> getWishCommentList(Long wishId, Member member){
 
         Wish wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new WishCommentHandler(ErrorStatus.WISH_NOT_FOUND));
 
         List<WishComment> wishCommentList = wishCommentRepository.findAllByWish(wish);
 
+
+
         return wishCommentList.stream()
-                .map(WishCommentConverter::toGetWishCommentResultDTO)
+                .map(comment -> WishCommentConverter.toGetWishCommentResultDTO(comment, member))
                 .toList();
 
     }
