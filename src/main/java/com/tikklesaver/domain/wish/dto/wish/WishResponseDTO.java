@@ -209,6 +209,7 @@ public class WishResponseDTO {
         Integer price;
         String image;
         PublicStatus publicStatus;
+        PurchaseStatus purchaseStatus;
         SatisfactionStatus satisfactionStatus;
         ProductType productType;
         Boolean isAuthor;

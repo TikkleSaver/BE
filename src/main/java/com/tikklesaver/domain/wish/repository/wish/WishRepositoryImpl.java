@@ -230,6 +230,7 @@ public class WishRepositoryImpl implements WishRepositoryCustom {
                         wish.product.price,
                         wish.product.image,
                         wish.publicStatus,
+                        wish.purchaseStatus,
                         wish.satisfactionStatus,
                         wish.product.productType,
                         wish.member.id.eq(member.getId()),
