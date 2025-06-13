@@ -27,7 +27,7 @@ public class WishRepositoryImpl implements WishRepositoryCustom {
 
     // 위시리스트 상세 조회
     @Override
-    public WishResponseDTO.WishDetailDTO getWishDetail(Long wishId){
+    public WishResponseDTO.WishDetailDTO getWishDetail(Long wishId, Member member){
         return jpaQueryFactory
                 .select(Projections.constructor(
                         WishResponseDTO.WishDetailDTO.class,
@@ -44,6 +44,7 @@ public class WishRepositoryImpl implements WishRepositoryCustom {
                         wish.satisfactionStatus,
                         wish.purchaseStatus,
                         wish.product.productType,
+                        wish.member.id.eq(member.getId()),
                         JPAExpressions.select(vote.count())
                                 .from(vote)
                                 .where(vote.wish.id.eq(wish.id),

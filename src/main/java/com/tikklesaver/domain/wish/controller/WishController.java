@@ -114,9 +114,10 @@ public class WishController {
     @GetMapping("/{wishId}")
     @Operation(summary = "위시 상세 조회 API")
     public ApiResponse<WishResponseDTO.WishDetailDTO> getWishDetail(
+            @CurrentMember Member member,
             @PathVariable(name = "wishId") Long wishId) {
 
-        return ApiResponse.onSuccess(wishQueryService.getWishDetail(wishId));
+        return ApiResponse.onSuccess(wishQueryService.getWishDetail(wishId, member));
     }
 
     // 나의 위시리스트 구매예정 목록 조회
