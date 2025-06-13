@@ -211,6 +211,7 @@ public class WishResponseDTO {
         PublicStatus publicStatus;
         SatisfactionStatus satisfactionStatus;
         ProductType productType;
+        Boolean isAuthor;
         Long likeCnt;
         Long unLikeCnt;
         Long  commentCnt;

@@ -23,5 +23,5 @@ public interface WishRepositoryCustom {
     List<WishResponseDTO.FriendWishPurchasedPreviewDTO> getFriendWishPurchasedList(Member friend);
 
     // 나와 친구의 위시리스트 목록 조회
-    List<WishResponseDTO.WishPreviewDTO> getWishList(List<Long> memberIdList);
+    List<WishResponseDTO.WishPreviewDTO> getWishList(List<Long> memberIdList, Member member);
 }

@@ -80,6 +80,6 @@ public class WishQueryServiceImpl implements WishQueryService {
 
         memberIdList.add(member.getId());
 
-        return wishRepository.getWishList(memberIdList);
+        return wishRepository.getWishList(memberIdList, member);
     }
 }
