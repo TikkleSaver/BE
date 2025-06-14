@@ -66,7 +66,7 @@ public class ExpenseCommentController {
             @CurrentMember Member viewer,
             @RequestParam(name = "page") Integer page,
             @RequestParam(name = "memberId", required = false) Long memberId,
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date expenseDate
+            @RequestParam(value = "expenseDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date expenseDate
     ){
         if ( memberId == null ){
             Page<ExpenseComment> expenseCommentList = expenseCommentQueryService.getExpenseCommentList(viewer.getId(), page - 1, viewer.getId(), expenseDate);

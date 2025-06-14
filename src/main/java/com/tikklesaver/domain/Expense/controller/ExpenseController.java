@@ -38,7 +38,7 @@ public class ExpenseController {
     })
     public ApiResponse<ExpenseResponseDTO.GetExpenseResultDTO> getExpense(
             @CurrentMember Member member,
-            @PathVariable Long expenseId) {
+            @PathVariable(value = "expenseId") Long expenseId) {
 
         Expense expense = expenseQueryService.getExpense(member.getId(), expenseId);
         return ApiResponse.onSuccess(ExpenseConverter.toGetExpenseResultDTO(expense));
@@ -51,7 +51,7 @@ public class ExpenseController {
             @CurrentMember Member viewer,
             @RequestParam(name = "page") Integer page,
             @RequestParam(value = "memberId", required = false) Long memberId,
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date expenseDate
+            @RequestParam(value = "expenseDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date expenseDate
     ){
 
         if( memberId == null) {
@@ -113,8 +113,8 @@ public class ExpenseController {
     public ApiResponse<ExpenseResponseDTO.GetDailyExpenseResultDTOList> getDailyExpense(
             @CurrentMember Member viewer,
             @RequestParam(value = "memberId", required = false) Long memberId,
-            @RequestParam int year,
-            @RequestParam int month) {
+            @RequestParam(value = "year") int year,
+            @RequestParam(value = "month") int month) {
 
         if(memberId == null) {
             List<Expense> expenseList =
@@ -138,7 +138,7 @@ public class ExpenseController {
     })
     public ApiResponse<ExpenseResponseDTO.GetMonthlyExpenseResultDTOList> getMonthlyExpense(
             @CurrentMember Member member,
-            @RequestParam int year) {
+            @RequestParam(value = "year") int year) {
 
         List<ExpenseResponseDTO.MonthlyExpenseTotalDTO> expenseList =
                 expenseQueryService.getMonthlyExpense(member.getId(), year);
@@ -155,8 +155,8 @@ public class ExpenseController {
     })
     public ApiResponse<ExpenseResponseDTO.GetTotalExpenseByCategoryResultDTOList> getTotalExpenseByCategory(
             @CurrentMember Member member,
-            @RequestParam int year,
-            @RequestParam int month) {
+            @RequestParam(value = "year") int year,
+            @RequestParam(value = "month") int month) {
 
         List<ExpenseResponseDTO.TotalExpenseByCategoryResultDTO> expenseList =
                 expenseQueryService.getTotalExpenseByCategory(member.getId(), year, month);
@@ -173,8 +173,8 @@ public class ExpenseController {
     })
     public ApiResponse<ExpenseResponseDTO.GetTotalExpenseByMonthResultDTO> getTotalExpenseByMonth(
             @CurrentMember Member member,
-            @RequestParam int year,
-            @RequestParam int month) {
+            @RequestParam(value = "year") int year,
+            @RequestParam(value = "month") int month) {
 
         Long totalAmount = expenseQueryService.getTotalExpenseByMonth(member.getId(), year, month);
 
@@ -190,8 +190,8 @@ public class ExpenseController {
     })
     public ApiResponse<ExpenseResponseDTO.GetExpenseTop3CategoryResultDTO> getTotalExpenseTop3Category(
             @CurrentMember Member member,
-            @RequestParam int year,
-            @RequestParam int month) {
+            @RequestParam(value = "year") int year,
+            @RequestParam(value = "month") int month) {
 
         ExpenseResponseDTO.GetExpenseTop3CategoryResultDTO result = expenseQueryService.getTotalExpenseTop3Category(member.getId(), year, month);
 
@@ -207,8 +207,8 @@ public class ExpenseController {
     })
     public ApiResponse<ExpenseResponseDTO.GetAchievedGoalCostResultDTO> getAchievedGoalCost(
             @CurrentMember Member member,
-            @RequestParam int year,
-            @RequestParam int month) {
+            @RequestParam(value = "year") int year,
+            @RequestParam(value = "month") int month) {
 
         ExpenseResponseDTO.GetAchievedGoalCostResultDTO result = expenseQueryService.getAchievedGoalCost(member.getId(), year, month);
 
