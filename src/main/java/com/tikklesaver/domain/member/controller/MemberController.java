@@ -91,7 +91,7 @@ public class MemberController {
     public ApiResponse<MemberResponseDto.MemberInfoDTO> updateProfile
             (@Parameter(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
              @Valid @RequestPart MemberRequestDto.UpdateProfileDTO requestDTO,
-             @RequestPart("profileImg") MultipartFile profileImg,@CurrentMember Member member) {
+             @RequestPart(value = "profileImg", required = false) MultipartFile profileImg,@CurrentMember Member member) {
         return ApiResponse.onSuccess(MemberConverter.toMemberInfoDTO(memberCommandService.updateProfile(member, requestDTO.getNickname(), profileImg)));
     }
 
