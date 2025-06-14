@@ -60,12 +60,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         Optional<Member> optionalMember = memberRepository.findByLoginId(memberSignUpDto.getLoginId());
 
         if (optionalMember.isPresent()) {
-            Member member = optionalMember.get();
-                throw new Exception("이미 존재하는 이메일입니다.");
-        }
-
-        if (memberRepository.findByNickname(memberSignUpDto.getNickname()).isPresent()) {
-            throw new Exception("이미 존재하는 닉네임입니다.");
+                throw new MemberHandler(ErrorStatus.MEMBER_ALREADY_EXISTS);
         }
 
         Member member = Member.builder()
