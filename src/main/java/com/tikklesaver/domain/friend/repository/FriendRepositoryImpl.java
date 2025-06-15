@@ -1,17 +1,10 @@
 package com.tikklesaver.domain.friend.repository;
 
 import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tikklesaver.domain.friend.dto.FriendResponseDto;
 import com.tikklesaver.domain.friend.entity.QFriend;
 import com.tikklesaver.domain.member.entity.QMember;
-import com.tikklesaver.domain.wish.dto.wish.WishResponseDTO;
-import com.tikklesaver.domain.wish.entity.QVote;
-import com.tikklesaver.domain.wish.entity.QWish;
-import com.tikklesaver.domain.wish.entity.QWishComment;
-import com.tikklesaver.domain.wish.entity.enums.LikeStatus;
-import com.tikklesaver.domain.wish.entity.enums.PurchaseStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +17,19 @@ public class FriendRepositoryImpl implements FriendRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
     private final QFriend friend = QFriend.friend;
     private final QMember member = QMember.member;
+
+    @Override
+    public Long countByMemberId(Long memberId) {
+        return jpaQueryFactory
+                .select(friend.count())
+                .from(friend)
+                .where(
+                        friend.member1.id.eq(memberId)
+                                .or(friend.member2.id.eq(memberId))
+                )
+                .fetchOne(); // 결과는 Long 하나
+    }
+
 
     @Override
     public List<FriendResponseDto.FriendDTO> findAllByMemberId(Long memberId) {

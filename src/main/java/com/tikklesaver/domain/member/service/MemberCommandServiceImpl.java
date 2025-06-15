@@ -5,6 +5,7 @@ import com.tikklesaver.domain.Challenge.entity.Challenge;
 import com.tikklesaver.domain.Challenge.entity.ChallengeScraped;
 import com.tikklesaver.domain.Challenge.repository.ChallengeScrapRepository;
 import com.tikklesaver.domain.Challenge.repository.JoinChallengeRepository;
+import com.tikklesaver.domain.friend.repository.FriendRepository;
 import com.tikklesaver.domain.member.dto.CustomUserInfoDto;
 import com.tikklesaver.domain.member.dto.LoginRequestDto;
 import com.tikklesaver.domain.member.dto.SignUpRequestDto;
@@ -25,6 +26,8 @@ import com.tikklesaver.global.repository.UuidRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -52,7 +55,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     private final AmazonS3Manager s3Manager;
     private final UuidRepository uuidRepository;
     private final ChallengeScrapRepository challengeScrapRepository;
-
+    private final FriendRepository friendRepository;
 
 
     @Override
@@ -224,8 +227,9 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
     @Override
     public int getFriendCount(Long memberId) {
-        return 0;
+        return Math.toIntExact(friendRepository.countByMemberId(memberId));
     }
+
 
     public List<Challenge> getScrappedChallenges(Long memberId) {
         List<ChallengeScraped> scrapedList = challengeScrapRepository.findAllByMemberId(memberId);
@@ -259,8 +263,10 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     }
 
     @Override
-    public List<Member> searchByNicknameKeyword(String keyword) {
-        return memberRepository.searchByNicknameKeyword(keyword);
+    public List<Member> searchByNicknameKeyword(String keyword, int pageNumber, Long memberId) {
+        Pageable pageable = PageRequest.of(pageNumber, 10); // 0페이지, 10개씩
+        List<Member> members = memberRepository.searchByNicknameKeyword(keyword, pageable, memberId);
+        return members;
     }
 }
 

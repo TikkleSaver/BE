@@ -45,5 +45,5 @@ public interface MemberCommandService {
     // 지출 목표 금액 조회(지출 달력 페이지)
     Long getExpenseGoalCost(Long memberId);
 
-    List<Member> searchByNicknameKeyword(String keyword);
+    List<Member> searchByNicknameKeyword(String keyword, int pageNumber, Long memberId);
 }
