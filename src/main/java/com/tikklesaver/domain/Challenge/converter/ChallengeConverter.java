@@ -136,7 +136,7 @@ public class ChallengeConverter {
                 .missionProofId(missionProof.getId())
                 .content(missionProof.getContent())
                 .imageUrl(missionProof.getImageUrl())
-                .createdAt(LocalDateTime.now())
+                .createdAt(missionProof.getCreatedAt())
                 .build();
     }
 
