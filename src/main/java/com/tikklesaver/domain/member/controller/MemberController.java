@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Null;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -89,11 +90,12 @@ public class MemberController {
     //프로필 수정
     @PatchMapping(value = "/users", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ApiResponse<MemberResponseDto.MemberInfoDTO> updateProfile
-            (@Parameter(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
-             @Valid @RequestPart MemberRequestDto.UpdateProfileDTO requestDTO,
-             @RequestPart(value = "profileImg", required = false) MultipartFile profileImg,@CurrentMember Member member) {
+    (@Parameter(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+     @RequestPart(value = "profileImg", required = false) MultipartFile profileImg,@CurrentMember Member member,
+     @Valid @RequestPart(name="requestDTO") MemberRequestDto.UpdateProfileDTO requestDTO) {
         return ApiResponse.onSuccess(MemberConverter.toMemberInfoDTO(memberCommandService.updateProfile(member, requestDTO.getNickname(), profileImg)));
     }
+
 
 
 
@@ -159,8 +161,8 @@ public class MemberController {
 
     @GetMapping("/users/search")
     public ApiResponse<List<MemberResponseDto.MemberInfoDTO>> searchMembers(
-            @RequestParam String keyword) {
-        List<Member> members = memberCommandService.searchByNicknameKeyword(keyword);
+            @RequestParam int pageNum, String keyword) {
+        List<Member> members = memberCommandService.searchByNicknameKeyword(keyword, pageNum);
         return ApiResponse.onSuccess(MemberConverter.toMemberInfoListDTO(members));
     }
 }

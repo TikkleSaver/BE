@@ -25,6 +25,8 @@ import com.tikklesaver.global.repository.UuidRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -259,8 +261,10 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     }
 
     @Override
-    public List<Member> searchByNicknameKeyword(String keyword) {
-        return memberRepository.searchByNicknameKeyword(keyword);
+    public List<Member> searchByNicknameKeyword(String keyword, int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, 10); // 0페이지, 10개씩
+        List<Member> members = memberRepository.searchByNicknameKeyword(keyword, pageable);
+        return members;
     }
 }
 
