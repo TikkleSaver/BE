@@ -112,12 +112,13 @@ public class MemberController {
         return ApiResponse.onSuccess("목표 지출액 저장 완료");
     }
 
-    //내 정보 조회
-    @GetMapping("/users")
+    //내 프로필 정보 조회
+    @GetMapping("/users/profile")
     public ApiResponse<MemberResponseDto.MemberProfileDTO> getProfile(@CurrentMember Member member) throws Exception {
         int wishListNum = memberCommandService.getWishListCount(member.getId());
         int challengeNum = memberCommandService.getChallengeCount(member.getId());
         int friendNum = memberCommandService.getFriendCount(member.getId());
+
         List<Challenge> challengeScrapedList = memberCommandService.getScrappedChallenges(member.getId());
 
         return ApiResponse.onSuccess(
@@ -125,6 +126,11 @@ public class MemberController {
                 challengeNum, friendNum, challengeScrapedList));
     }
 
+    //내 정보 조회
+    @GetMapping("/users")
+    public ApiResponse<MemberResponseDto.MemberInfoDTO> getUserInfo(@CurrentMember Member member) throws Exception {
+        return ApiResponse.onSuccess(MemberConverter.toMemberInfoDTO(member));
+    }
 
     // 지출 목표 금액 수정(지출 달력 페이지)
     @PatchMapping("/users/goalCost")
@@ -161,8 +167,9 @@ public class MemberController {
 
     @GetMapping("/users/search")
     public ApiResponse<List<MemberResponseDto.MemberInfoDTO>> searchMembers(
+            @CurrentMember Member member,
             @RequestParam int pageNum, String keyword) {
-        List<Member> members = memberCommandService.searchByNicknameKeyword(keyword, pageNum);
+        List<Member> members = memberCommandService.searchByNicknameKeyword(keyword, pageNum, member.getId());
         return ApiResponse.onSuccess(MemberConverter.toMemberInfoListDTO(members));
     }
 }
