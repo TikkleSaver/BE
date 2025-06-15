@@ -5,6 +5,7 @@ import com.tikklesaver.domain.Challenge.entity.Challenge;
 import com.tikklesaver.domain.Challenge.entity.ChallengeScraped;
 import com.tikklesaver.domain.Challenge.repository.ChallengeScrapRepository;
 import com.tikklesaver.domain.Challenge.repository.JoinChallengeRepository;
+import com.tikklesaver.domain.friend.repository.FriendRepository;
 import com.tikklesaver.domain.member.dto.CustomUserInfoDto;
 import com.tikklesaver.domain.member.dto.LoginRequestDto;
 import com.tikklesaver.domain.member.dto.SignUpRequestDto;
@@ -54,7 +55,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     private final AmazonS3Manager s3Manager;
     private final UuidRepository uuidRepository;
     private final ChallengeScrapRepository challengeScrapRepository;
-
+    private final FriendRepository friendRepository;
 
 
     @Override
@@ -226,8 +227,9 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
     @Override
     public int getFriendCount(Long memberId) {
-        return 0;
+        return Math.toIntExact(friendRepository.countByMemberId(memberId));
     }
+
 
     public List<Challenge> getScrappedChallenges(Long memberId) {
         List<ChallengeScraped> scrapedList = challengeScrapRepository.findAllByMemberId(memberId);
@@ -261,9 +263,9 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     }
 
     @Override
-    public List<Member> searchByNicknameKeyword(String keyword, int pageNumber) {
+    public List<Member> searchByNicknameKeyword(String keyword, int pageNumber, Long memberId) {
         Pageable pageable = PageRequest.of(pageNumber, 10); // 0페이지, 10개씩
-        List<Member> members = memberRepository.searchByNicknameKeyword(keyword, pageable);
+        List<Member> members = memberRepository.searchByNicknameKeyword(keyword, pageable, memberId);
         return members;
     }
 }
