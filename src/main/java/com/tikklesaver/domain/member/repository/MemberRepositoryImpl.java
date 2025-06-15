@@ -15,18 +15,22 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     private final QMember member = QMember.member;
 
     @Override
-    public List<Member> searchByNicknameKeyword(String keyword, Pageable pageable) {
+    public List<Member> searchByNicknameKeyword(String keyword, Pageable pageable, Long currentMemberId) {
         BooleanBuilder builder = new BooleanBuilder();
 
         if (keyword != null && !keyword.isBlank()) {
             builder.and(member.nickname.containsIgnoreCase(keyword));
         }
 
+        if (currentMemberId != null) {
+            builder.and(member.id.ne(currentMemberId)); // 현재 로그인한 사용자 제외
+        }
+
         return queryFactory
                 .selectFrom(member)
                 .where(builder)
-                .offset(pageable.getOffset())       // 몇 번째부터 시작할지
-                .limit(pageable.getPageSize())      // 몇 개 가져올지
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
     }
 
