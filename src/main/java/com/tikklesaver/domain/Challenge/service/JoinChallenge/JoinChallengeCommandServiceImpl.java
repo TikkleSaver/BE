@@ -77,4 +77,19 @@ public class JoinChallengeCommandServiceImpl implements JoinChallengeCommandServ
 
     }
 
+
+    @Override
+    public void exitChallenge(Long memberId, Long challengeId) {
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
+
+        Challenge challenge = challengeRepository.findById(challengeId)
+                . orElseThrow(() -> new EntityNotFoundException("해당하는 챌린지를 찾을 수 없습니다. ID: " + challengeId));
+
+        JoinChallenge joinChallenge = joinChallengeRepository.findByChallengeIdAndMemberId(challengeId,memberId);
+        joinChallengeRepository.delete(joinChallenge);
+
+    }
+
 }

@@ -67,9 +67,7 @@ public class ChallengeController {
     @Operation(summary = "카테고리별 챌린지 리스트 조회 API")
     public ApiResponse<ChallengeResponseDTO.ChallengePreViewListDTO> getChallengeList(@RequestParam(name = "category", required = false) Long categoryId, @RequestParam(name="page")Integer page){
 
-        Long memberId = 1L;
-
-        Page<Challenge> challengeList = challengeQueryService.getAllChallenges(memberId, categoryId, page);
+        Page<Challenge> challengeList = challengeQueryService.getAllChallenges(categoryId, page);
 
         return ApiResponse.onSuccess(ChallengeConverter.challengePreViewListDTO(challengeList));
 
