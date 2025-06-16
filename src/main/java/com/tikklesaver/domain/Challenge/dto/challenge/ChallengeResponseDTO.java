@@ -91,7 +91,8 @@ public class ChallengeResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class DetailChallengerTabResponseDTO {
-
+        private Long id;
+        private Long challengeId;
         private Long memberId;
         private String memberImgUrl;
         private String memberName;

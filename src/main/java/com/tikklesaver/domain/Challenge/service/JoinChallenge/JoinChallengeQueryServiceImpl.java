@@ -10,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class JoinChallengeQueryServiceImpl implements JoinChallengeQueryService {
@@ -22,6 +24,16 @@ public class JoinChallengeQueryServiceImpl implements JoinChallengeQueryService 
         PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
 
         return joinChallengeRepository.findByChallengeIdAndStatus(challengeId, Status.JOINED, pageRequest);
+
+
+    }
+
+    @Override
+    public Page<JoinChallenge> getChallengeRequestMembers(Long challengeId, Integer page) {
+
+        PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
+
+        return joinChallengeRepository.findByChallengeIdAndStatus(challengeId, Status.PENDING, pageRequest);
 
 
     }
