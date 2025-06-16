@@ -10,4 +10,5 @@ public interface JoinChallengeCommandService {
     JoinChallenge acceptChallenge(Long memberId, Long joinChallengeId);
 
     void rejectChallenge(Long memberId, Long joinChallengeId);
+    void exitChallenge(Long memberId, Long challengeId);
 }

@@ -29,7 +29,7 @@ public class ChallengeQueryServiceImpl implements ChallengeQueryService {
 
 
     @Override
-    public Page<Challenge> getAllChallenges(Long memberId, Long categoryId, Integer page) {
+    public Page<Challenge> getAllChallenges( Long categoryId, Integer page) {
 
         PageRequest pageRequest = PageRequest.of(page - 1, 20, Sort.by(Sort.Direction.DESC, "createdAt"));
 
