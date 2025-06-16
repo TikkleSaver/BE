@@ -56,6 +56,16 @@ public class JoinChallengeController {
 
     }
 
+    @GetMapping("/{challengeId}/request-list")
+    @Operation(summary = "챌린지 참여 요청 챌린저 조회 API ")
+    public ApiResponse<ChallengeResponseDTO.DetailChallengerTabListResponseDTO> getRequestChallengerList(@PathVariable(name = "challengeId") Long challengeId, @RequestParam(name="page")Integer page){
+
+        Page<JoinChallenge> challengerList = joinChallengeQueryService.getChallengeRequestMembers(challengeId, page);
+
+        return ApiResponse.onSuccess(ChallengeConverter.detailChallengerTabListDTO(challengerList));
+
+    }
+
     @PostMapping("/{joinChallengeId}/accept")
     @Operation(summary = "챌린지 참여 요청 수락 API")
     public ApiResponse<JoinChallengeResponseDTO> acceptChallenge(

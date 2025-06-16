@@ -156,6 +156,8 @@ public class ChallengeConverter {
 
     public static ChallengeResponseDTO.DetailChallengerTabResponseDTO detailChallengerTabDTO(JoinChallenge joinChallenge) {
         return ChallengeResponseDTO.DetailChallengerTabResponseDTO.builder()
+                .id(joinChallenge.getId())
+                .challengeId(joinChallenge.getChallenge().getId())
                 .memberId(joinChallenge.getMember().getId())
                 .memberName(joinChallenge.getMember().getNickname())
                 .memberImgUrl(joinChallenge.getMember().getProfileUrl())
