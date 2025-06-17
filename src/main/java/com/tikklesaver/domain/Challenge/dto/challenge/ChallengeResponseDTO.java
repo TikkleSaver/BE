@@ -55,6 +55,7 @@ public class ChallengeResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ChallengePreviewWithStatusResponseDTO {
+        private Long memberId;
         private Long challengeId;
         private String title;
         private String description;

@@ -66,8 +66,9 @@ public class ChallengeConverter {
     }
 
 
-    public static ChallengeResponseDTO.ChallengePreviewWithStatusResponseDTO challengePreviewWithStatusResponseDTO(Challenge challenge, Status status, boolean isScrapped, Integer challengerCount, List<String> challengerImages) {
+    public static ChallengeResponseDTO.ChallengePreviewWithStatusResponseDTO challengePreviewWithStatusResponseDTO(Member member, Challenge challenge, Status status, boolean isScrapped, Integer challengerCount, List<String> challengerImages) {
         return ChallengeResponseDTO.ChallengePreviewWithStatusResponseDTO.builder()
+                .memberId(member.getId())
                 .challengeId(challenge.getId())
                 .title(challenge.getTitle())
                 .description(challenge.getDescription())
