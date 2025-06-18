@@ -1,5 +1,7 @@
 package com.tikklesaver.domain.Challenge.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tikklesaver.domain.Category.entity.Category;
 import com.tikklesaver.domain.Challenge.entity.enums.PublicStatus;
 import com.tikklesaver.domain.member.entity.Member;

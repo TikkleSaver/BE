@@ -3,6 +3,7 @@ package com.tikklesaver.domain.Challenge.service.Challenge;
 import com.tikklesaver.domain.Category.entity.Category;
 import com.tikklesaver.domain.Category.repository.CategoryRepository;
 import com.tikklesaver.domain.Challenge.converter.ChallengeConverter;
+import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeDTO;
 import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeResponseDTO;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
 import com.tikklesaver.domain.Challenge.entity.enums.Status;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -76,6 +78,20 @@ public class ChallengeQueryServiceImpl implements ChallengeQueryService {
 
     }
 
+    @Override
+    public List<ChallengeDTO> getTop4Challenges( ) {
+        PageRequest pageRequest = PageRequest.of(0, 4); // 0페이지, 4개만
+        List<Challenge> challenges = challengeRepository.findTop4ByMostJoined(pageRequest);
+        return challenges.stream()
+                .map(challenge -> ChallengeDTO.builder()
+                        .challengeId(challenge.getId())
+                        .title(challenge.getTitle())
+                        .description(challenge.getDescription())
+                        .imgUrl(challenge.getChallengeUrl())
+                        .categoryId(challenge.getCategory().getId())
+                        .build())
+                .collect(Collectors.toList());
+    }
 
 }
 
