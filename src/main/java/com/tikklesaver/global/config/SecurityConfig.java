@@ -31,7 +31,7 @@ public class SecurityConfig {
 //    private final CustomAccessDeniedHandler accessDeniedHandler;
 //    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
 
-    private static final String[] AUTH_WHITELIST = {"/api/login", "/api/signup","/api/refresh-token","/api/check-id", "/api/challenges/search", "/api/challenges","/api/challenges/lists", "/api/join-challenges"};
+    private static final String[] AUTH_WHITELIST = {"/api/login", "/api/signup","/api/refresh-token","/api/check-id", "/api/challenges/search", "/api/challenges","/api/challenges/lists", "/api/join-challenges", "/api/challenges/top4-lists"};
 
 
     @Bean

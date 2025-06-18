@@ -1,6 +1,7 @@
 package com.tikklesaver.domain.Challenge.controller;
 
 import com.tikklesaver.domain.Challenge.converter.ChallengeConverter;
+import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeDTO;
 import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeRequestDTO;
 import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeResponseDTO;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
@@ -17,6 +18,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -83,6 +86,15 @@ public class ChallengeController {
 
     }
 
+    @GetMapping("/top4-lists")
+    @Operation(summary = "인기 챌린지 TOP4 조회 API")
+    public ApiResponse<List<ChallengeDTO>> getTop4Challenge(){
+
+        List<ChallengeDTO> challengeList = challengeQueryService.getTop4Challenges();
+
+        return ApiResponse.onSuccess(challengeList);
+
+    }
 
 
 }

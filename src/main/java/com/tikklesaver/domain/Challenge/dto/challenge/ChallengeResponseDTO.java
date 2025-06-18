@@ -1,14 +1,14 @@
 package com.tikklesaver.domain.Challenge.dto.challenge;
 
+import com.tikklesaver.domain.Challenge.entity.JoinChallenge;
 import com.tikklesaver.domain.Challenge.entity.enums.Status;
 import com.tikklesaver.domain.member.entity.Member;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ChallengeResponseDTO {
 
@@ -99,6 +99,7 @@ public class ChallengeResponseDTO {
         private String memberName;
 
     }
+
 
 
 

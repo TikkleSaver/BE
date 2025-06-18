@@ -4,7 +4,11 @@ import com.tikklesaver.domain.Category.entity.Category;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 public interface ChallengeRepositoryCustom {
 
     Page<Challenge> dynamicQueryBuilder(String keyword, Category category, Integer page);
+
+
 }

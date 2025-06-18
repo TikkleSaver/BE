@@ -6,7 +6,6 @@ import com.tikklesaver.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
 
 @Builder
 @Getter
