@@ -1,6 +1,7 @@
 package com.tikklesaver.domain.Challenge.service.JoinChallenge;
 
 import com.tikklesaver.domain.Challenge.converter.ChallengeConverter;
+import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeDTO;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
 import com.tikklesaver.domain.Challenge.entity.JoinChallenge;
 import com.tikklesaver.domain.Challenge.entity.enums.PublicStatus;
@@ -11,10 +12,14 @@ import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.domain.member.repository.MemberRepository;
 import com.tikklesaver.global.apiPayload.code.status.ErrorStatus;
 import com.tikklesaver.global.apiPayload.exception.handler.ChallengeHandler;
-import com.tikklesaver.global.apiPayload.exception.handler.JoinChallengeHandler;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -92,4 +97,21 @@ public class JoinChallengeCommandServiceImpl implements JoinChallengeCommandServ
 
     }
 
+    @Override
+    public List<ChallengeDTO> getMyChallenges(Long memberId) {
+        List<Challenge> challenges = joinChallengeRepository.findByMemberIdAndStatus(memberId, Status.JOINED)
+                .stream()
+                .map(JoinChallenge::getChallenge)
+                .toList();
+
+        return challenges.stream()
+                .map(challenge -> ChallengeDTO.builder()
+                        .challengeId(challenge.getId())
+                        .title(challenge.getTitle())
+                        .description(challenge.getDescription())
+                        .imgUrl(challenge.getChallengeUrl())
+                        .categoryId(challenge.getCategory().getId())
+                        .build())
+                .collect(Collectors.toList());
+    }
 }

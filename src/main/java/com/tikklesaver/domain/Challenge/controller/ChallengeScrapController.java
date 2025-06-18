@@ -3,6 +3,8 @@ package com.tikklesaver.domain.Challenge.controller;
 import com.tikklesaver.domain.Challenge.dto.challengeScrap.ChallengeScrapResponseDTO;
 import com.tikklesaver.domain.Challenge.entity.ChallengeScraped;
 import com.tikklesaver.domain.Challenge.service.ChallengeScrap.ChallengeScrapCommandService;
+import com.tikklesaver.domain.member.entity.Member;
+import com.tikklesaver.global.annotation.CurrentMember;
 import com.tikklesaver.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +21,9 @@ public class ChallengeScrapController {
 
     @PatchMapping("/{challengeId}/scrap")
     @Operation(summary = "챌린지 스크랩 추가/삭제 API")
-    public ApiResponse<ChallengeScrapResponseDTO> joinChallenge(@PathVariable(name = "challengeId") Long challengeId){
+    public ApiResponse<ChallengeScrapResponseDTO> joinChallenge(@PathVariable(name = "challengeId") Long challengeId, @CurrentMember Member member){
 
-        //임시 memberId
-        Long memberId = 2L;
-        ChallengeScrapResponseDTO challengeScrap = challengeScrapCommandService.changeScrap(challengeId,memberId);
+        ChallengeScrapResponseDTO challengeScrap = challengeScrapCommandService.changeScrap(challengeId,member.getId());
         return ApiResponse.onSuccess(challengeScrap);
     }
 

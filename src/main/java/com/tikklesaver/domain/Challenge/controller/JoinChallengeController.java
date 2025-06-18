@@ -1,6 +1,7 @@
 package com.tikklesaver.domain.challenge.controller;
 
 import com.tikklesaver.domain.Challenge.converter.ChallengeConverter;
+import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeDTO;
 import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeResponseDTO;
 import com.tikklesaver.domain.Challenge.dto.joinChallenge.JoinChallengeResponseDTO;
 import com.tikklesaver.domain.Challenge.entity.JoinChallenge;
@@ -15,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -94,6 +97,16 @@ public class JoinChallengeController {
 
         joinChallengeCommandService.exitChallenge(member.getId(),challengeId);
         return ApiResponse.onSuccess("joinChallenge가 삭제되었습니다.");
+    }
+
+    @GetMapping("/members/{memberId}")
+    @Operation(summary = "참여중인 챌린지 조회")
+    public ApiResponse<List<ChallengeDTO>> getChallengerList(@PathVariable(name = "memberId") Long memberId){
+
+        List<ChallengeDTO> challengeList  = joinChallengeCommandService.getMyChallenges(memberId);
+
+        return ApiResponse.onSuccess(challengeList);
+
     }
 
 }
