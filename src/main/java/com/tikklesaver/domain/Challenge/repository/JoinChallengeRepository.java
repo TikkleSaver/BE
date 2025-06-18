@@ -33,7 +33,7 @@ public interface JoinChallengeRepository extends JpaRepository<JoinChallenge, Lo
     Integer countJoinChallengeByChallengeIdAndStatus(Long challengeId, Status status);
 
 
-    int countByMemberId(Long memberId);
+    int countByMemberIdAndStatus(Long memberId, Status status);
 
 
     Page<JoinChallenge> findByChallengeIdAndStatus(Long challengeId, Status status, Pageable pageable);
@@ -41,4 +41,6 @@ public interface JoinChallengeRepository extends JpaRepository<JoinChallenge, Lo
     boolean existsByChallengeIdAndMemberId(Long challengeId, Long memberId);
 
   JoinChallenge findByChallengeIdAndMemberId(Long challengeId, Long memberId);
+
+    List<JoinChallenge> findByMemberIdAndStatus(Long memberId, Status status);
 }
