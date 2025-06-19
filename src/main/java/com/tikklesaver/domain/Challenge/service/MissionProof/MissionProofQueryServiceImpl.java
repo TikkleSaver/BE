@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 public class MissionProofQueryServiceImpl implements MissionProofQueryService {
 
     private final MissionProofRepository missionProofRepository;
-    private final ChallengeRepository challengeRepository;
 
     public List<MissionProofResponseDTO.missionProofResultDTO> getMissionProofsByMonth(Long memberId, Long challengeId, int year, int month) {
         List<MissionProof> proofs = missionProofRepository.findByMonth(memberId, challengeId, year, month);

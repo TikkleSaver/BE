@@ -5,11 +5,13 @@ import com.tikklesaver.domain.Category.repository.CategoryRepository;
 import com.tikklesaver.domain.Challenge.converter.ChallengeConverter;
 import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeDTO;
 import com.tikklesaver.domain.Challenge.dto.challenge.ChallengeResponseDTO;
+import com.tikklesaver.domain.Challenge.dto.missionProof.MissionProofResponseDTO;
 import com.tikklesaver.domain.Challenge.entity.Challenge;
 import com.tikklesaver.domain.Challenge.entity.enums.Status;
 import com.tikklesaver.domain.Challenge.repository.challenge.ChallengeRepository;
 import com.tikklesaver.domain.Challenge.repository.ChallengeScrapRepository;
 import com.tikklesaver.domain.Challenge.repository.JoinChallengeRepository;
+import com.tikklesaver.domain.Challenge.repository.missionProof.MissionProofRepository;
 import com.tikklesaver.domain.member.entity.Member;
 import com.tikklesaver.domain.member.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +34,7 @@ public class ChallengeQueryServiceImpl implements ChallengeQueryService {
     private final JoinChallengeRepository joinChallengeRepository;
     private final ChallengeScrapRepository challengeScrapRepository;
     private final MemberRepository memberRepository;
+    private final MissionProofRepository missionProofRepository;
 
 
     @Override
@@ -50,6 +54,10 @@ public class ChallengeQueryServiceImpl implements ChallengeQueryService {
     @Override
     public ChallengeResponseDTO.ChallengePreviewWithStatusResponseDTO getChallengePreview(Long memberId, Long challengeId) {
 
+        LocalDate now = LocalDate.now();
+        int year = now.getYear();
+        int month = now.getMonthValue();
+
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 유저를 찾을 수 없습니다. ID: " + memberId));
 
@@ -60,8 +68,9 @@ public class ChallengeQueryServiceImpl implements ChallengeQueryService {
         boolean isScrapped = challengeScrapRepository.existsByChallengeIdAndMemberId(challengeId, memberId);
         Integer challengerCount = joinChallengeRepository.countJoinChallengeByChallengeIdAndStatus(challengeId, Status.JOINED);
 
-        List<String> challengerImages = joinChallengeRepository.findTop3ChallengerImages(challengeId);
-        return ChallengeConverter.challengePreviewWithStatusResponseDTO(member, challenge, status, isScrapped, challengerCount, challengerImages);
+        List<MissionProofResponseDTO.top3RankingDTO> top3 = missionProofRepository.findTop3RankersByChallengeAndMonth(challengeId, year, month);
+
+        return ChallengeConverter.challengePreviewWithStatusResponseDTO(member, challenge, status, isScrapped, challengerCount, top3);
 
     }
 

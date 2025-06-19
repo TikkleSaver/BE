@@ -1,5 +1,6 @@
 package com.tikklesaver.domain.Challenge.dto.challenge;
 
+import com.tikklesaver.domain.Challenge.dto.missionProof.MissionProofResponseDTO;
 import com.tikklesaver.domain.Challenge.entity.JoinChallenge;
 import com.tikklesaver.domain.Challenge.entity.enums.Status;
 import com.tikklesaver.domain.member.entity.Member;
@@ -66,7 +67,7 @@ public class ChallengeResponseDTO {
         private Long leaderId;
         private String isPublic;
         private boolean isScrapped;
-        private List<String> challengerImages;
+        private List<MissionProofResponseDTO.top3RankingDTO> top3Challenger;
         private Integer challengerCount;
 
 

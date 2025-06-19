@@ -16,8 +16,6 @@ public interface JoinChallengeRepository extends JpaRepository<JoinChallenge, Lo
     @Query("SELECT jc.status FROM JoinChallenge jc WHERE jc.challenge.id = :challengeId AND jc.member.id = :memberId")
     Optional<Status> getJoinChallengeStatusByChallengeIdAndMemberId(Long challengeId,  Long memberId);
 
-    Integer countJoinChallengeByChallengeId(Long challengeId);
-
     @Query(
             value = "SELECT m.profile_url " +
                     "FROM join_challenge jc " +
