@@ -66,7 +66,7 @@ public class ChallengeConverter {
     }
 
 
-    public static ChallengeResponseDTO.ChallengePreviewWithStatusResponseDTO challengePreviewWithStatusResponseDTO(Member member, Challenge challenge, Status status, boolean isScrapped, Integer challengerCount, List<String> challengerImages) {
+    public static ChallengeResponseDTO.ChallengePreviewWithStatusResponseDTO challengePreviewWithStatusResponseDTO(Member member, Challenge challenge, Status status, boolean isScrapped, Integer challengerCount, List<MissionProofResponseDTO.top3RankingDTO> top3) {
         return ChallengeResponseDTO.ChallengePreviewWithStatusResponseDTO.builder()
                 .memberId(member.getId())
                 .challengeId(challenge.getId())
@@ -79,7 +79,7 @@ public class ChallengeConverter {
                 .isPublic(challenge.getPublicStatus().toString())
                 .isScrapped(isScrapped)
                 .challengerCount(challengerCount)
-                .challengerImages(challengerImages)
+                .top3Challenger(top3)
                 .imgUrl(challenge.getChallengeUrl())
                 .build();
 
